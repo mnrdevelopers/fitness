@@ -263,3 +263,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Quotes Slider
+let quoteIndex = 0;
+const quotes = document.querySelectorAll('.quote');
+
+function showQuotes() {
+    quotes.forEach(quote => quote.classList.remove('active'));
+    quoteIndex++;
+    if (quoteIndex >= quotes.length) quoteIndex = 0;
+    quotes[quoteIndex].classList.add('active');
+    setTimeout(showQuotes, 5000);
+}
+
+// Start the quotes slider
+setTimeout(showQuotes, 5000);
