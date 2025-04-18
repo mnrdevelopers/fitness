@@ -1,12 +1,12 @@
 :root {
-    --primary: #2ecc71;
-    --primary-dark: #27ae60;
-    --secondary: #3498db;
-    --dark: #2c3e50;
-    --light: #ecf0f1;
-    --accent: #e74c3c;
-    --gray: #95a5a6;
-    --light-gray: #bdc3c7;
+    --primary: #3F4F44;
+    --primary-dark: #2C3930;
+    --secondary: #A27B5C;
+    --dark: #2C3930;
+    --light: #DCD7C9;
+    --accent: #A27B5C;
+    --gray: #6c757d;
+    --light-gray: #adb5bd;
     --white: #ffffff;
     --black: #000000;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
