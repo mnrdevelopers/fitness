@@ -279,4 +279,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start the quotes slider
     setTimeout(showQuotes, 5000);
   });
+
+  // Progress tracking functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const updateProgressBtn = document.getElementById('updateProgress');
+    const progressCircle = document.querySelector('.progress-circle');
+    
+    if (updateProgressBtn && progressCircle) {
+        // Load saved progress from localStorage
+        const savedProgress = localStorage.getItem('fitnessProgress') || 0;
+        updateProgressCircle(savedProgress);
+        
+        updateProgressBtn.addEventListener('click', function() {
+            const newProgress = prompt('Enter your progress percentage (0-100):', savedProgress);
+            if (newProgress !== null && !isNaN(newProgress) {
+                const progress = Math.min(100, Math.max(0, parseInt(newProgress)));
+                localStorage.setItem('fitnessProgress', progress);
+                updateProgressCircle(progress);
+            }
+        });
+    }
+    
+    function updateProgressCircle(percent) {
+        const circle = document.querySelector('.progress-fill');
+        const text = document.querySelector('.progress-text span');
+        const circumference = 2 * Math.PI * 54;
+        const offset = circumference - (percent / 100) * circumference;
+        
+        circle.style.strokeDashoffset = offset;
+        text.textContent = `${percent}%`;
+    }
 });
