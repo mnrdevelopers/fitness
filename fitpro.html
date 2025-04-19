@@ -384,6 +384,86 @@
         </button>
     </div>
 
+    <!-- Dashboard Section -->
+<section id="dashboard" class="section dashboard" style="display: none;">
+    <div class="container">
+        <h2 class="section-title">Your Fitness Dashboard</h2>
+        <p class="section-subtitle">Track your progress and access exclusive content</p>
+        
+        <div class="dashboard-grid">
+            <div class="stats-card">
+                <h3>Your Progress</h3>
+                <div class="progress-circle" data-percent="0">
+                    <svg>
+                        <circle class="progress-bg" cx="60" cy="60" r="54"></circle>
+                        <circle class="progress-fill" cx="60" cy="60" r="54"></circle>
+                    </svg>
+                    <div class="progress-text">
+                        <span>0%</span>
+                        <small>to goal</small>
+                    </div>
+                </div>
+                <button id="updateProgress" class="btn btn-outline">Update Progress</button>
+            </div>
+            
+            <div class="workout-card">
+                <h3>Today's Workout</h3>
+                <div class="workout-content">
+                    <div class="workout-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="workout-details">
+                        <h4>Upper Body Strength</h4>
+                        <p>4 exercises • 45 minutes</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Start Workout</button>
+            </div>
+            
+            <div class="meal-card">
+                <h3>Today's Nutrition</h3>
+                <div class="meal-plan">
+                    <div class="meal">
+                        <span class="meal-time">Breakfast</span>
+                        <p>Oatmeal with berries and nuts</p>
+                    </div>
+                    <div class="meal">
+                        <span class="meal-time">Lunch</span>
+                        <p>Grilled chicken with quinoa</p>
+                    </div>
+                    <div class="meal">
+                        <span class="meal-time">Dinner</span>
+                        <p>Salmon with roasted vegetables</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline">View Full Plan</button>
+            </div>
+        </div>
+        
+        <div class="exclusive-content">
+            <h3>Exclusive Member Content</h3>
+            <div class="content-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play"></i>
+                        <img src="images/video1.jpg" alt="Advanced Workout">
+                    </div>
+                    <h4>Advanced Core Workout</h4>
+                    <p>15 min • Intermediate</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play"></i>
+                        <img src="images/video2.jpg" alt="Meal Prep">
+                    </div>
+                    <h4>Weekly Meal Prep Guide</h4>
+                    <p>25 min • All Levels</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
