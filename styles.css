@@ -1302,8 +1302,8 @@ body {
 /* For mobile responsiveness */
 @media (max-width: 768px) {
     .logo-container dotlottie-player {
-        width: 30px !important;
-        height: 30px !important;
+        width: 50px !important;
+        height: 50px !important;
     }
     
     .navbar .logo {
