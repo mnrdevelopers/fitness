@@ -13,37 +13,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Authentication UI elements
-const authSection = document.createElement('div');
-authSection.className = 'auth-section';
-authSection.innerHTML = `
-    <div class="auth-container">
-        <button id="signInButton" class="btn btn-primary">
-            <i class="fab fa-google"></i> Sign In with Google
-        </button>
-        <button id="signOutButton" class="btn btn-outline" style="display:none;">
-            Sign Out
-        </button>
-        <div id="userInfo" style="display:none;"></div>
-    </div>
-`;
-
-// Add auth section to header
-const header = document.querySelector('.header .container');
-header.appendChild(authSection);
-
 // Authentication functions
 function initAuth() {
     const signInButton = document.getElementById('signInButton');
     const signOutButton = document.getElementById('signOutButton');
     const userInfo = document.getElementById('userInfo');
+    const userAvatar = document.querySelector('.user-avatar');
 
     // Sign in with Google
     signInButton.addEventListener('click', () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
             .then((result) => {
-                // User signed in
                 console.log('User signed in:', result.user);
             })
             .catch((error) => {
@@ -67,19 +48,11 @@ function initAuth() {
         if (user) {
             // User is signed in
             signInButton.style.display = 'none';
-            signOutButton.style.display = 'block';
-            userInfo.style.display = 'block';
-            userInfo.innerHTML = `
-                <img src="${user.photoURL}" alt="Profile" class="user-avatar">
-                <span>${user.displayName}</span>
-            `;
-            
-            // You can now access user data:
-            // user.uid, user.email, user.displayName, user.photoURL
+            userInfo.style.display = 'flex';
+            userAvatar.src = user.photoURL;
         } else {
             // User is signed out
-            signInButton.style.display = 'block';
-            signOutButton.style.display = 'none';
+            signInButton.style.display = 'flex';
             userInfo.style.display = 'none';
         }
     });
