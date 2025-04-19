@@ -1,13 +1,13 @@
 :root {
-    --primary: #3F4F44;
-    --primary-dark: #2C3930;
-    --secondary: #A27B5C;
-    --dark: #2C3930;
-    --light: #DCD7C9;
-    --accent: #A27B5C;
-    --gray: #6c757d;
-    --light-gray: #adb5bd;
-    --white: #ffffff;
+    --primary: #1DCD9F;
+    --primary-dark: #169976;
+    --secondary: #1DCD9F;
+    --dark: #000000;
+    --light: #FFFFFF;
+    --accent: #169976;
+    --gray: #222222;
+    --light-gray: #555555;
+    --white: #FFFFFF;
     --black: #000000;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
