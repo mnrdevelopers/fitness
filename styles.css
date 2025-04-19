@@ -300,30 +300,57 @@ body {
     }
 }
 
-.user-toast {
+/* Add these styles to your CSS */
+.user-popup {
     position: fixed;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--primary);
+    right: 20px;
+    background-color: var(--light);
     color: var(--dark);
     padding: 15px 25px;
-    border-radius: 50px;
+    border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     z-index: 1100;
-    animation: slideUp 0.5s ease;
     display: flex;
     align-items: center;
+    gap: 10px;
+    animation: slideIn 0.5s ease;
+    border-left: 5px solid var(--primary);
+    max-width: 300px;
 }
 
-.user-toast i {
-    margin-right: 10px;
+.user-popup i {
     font-size: 1.2rem;
 }
 
-@keyframes slideUp {
-    from { bottom: -50px; opacity: 0; }
-    to { bottom: 20px; opacity: 1; }
+.user-popup.success {
+    border-left-color: #4CAF50;
+}
+
+.user-popup.error {
+    border-left-color: #F44336;
+}
+
+.user-popup.warning {
+    border-left-color: #FFC107;
+}
+
+.user-popup.info {
+    border-left-color: #2196F3;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
 }
 
 /* Loader */
