@@ -162,6 +162,7 @@ body {
 
 /* Updated Hero Section */
 .hero {
+    background: linear-gradient(135deg, var(--light) 0%, rgba(22, 153, 118, 0.1) 100%);
     padding: 120px 0 80px;
     background-color: var(--light);
     text-align: center;
@@ -333,7 +334,7 @@ body {
 .service-icon {
     width: 70px;
     height: 70px;
-    background-color: rgba(46, 204, 113, 0.1);
+    background-color: rgba(29, 205, 159, 0.1);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -473,6 +474,7 @@ body {
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .testimonial-card.active {
@@ -605,7 +607,7 @@ body {
 .info-icon {
     width: 50px;
     height: 50px;
-    background-color: rgba(46, 204, 113, 0.1);
+    background-color: rgba(29, 205, 159, 0.1);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -637,7 +639,7 @@ body {
     align-items: center;
     width: 40px;
     height: 40px;
-    background-color: rgba(46, 204, 113, 0.1);
+    background-color: rgba(29, 205, 159, 0.1);
     border-radius: 50%;
     margin-right: 10px;
     color: var(--primary);
@@ -683,7 +685,7 @@ body {
 .form-control:focus {
     border-color: var(--primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+    box-shadow: 0 0 0 3px rgba(29, 205, 159, 0.2);
 }
 
 .form-control:focus + label,
@@ -756,7 +758,7 @@ body {
     transition: var(--transition);
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    box-shadow: 0 4px 15px rgba(29, 205, 159, 0.4);
 }
 
 .pwa-install-btn i {
@@ -766,12 +768,12 @@ body {
 .pwa-install-btn:hover {
     background-color: var(--primary-dark);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+    box-shadow: 0 8px 20px rgba(29, 205, 159, 0.6);
 }
 
 /* Footer */
 .footer {
-    background-color: var(--dark);
+    background-color: var(--black);
     color: var(--light);
     padding: 60px 0 20px;
 }
