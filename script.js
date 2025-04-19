@@ -1,3 +1,93 @@
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// Authentication UI elements
+const authSection = document.createElement('div');
+authSection.className = 'auth-section';
+authSection.innerHTML = `
+    <div class="auth-container">
+        <button id="signInButton" class="btn btn-primary">
+            <i class="fab fa-google"></i> Sign In with Google
+        </button>
+        <button id="signOutButton" class="btn btn-outline" style="display:none;">
+            Sign Out
+        </button>
+        <div id="userInfo" style="display:none;"></div>
+    </div>
+`;
+
+// Add auth section to header
+const header = document.querySelector('.header .container');
+header.appendChild(authSection);
+
+// Authentication functions
+function initAuth() {
+    const signInButton = document.getElementById('signInButton');
+    const signOutButton = document.getElementById('signOutButton');
+    const userInfo = document.getElementById('userInfo');
+
+    // Sign in with Google
+    signInButton.addEventListener('click', () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                // User signed in
+                console.log('User signed in:', result.user);
+            })
+            .catch((error) => {
+                console.error('Sign in error:', error);
+            });
+    });
+
+    // Sign out
+    signOutButton.addEventListener('click', () => {
+        auth.signOut()
+            .then(() => {
+                console.log('User signed out');
+            })
+            .catch((error) => {
+                console.error('Sign out error:', error);
+            });
+    });
+
+    // Auth state listener
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            signInButton.style.display = 'none';
+            signOutButton.style.display = 'block';
+            userInfo.style.display = 'block';
+            userInfo.innerHTML = `
+                <img src="${user.photoURL}" alt="Profile" class="user-avatar">
+                <span>${user.displayName}</span>
+            `;
+            
+            // You can now access user data:
+            // user.uid, user.email, user.displayName, user.photoURL
+        } else {
+            // User is signed out
+            signInButton.style.display = 'block';
+            signOutButton.style.display = 'none';
+            userInfo.style.display = 'none';
+        }
+    });
+}
+
+// Initialize authentication when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initAuth();
+  
 // DOM Elements
 const loader = document.querySelector('.loader');
 const header = document.querySelector('.header');
@@ -183,4 +273,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start the quotes slider
     setTimeout(showQuotes, 5000);
+  });
 });
