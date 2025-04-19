@@ -44,37 +44,42 @@ function initAuth() {
     });
 
     // Auth state listener
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-          // Show welcome toast
-            showToast(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`);
-            // User is signed in
-            signInButton.style.display = 'none';
-            userInfo.style.display = 'flex';
-            userAvatar.src = user.photoURL;
-        } else {
-            // Add dashboard link
-        const navMenu = document.querySelector('.nav-menu');
-        const dashboardLink = document.createElement('li');
-        dashboardLink.className = 'nav-item';
-        dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
-        navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
-        
+   // Auth state listener
+auth.onAuthStateChanged((user) => {
+    const dashboardSection = document.querySelector('.dashboard');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (user) {
+        // User is signed in
+        showToast(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`);
+        signInButton.style.display = 'none';
+        userInfo.style.display = 'flex';
+        userAvatar.src = user.photoURL;
+
+        // Add dashboard link if not exists
+        if (!document.querySelector('.nav-item a[href="#dashboard"]')) {
+            const dashboardLink = document.createElement('li');
+            dashboardLink.className = 'nav-item';
+            dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
+            navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
+        }
+
         // Show dashboard section
-        document.querySelector('.dashboard').style.display = 'block';
+        if (dashboardSection) dashboardSection.style.display = 'block';
+
     } else {
+        // User is signed out
+        signInButton.style.display = 'flex';
+        userInfo.style.display = 'none';
+
         // Remove dashboard link if exists
         const dashboardLink = document.querySelector('.nav-item a[href="#dashboard"]')?.parentElement;
         if (dashboardLink) dashboardLink.remove();
-        
+
         // Hide dashboard section
-        document.querySelector('.dashboard').style.display = 'none';
-            // User is signed out
-            signInButton.style.display = 'flex';
-            userInfo.style.display = 'none';
-        }
-    });
-}
+        if (dashboardSection) dashboardSection.style.display = 'none';
+    }
+});
 
 // Initialize authentication when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -292,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateProgressBtn.addEventListener('click', function() {
             const newProgress = prompt('Enter your progress percentage (0-100):', savedProgress);
-            if (newProgress !== null && !isNaN(newProgress) {
+            if (newProgress !== null && !isNaN(newProgress)) {
                 const progress = Math.min(100, Math.max(0, parseInt(newProgress)));
                 localStorage.setItem('fitnessProgress', progress);
                 updateProgressCircle(progress);
