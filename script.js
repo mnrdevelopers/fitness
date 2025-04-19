@@ -68,46 +68,130 @@ function initAuth() {
             });
     });
 
-    // Auth state listener
-    auth.onAuthStateChanged((user) => {
-        const dashboardSection = document.querySelector('.dashboard');
-        const navMenu = document.querySelector('.nav-menu');
+   // Auth state listener with popup integration
+auth.onAuthStateChanged((user) => {
+    const dashboardSection = document.querySelector('.dashboard');
+    const navMenu = document.querySelector('.nav-menu');
 
-        if (user) {
-            // User is signed in
-            showToast(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`);
-            signInButton.style.display = 'none';
-            userInfo.style.display = 'flex';
-            userAvatar.src = user.photoURL;
+    if (user) {
+        // User is signed in
+        showPopup(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`, 'success');
+        signInButton.style.display = 'none';
+        userInfo.style.display = 'flex';
+        userAvatar.src = user.photoURL;
 
-            // Add dashboard link if not exists
-            if (!document.querySelector('.nav-item a[href="#dashboard"]')) {
-                const dashboardLink = document.createElement('li');
-                dashboardLink.className = 'nav-item';
-                dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
-                navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
-            }
-
-            // Show dashboard section
-            if (dashboardSection) dashboardSection.style.display = 'block';
-
-        } else {
-            // User is signed out
-            signInButton.style.display = 'flex';
-            userInfo.style.display = 'none';
-
-            // Remove dashboard link if exists
-            const dashboardLink = document.querySelector('.nav-item a[href="#dashboard"]')?.parentElement;
-            if (dashboardLink) dashboardLink.remove();
-
-            // Hide dashboard section
-            if (dashboardSection) dashboardSection.style.display = 'none';
+        // Add dashboard link if not exists
+        if (!document.querySelector('.nav-item a[href="#dashboard"]')) {
+            const dashboardLink = document.createElement('li');
+            dashboardLink.className = 'nav-item';
+            dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
+            navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
         }
+
+        // Show dashboard section
+        if (dashboardSection) dashboardSection.style.display = 'block';
+
+    } else {
+        // User is signed out
+        signInButton.style.display = 'flex';
+        userInfo.style.display = 'none';
+
+        // Remove dashboard link if exists
+        const dashboardLink = document.querySelector('.nav-item a[href="#dashboard"]')?.parentElement;
+        if (dashboardLink) dashboardLink.remove();
+
+        // Hide dashboard section
+        if (dashboardSection) dashboardSection.style.display = 'none';
+    }
+});
+
+// Popup message function (replace showToast with this)
+function showPopup(message, type = 'info') {
+    const popup = document.createElement('div');
+    popup.className = `user-popup ${type}`;
+    popup.innerHTML = `
+        <i class="fas ${getIconForType(type)}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(popup);
+    
+    // Remove popup after 3 seconds
+    setTimeout(() => {
+        popup.classList.add('fade-out');
+        setTimeout(() => popup.remove(), 300);
+    }, 3000);
+}
+
+function getIconForType(type) {
+    const icons = {
+        'success': 'fa-check-circle',
+        'error': 'fa-exclamation-circle',
+        'warning': 'fa-exclamation-triangle',
+        'info': 'fa-info-circle'
+    };
+    return icons[type] || 'fa-info-circle';
+}
+
+// Enhanced checkAuthAndRedirect function
+function checkAuthAndRedirect(event) {
+    // Allow sign in/out buttons to work normally
+    if (event.currentTarget.id === 'signInButton' || event.currentTarget.id === 'signOutButton') {
+        return true;
+    }
+    
+    event.preventDefault();
+    const user = auth.currentUser;
+    
+    if (!user) {
+        showPopup('Please sign in to access this feature', 'warning');
+        
+        // Redirect to login after showing popup
+        setTimeout(() => {
+            document.getElementById('signInButton').click();
+        }, 1000);
+        return false;
+    }
+    
+    // If user is logged in, proceed with original action
+    const href = event.currentTarget.getAttribute('href');
+    if (href && href !== '#') {
+        window.location.href = href;
+    }
+    return true;
+}
+
+// Initialize event listeners
+function initAuthListeners() {
+    // Add click handlers to all interactive elements
+    const protectedElements = document.querySelectorAll(`
+        .btn:not(#signInButton):not(#signOutButton),
+        .nav-link:not([href="#"]),
+        .plan-card,
+        .service-card,
+        .transformation-card
+    `);
+    
+    protectedElements.forEach(element => {
+        element.addEventListener('click', checkAuthAndRedirect);
+    });
+    
+    // Sign in button
+    signInButton.addEventListener('click', (e) => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .catch(error => showPopup(`Sign in failed: ${error.message}`, 'error'));
+    });
+    
+    // Sign out button
+    signOutButton.addEventListener('click', (e) => {
+        auth.signOut()
+            .then(() => showPopup('Signed out successfully', 'info'))
+            .catch(error => showPopup(`Sign out failed: ${error.message}`, 'error'));
     });
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Call this when DOM is loaded
+document.addEventListener('DOMContentLoaded', initAuthListeners);
     // Initialize authentication
     initAuth();
 
