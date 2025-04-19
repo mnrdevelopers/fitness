@@ -844,7 +844,7 @@ body {
 /* Responsive Design */
 @media (max-width: 992px) {
     .hero-title {
-        font-size: 2.8rem;
+        font-size: 8rem;
     }
 }
 
@@ -887,7 +887,7 @@ body {
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 8rem;
     }
 
     .hero-content {
@@ -900,11 +900,11 @@ body {
     }
     
     .hero-title {
-        font-size: 3rem;
+        font-size: 8rem;
     }
     
     .hero-subtitle {
-        font-size: 1.2rem;
+        font-size: 3.4rem;
     }
 }
 
