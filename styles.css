@@ -168,15 +168,20 @@ body {
     font-weight: 700;
     color: var(--dark);
     margin-bottom: -50px;
-    font-family: fantasy;
+    font-family: 'Poppins', fantasy, sans-serif; /* Added Poppins as primary */
     margin-top: -50px;
+    text-transform: uppercase; /* Gives fantasy-like feel */
+    letter-spacing: -3px;
 }
 
 .hero-subtitle {
     font-size: 4.3rem;
     color: var(--primary);
     margin-bottom: 30px;
-    font-family: fantasy;
+    font-family: 'Poppins', fantasy, sans-serif; /* Added Poppins as primary */
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    font-weight: 700;
 }
 
 /* Transformation Grid */
@@ -898,12 +903,13 @@ body {
     }
 }
 
-/* Responsive Design */
+/* Then update your responsive sizes accordingly */
 @media (max-width: 1200px) {
     .hero-title {
         font-size: 8rem;
         margin-bottom: -40px;
         margin-top: -40px;
+        letter-spacing: -2px;
     }
     .hero-subtitle {
         font-size: 3.8rem;
@@ -926,9 +932,10 @@ body {
         font-size: 4.5rem;
         margin-bottom: -20px;
         margin-top: -20px;
+        letter-spacing: -1px;
     }
     .hero-subtitle {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -937,6 +944,7 @@ body {
         font-size: 3.5rem;
         margin-bottom: -15px;
         margin-top: -15px;
+        letter-spacing: 0;
     }
     .hero-subtitle {
         font-size: 1.8rem;
