@@ -12,12 +12,20 @@
     <link rel="apple-touch-icon" href="images/icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loader">
-        <div class="loader-spinner"></div>
-    </div>
+  <!-- Loading Screen -->
+<div class="loader">
+    <dotlottie-player
+        src="https://lottie.host/f7772d16-3eec-4d78-893c-e290e435d2ba/ykjVhAAvWf.lottie"
+        background="transparent"
+        speed="1"
+        style="width: 300px; height: 300px"
+        loop
+        autoplay
+    ></dotlottie-player>
+</div>
 
     <!-- Header -->
     <header class="header">
