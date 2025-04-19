@@ -269,18 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Quotes Slider
-    let quoteIndex = 0;
-    const quotes = document.querySelectorAll('.quote');
-
-    function showQuotes() {
-        quotes.forEach(quote => quote.classList.remove('active'));
-        quoteIndex++;
-        if (quoteIndex >= quotes.length) quoteIndex = 0;
-        quotes[quoteIndex].classList.add('active');
-        setTimeout(showQuotes, 5000);
-    }
-
     // Initialize components
     initTestimonialsSlider();
     handleContactForm();
@@ -292,9 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
             input.placeholder = ' ';
         }
     });
-
-    // Start the quotes slider
-    setTimeout(showQuotes, 5000);
 
     // Progress tracking functionality
     const updateProgressBtn = document.getElementById('updateProgress');
