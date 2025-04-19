@@ -912,7 +912,7 @@ body {
         letter-spacing: -2px;
     }
     .hero-subtitle {
-        font-size: 3.8rem;
+        font-size: 3.5rem;
     }
 }
 
@@ -923,7 +923,7 @@ body {
         margin-top: -30px;
     }
     .hero-subtitle {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 }
 
@@ -947,6 +947,6 @@ body {
         letter-spacing: 0;
     }
     .hero-subtitle {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 }
