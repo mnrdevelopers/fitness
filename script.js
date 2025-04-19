@@ -1,13 +1,13 @@
 // Firebase configuration
- const firebaseConfig = {
-    apiKey: "AIzaSyD71QYDbPEETn-24nT45h4AdD_W6_inyWU",
-    authDomain: "fitness-healthylifestyle.firebaseapp.com",
-    projectId: "fitness-healthylifestyle",
-    storageBucket: "fitness-healthylifestyle.firebasestorage.app",
-    messagingSenderId: "762783082047",
-    appId: "1:762783082047:web:04f79dfe0ee4b7ae6c7a8a",
-    measurementId: "G-DYVL7D64Q8"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyD71QYDbPEETn-24nT45h4AdD_W6_inyWU",
+  authDomain: "fitness-healthylifestyle.firebaseapp.com",
+  projectId: "fitness-healthylifestyle",
+  storageBucket: "fitness-healthylifestyle.firebasestorage.app",
+  messagingSenderId: "762783082047",
+  appId: "1:762783082047:web:04f79dfe0ee4b7ae6c7a8a",
+  measurementId: "G-DYVL7D64Q8"
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
