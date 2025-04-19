@@ -34,6 +34,44 @@ body {
     padding: 0 20px;
 }
 
+/* Authentication Styles */
+.auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.auth-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .auth-section {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .auth-container {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    #signInButton, #signOutButton {
+        width: 100%;
+    }
+}
+
 /* Loader */
 .loader {
     position: fixed;
