@@ -53,6 +53,22 @@ function initAuth() {
             userInfo.style.display = 'flex';
             userAvatar.src = user.photoURL;
         } else {
+            // Add dashboard link
+        const navMenu = document.querySelector('.nav-menu');
+        const dashboardLink = document.createElement('li');
+        dashboardLink.className = 'nav-item';
+        dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
+        navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
+        
+        // Show dashboard section
+        document.querySelector('.dashboard').style.display = 'block';
+    } else {
+        // Remove dashboard link if exists
+        const dashboardLink = document.querySelector('.nav-item a[href="#dashboard"]')?.parentElement;
+        if (dashboardLink) dashboardLink.remove();
+        
+        // Hide dashboard section
+        document.querySelector('.dashboard').style.display = 'none';
             // User is signed out
             signInButton.style.display = 'flex';
             userInfo.style.display = 'none';
