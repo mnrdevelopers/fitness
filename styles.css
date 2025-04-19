@@ -169,6 +169,7 @@ body {
     color: var(--dark);
     margin-bottom: -50px;
     font-family: fantasy;
+    margin-top: -50px;
 }
 
 .hero-subtitle {
