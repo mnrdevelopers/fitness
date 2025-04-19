@@ -46,6 +46,8 @@ function initAuth() {
     // Auth state listener
     auth.onAuthStateChanged((user) => {
         if (user) {
+          // Show welcome toast
+            showToast(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`);
             // User is signed in
             signInButton.style.display = 'none';
             userInfo.style.display = 'flex';
@@ -61,6 +63,19 @@ function initAuth() {
 // Initialize authentication when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initAuth();
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'user-toast';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="fas fa-dumbbell"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+}
   
 // DOM Elements
 const loader = document.querySelector('.loader');
