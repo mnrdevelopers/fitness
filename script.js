@@ -21,20 +21,6 @@ const navLinks = document.querySelectorAll('.nav-link');
 const installBtn = document.getElementById('installBtn');
 let deferredPrompt;
 
-// Toast notification function
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'user-toast';
-    toast.innerHTML = `
-        <div class="toast-content">
-            <i class="fas fa-dumbbell"></i>
-            <span>${message}</span>
-        </div>
-    `;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 5000);
-}
-
 // Popup message function
 function showPopup(message, type = 'info') {
     const popup = document.createElement('div');
@@ -61,62 +47,10 @@ function getIconForType(type) {
     return icons[type] || 'fa-info-circle';
 }
 
-// Progress tracking function
-function updateProgressCircle(percent) {
-    const circle = document.querySelector('.progress-fill');
-    const text = document.querySelector('.progress-text span');
-    const circumference = 2 * Math.PI * 54;
-    const offset = circumference - (percent / 100) * circumference;
-    
-    circle.style.strokeDashoffset = offset;
-    text.textContent = `${percent}%`;
-}
-
-// Enhanced checkAuthAndRedirect function
-function checkAuthAndRedirect(event) {
-    // Allow sign in/out buttons to work normally
-    if (event.currentTarget.id === 'signInButton' || event.currentTarget.id === 'signOutButton') {
-        return true;
-    }
-    
-    event.preventDefault();
-    const user = auth.currentUser;
-    
-    if (!user) {
-        showPopup('Please sign in to access this feature', 'warning');
-        
-        // Redirect to login after showing popup
-        setTimeout(() => {
-            document.getElementById('signInButton').click();
-        }, 1000);
-        return false;
-    }
-    
-    // If user is logged in, proceed with original action
-    const href = event.currentTarget.getAttribute('href');
-    if (href && href !== '#') {
-        window.location.href = href;
-    }
-    return true;
-}
-
 // Initialize auth listeners
 function initAuthListeners() {
     const signInButton = document.getElementById('signInButton');
     const signOutButton = document.getElementById('signOutButton');
-    
-    // Add click handlers to all interactive elements
-    const protectedElements = document.querySelectorAll(`
-        .btn:not(#signInButton):not(#signOutButton),
-        .nav-link:not([href="#"]),
-        .plan-card,
-        .service-card,
-        .transformation-card
-    `);
-    
-    protectedElements.forEach(element => {
-        element.addEventListener('click', checkAuthAndRedirect);
-    });
     
     // Sign in button
     signInButton?.addEventListener('click', (e) => {
@@ -141,38 +75,16 @@ function initAuthStateListener() {
     const userAvatar = document.querySelector('.user-avatar');
 
     auth.onAuthStateChanged((user) => {
-        const dashboardSection = document.querySelector('.dashboard');
-        const navMenu = document.querySelector('.nav-menu');
-
         if (user) {
             // User is signed in
             showPopup(`Welcome back, ${user.displayName || 'Fitness Enthusiast'}!`, 'success');
             signInButton.style.display = 'none';
             userInfo.style.display = 'flex';
             userAvatar.src = user.photoURL;
-
-            // Add dashboard link if not exists
-            if (!document.querySelector('.nav-item a[href="#dashboard"]')) {
-                const dashboardLink = document.createElement('li');
-                dashboardLink.className = 'nav-item';
-                dashboardLink.innerHTML = '<a href="#dashboard" class="nav-link">Dashboard</a>';
-                navMenu.insertBefore(dashboardLink, navMenu.children[navMenu.children.length - 1]);
-            }
-
-            // Show dashboard section
-            if (dashboardSection) dashboardSection.style.display = 'block';
-
         } else {
             // User is signed out
             signInButton.style.display = 'flex';
             userInfo.style.display = 'none';
-
-            // Remove dashboard link if exists
-            const dashboardLink = document.querySelector('.nav-item a[href="#dashboard"]')?.parentElement;
-            if (dashboardLink) dashboardLink.remove();
-
-            // Hide dashboard section
-            if (dashboardSection) dashboardSection.style.display = 'none';
         }
     });
 }
@@ -232,34 +144,8 @@ function handleContactForm() {
         e.preventDefault();
         
         const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const service = document.getElementById('service').value;
-        const message = document.getElementById('message').value;
-        
         showPopup(`Thank you, ${name}! We'll contact you soon.`, 'success');
         form.reset();
-    });
-}
-
-// Progress tracking functionality
-function initProgressTracking() {
-    const updateProgressBtn = document.getElementById('updateProgress');
-    const progressCircle = document.querySelector('.progress-circle');
-    
-    if (!updateProgressBtn || !progressCircle) return;
-    
-    // Load saved progress
-    const savedProgress = localStorage.getItem('fitnessProgress') || 0;
-    updateProgressCircle(savedProgress);
-    
-    updateProgressBtn.addEventListener('click', function() {
-        const newProgress = prompt('Enter your progress percentage (0-100):', savedProgress);
-        if (newProgress !== null && !isNaN(newProgress)) {
-            const progress = Math.min(100, Math.max(0, parseInt(newProgress)));
-            localStorage.setItem('fitnessProgress', progress);
-            updateProgressCircle(progress);
-            showPopup(`Progress updated to ${progress}%!`, 'success');
-        }
     });
 }
 
@@ -345,7 +231,6 @@ function initApp() {
     initAuthListeners();
     initTestimonialsSlider();
     handleContactForm();
-    initProgressTracking();
     
     // Add floating labels functionality
     const formInputs = document.querySelectorAll('.form-control');
