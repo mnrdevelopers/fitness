@@ -134,15 +134,46 @@ function initTestimonialsSlider() {
     }, 5000);
 }
 
-// Contact Form Submission
+// Enhanced handleContactForm function
 function handleContactForm() {
     const form = document.getElementById('contactForm');
+    const authMessage = document.getElementById('authRequiredMessage');
+    const formFields = document.getElementById('formFields');
     
     if (!form) return;
-    
+
+    // Check auth state when loading form
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in - show form and populate fields
+            authMessage.style.display = 'none';
+            formFields.style.display = 'block';
+            
+            // Populate user data
+            document.getElementById('name').value = user.displayName || '';
+            document.getElementById('email').value = user.email || '';
+            
+            // You can also fetch additional user data if needed
+            if (user.phoneNumber) {
+                document.getElementById('phone').value = user.phoneNumber;
+            }
+        } else {
+            // User is not signed in - show auth message
+            authMessage.style.display = 'block';
+            formFields.style.display = 'none';
+        }
+    });
+
+    // Form submission handler
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const user = auth.currentUser;
+        if (!user) {
+            showPopup('Please sign in to submit the form.', 'warning');
+            return;
+        }
+
         const submitButton = form.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.textContent;
         
@@ -151,13 +182,15 @@ function handleContactForm() {
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             
-            // Create form data object
+            // Create form data with user info
             const formData = {
-                name: form.querySelector('[name="name"]').value,
-                email: form.querySelector('[name="email"]').value,
-                phone: form.querySelector('[name="phone"]').value || 'Not provided',
-                service: form.querySelector('[name="service"]').value,
-                message: form.querySelector('[name="message"]').value
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value || 'Not provided',
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value,
+                userId: user.uid, // Include user ID for reference
+                userPhoto: user.photoURL || '' // Include profile photo if available
             };
 
             // Send to Formspree
@@ -173,13 +206,12 @@ function handleContactForm() {
             if (response.ok) {
                 showPopup('Thank you! Your message has been sent.', 'success');
                 form.reset();
+                // Keep user's name and email populated
+                document.getElementById('name').value = user.displayName || '';
+                document.getElementById('email').value = user.email || '';
             } else {
                 const errorData = await response.json();
-                if (errorData.error) {
-                    showPopup(`Error: ${errorData.error}`, 'error');
-                } else {
-                    showPopup('Oops! Something went wrong. Please try again.', 'error');
-                }
+                showPopup(errorData.error || 'Oops! Something went wrong. Please try again.', 'error');
             }
         } catch (error) {
             console.error('Form submission error:', error);
@@ -189,6 +221,14 @@ function handleContactForm() {
             submitButton.disabled = false;
             submitButton.innerHTML = originalButtonText;
         }
+    });
+
+    // Add sign-in button handler for the form-specific button
+    document.getElementById('signInButtonForm')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .catch(error => showPopup(`Sign in failed: ${error.message}`, 'error'));
     });
 }
 
