@@ -135,19 +135,30 @@ function initTestimonialsSlider() {
 }
 
 // Contact Form Submission
-function handleContactForm() {
-    const form = document.getElementById('contactForm');
-    
-    if (!form) return;
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('name').value;
-        showPopup(`Thank you, ${name}! We'll contact you soon.`, 'success');
-        form.reset();
-    });
-}
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch("https://formspree.io/f/yourFormID", {
+            method: "POST",
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            alert("Thank you! Your message has been sent.");
+            form.reset();
+        } else {
+            alert("Oops! Something went wrong.");
+        }
+    } catch (error) {
+        alert("Network error. Please try again later.");
+    }
+});
+
 
 // Initialize all components
 function initApp() {
