@@ -653,6 +653,20 @@ body {
     background-size: 15px;
 }
 
+.auth-message {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(245, 196, 94, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px dashed var(--primary);
+}
+
+.auth-message p {
+    margin-bottom: 15px;
+    color: var(--gray);
+}
+
 /* PWA Install Button */
 .pwa-install-container {
     position: fixed;
