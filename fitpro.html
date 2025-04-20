@@ -304,42 +304,42 @@
                 </div>
                 
                 <div class="contact-form">
-                    <form id="contactForm" class="form">
-                        <h3>Send a Message</h3>
-                        
-                      <div class="form-group">
-    <input type="text" id="name" class="form-control" placeholder=" " required>
-    <label for="name">Your Name</label>
-</div>
+                   <form action="https://formspree.io/f/yourFormID" method="POST" id="contactForm" class="form">
+    <h3>Send a Message</h3>
 
-<div class="form-group">
-    <input type="email" id="email" class="form-control" placeholder=" " required>
-    <label for="email">Your Email</label>
-</div>
+    <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder=" " required>
+        <label for="name">Your Name</label>
+    </div>
 
-<div class="form-group">
-    <input type="tel" id="phone" class="form-control" placeholder=" ">
-    <label for="phone">Phone (Optional)</label>
-</div>
+    <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder=" " required>
+        <label for="email">Your Email</label>
+    </div>
 
-<div class="form-group">
-    <select id="service" class="form-control" required>
-        <option value="" disabled selected> </option>
-        <option value="personal-training">Personal Training</option>
-        <option value="diet-plan">Diet Plan</option>
-        <option value="combo-package">Combo Package</option>
-        <option value="other">Other Inquiry</option>
-    </select>
-    <label for="service">Service Interested In</label>
-</div>
+    <div class="form-group">
+        <input type="tel" name="phone" class="form-control" placeholder=" ">
+        <label for="phone">Phone (Optional)</label>
+    </div>
 
-<div class="form-group">
-    <textarea id="message" class="form-control" rows="5" placeholder=" " required></textarea>
-    <label for="message">Your Message</label>
-</div>
-                        
-                        <button type="submit" class="btn btn-primary btn-block">Send Message</button>
-                    </form>
+    <div class="form-group">
+        <select name="service" class="form-control" required>
+            <option value="" disabled selected> </option>
+            <option value="personal-training">Personal Training</option>
+            <option value="diet-plan">Diet Plan</option>
+            <option value="combo-package">Combo Package</option>
+            <option value="other">Other Inquiry</option>
+        </select>
+        <label for="service">Service Interested In</label>
+    </div>
+
+    <div class="form-group">
+        <textarea name="message" class="form-control" rows="5" placeholder=" " required></textarea>
+        <label for="message">Your Message</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+</form>
                 </div>
             </div>
         </div>
