@@ -151,13 +151,23 @@ function handleContactForm() {
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             
-            const formData = new FormData(form);
+            // Create form data object
+            const formData = {
+                name: form.querySelector('[name="name"]').value,
+                email: form.querySelector('[name="email"]').value,
+                phone: form.querySelector('[name="phone"]').value || 'Not provided',
+                service: form.querySelector('[name="service"]').value,
+                message: form.querySelector('[name="message"]').value
+            };
+
+            // Send to Formspree
             const response = await fetch('https://formspree.io/f/mzzenkyw', {
                 method: 'POST',
-                body: formData,
                 headers: {
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                }
+                },
+                body: JSON.stringify(formData)
             });
             
             if (response.ok) {
@@ -165,22 +175,22 @@ function handleContactForm() {
                 form.reset();
             } else {
                 const errorData = await response.json();
-                if (errorData.errors) {
-                    showPopup(`Please fix these errors: ${Object.values(errorData.errors).join(', ')}`, 'error');
+                if (errorData.error) {
+                    showPopup(`Error: ${errorData.error}`, 'error');
                 } else {
                     showPopup('Oops! Something went wrong. Please try again.', 'error');
                 }
             }
         } catch (error) {
+            console.error('Form submission error:', error);
             showPopup('Network error. Please try again later.', 'error');
         } finally {
             // Reset button state
             submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
+            submitButton.innerHTML = originalButtonText;
         }
     });
 }
-
 
 // Initialize all components
 function initApp() {
