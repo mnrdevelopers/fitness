@@ -241,7 +241,6 @@ function initApp() {
     initAuthStateListener();
     initAuthListeners();
     initTestimonialsSlider();
-    handleContactForm();
     
     // Add floating labels functionality
     const formInputs = document.querySelectorAll('.form-control');
