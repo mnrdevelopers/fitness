@@ -135,29 +135,51 @@ function initTestimonialsSlider() {
 }
 
 // Contact Form Submission
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    try {
-        const response = await fetch("https://formspree.io/f/yourFormID", {
-            method: "POST",
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-            alert("Thank you! Your message has been sent.");
-            form.reset();
-        } else {
-            alert("Oops! Something went wrong.");
+function handleContactForm() {
+    const form = document.getElementById('contactForm');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        
+        try {
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            const formData = new FormData(form);
+            const response = await fetch('https://formspree.io/f/mzzenkyw', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                showPopup('Thank you! Your message has been sent.', 'success');
+                form.reset();
+            } else {
+                const errorData = await response.json();
+                if (errorData.errors) {
+                    showPopup(`Please fix these errors: ${Object.values(errorData.errors).join(', ')}`, 'error');
+                } else {
+                    showPopup('Oops! Something went wrong. Please try again.', 'error');
+                }
+            }
+        } catch (error) {
+            showPopup('Network error. Please try again later.', 'error');
+        } finally {
+            // Reset button state
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
         }
-    } catch (error) {
-        alert("Network error. Please try again later.");
-    }
-});
+    });
+}
 
 
 // Initialize all components
@@ -241,6 +263,7 @@ function initApp() {
     initAuthStateListener();
     initAuthListeners();
     initTestimonialsSlider();
+    handleContactForm();
     
     // Add floating labels functionality
     const formInputs = document.querySelectorAll('.form-control');
