@@ -92,6 +92,27 @@ body {
     text-decoration: none;
 }
 
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-slogan {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    .logo-slogan {
+        font-size: 0.6rem;
+    }
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
