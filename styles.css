@@ -360,6 +360,10 @@ body {
 }
 
 .service-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
     margin-bottom: 25px;
 }
 
@@ -367,6 +371,12 @@ body {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--dark);
+}
+
+.service-price .original-price {
+    text-decoration: line-through;
+    color: var(--gray);
+    font-size: 1.2rem;
 }
 
 .service-price .duration {
