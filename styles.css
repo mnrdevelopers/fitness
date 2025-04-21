@@ -359,27 +359,46 @@ body {
     margin-bottom: 25px;
 }
 
+/* Service Price Styling */
 .service-price {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
     margin-bottom: 25px;
 }
 
-.service-price .price {
+.original-price-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--gray);
+    font-size: 1.1rem;
+}
+
+.discount-badge {
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.discounted-price {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.discounted-price .price {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--dark);
 }
 
-.service-price .original-price {
-    text-decoration: line-through;
-    color: var(--gray);
-    font-size: 1.2rem;
-}
-
-.service-price .duration {
+.discounted-price .duration {
     color: var(--gray);
     font-size: 0.9rem;
 }
