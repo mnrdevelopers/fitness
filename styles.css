@@ -100,7 +100,7 @@ body {
 
 .logo-slogan {
     font-size: 0.7rem;
-    font-weight: 400;
+    font-weight: bold;
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -109,7 +109,8 @@ body {
 /* For mobile responsiveness */
 @media (max-width: 768px) {
     .logo-slogan {
-        font-size: 0.6rem;
+        font-size: 0.64rem;
+        font-weight: bold;
     }
 }
 
