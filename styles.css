@@ -727,7 +727,6 @@ body {
 }
 
 .pwa-install-btn {
-    display: none;
     background-color: var(--primary);
     color: var(--dark);
     border: none;
@@ -737,7 +736,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
-    display: flex;
+    display: none;
     align-items: center;
     box-shadow: 0 4px 15px rgba(245, 196, 94, 0.4);
 }
