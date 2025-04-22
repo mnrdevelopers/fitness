@@ -347,7 +347,7 @@ body {
 
 .featured-badge {
     position: absolute;
-    top: 15px;
+    top: -15px;
     right: 20px;
     background-color: var(--primary);
     color: var(--dark);
@@ -539,30 +539,6 @@ body {
 }
 
 /* Loading and Alert Styles */
-.service-alert {
-    background-color: rgba(75, 181, 67, 0.1);
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #4bb543;
-    border-left: 3px solid #4bb543;
-    animation: fadeInUp 0.5s ease;
-}
-
-.service-alert.price-drop {
-    background-color: rgba(245, 196, 94, 0.1);
-    color: var(--primary);
-    border-left-color: var(--primary);
-}
-
-.service-alert i {
-    font-size: 1rem;
-}
-
 .loading-spinner {
     position: absolute;
     top: 0;
@@ -575,32 +551,6 @@ body {
     align-items: center;
     z-index: 1;
     border-radius: 15px;
-}
-
-.service-card {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Animation for alerts */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.price-drop-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: #ff4d4d;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    animation: pulse 2s infinite;
-    z-index: 2;
 }
 
 /* Testimonials Section */
