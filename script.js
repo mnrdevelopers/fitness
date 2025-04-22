@@ -328,7 +328,7 @@ function initApp() {
 // Start the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);
 
-// WhatsApp Booking Functionality
+// WhatsApp Booking with Loading & Alerts
 function initWhatsAppBooking() {
     const bookButtons = document.querySelectorAll('.book-btn');
     
@@ -339,20 +339,69 @@ function initWhatsAppBooking() {
         <div class="modal-content">
             <span class="modal-close">&times;</span>
             <h3 class="modal-title">Confirm Booking</h3>
-            <p class="modal-message">You're about to contact our trainer on WhatsApp to book this service. Make sure you're signed in to your account.</p>
+            <p class="modal-message"></p>
             <div class="modal-actions">
-                <button id="confirmBooking" class="btn btn-primary">Continue to WhatsApp</button>
+                <button id="confirmBooking" class="btn btn-primary">
+                    <span class="btn-text">Continue to WhatsApp</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
                 <button class="btn btn-outline cancel-booking">Cancel</button>
             </div>
             <div id="signinPrompt" class="signin-prompt" style="display: none;">
                 <p>Please sign in to book this service</p>
                 <button id="signInButtonModal" class="btn btn-primary">
-                    <i class="fab fa-google"></i> Sign In with Google
+                    <span class="btn-text"><i class="fab fa-google"></i> Sign In</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
                 </button>
             </div>
         </div>
     `;
     document.body.appendChild(modal);
+    
+    // Check for price drops and offers
+    function checkForOffers() {
+        // In a real app, you would fetch this from your backend
+        const offers = {
+            "Personal Training": {
+                priceDrop: true,
+                newPrice: "₹599/month",
+                message: "Limited time offer! Now ₹599/month (was ₹699)"
+            },
+            "Diet Planning": {
+                specialOffer: true,
+                message: "Combo discount available! Save 15% when booked with training"
+            }
+        };
+        
+        document.querySelectorAll('.service-card').forEach(card => {
+            const serviceTitle = card.querySelector('h3').textContent;
+            const offer = offers[serviceTitle];
+            const alertEl = card.querySelector('.service-alert');
+            
+            if (offer) {
+                alertEl.style.display = 'flex';
+                alertEl.querySelector('.alert-text').textContent = offer.message;
+                
+                if (offer.priceDrop) {
+                    alertEl.classList.add('price-drop');
+                    // Add price drop badge
+                    const priceBadge = document.createElement('div');
+                    priceBadge.className = 'price-drop-badge';
+                    priceBadge.textContent = 'SALE';
+                    card.appendChild(priceBadge);
+                    
+                    // Update displayed price
+                    if (offer.newPrice) {
+                        card.querySelector('.price').textContent = offer.newPrice.split('/')[0];
+                    }
+                }
+            }
+        });
+    }
     
     // Handle book button clicks
     bookButtons.forEach(button => {
@@ -361,29 +410,38 @@ function initWhatsAppBooking() {
             const service = this.dataset.service;
             const price = this.dataset.price;
             const whatsappNumber = this.dataset.whatsapp;
+            const card = this.closest('.service-card');
             
-            if (!user) {
-                // Show sign-in prompt
-                document.getElementById('signinPrompt').style.display = 'block';
-                document.querySelector('.modal-actions').style.display = 'none';
-                document.querySelector('.modal-message').textContent = 'You need to be signed in to book services.';
+            // Show loading spinner on card
+            const spinner = card.querySelector('.loading-spinner');
+            spinner.style.display = 'flex';
+            
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                
+                if (!user) {
+                    // Show sign-in prompt
+                    document.getElementById('signinPrompt').style.display = 'block';
+                    document.querySelector('.modal-actions').style.display = 'none';
+                    document.querySelector('.modal-message').textContent = 'You need to be signed in to book services.';
+                    modal.classList.add('active');
+                    return;
+                }
+                
+                // User is signed in - prepare WhatsApp message
+                const message = `Hi, I'd like to book your ${service} (${price}).\n\nMy details:\nName: ${user.displayName}\nEmail: ${user.email}`;
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+                
+                // Show confirmation modal
+                document.getElementById('signinPrompt').style.display = 'none';
+                document.querySelector('.modal-actions').style.display = 'flex';
+                document.querySelector('.modal-message').textContent = `You're about to contact our trainer on WhatsApp to book ${service}.`;
+                
+                // Store WhatsApp URL in modal for confirmation
+                modal.dataset.whatsappUrl = whatsappUrl;
                 modal.classList.add('active');
-                return;
-            }
-            
-            // User is signed in - prepare WhatsApp message
-            const message = `Hi, I'd like to book your ${service} (${price}).\n\nMy details:\nName: ${user.displayName}\nEmail: ${user.email}`;
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            
-            // Show confirmation modal
-            document.getElementById('signinPrompt').style.display = 'none';
-            document.querySelector('.modal-actions').style.display = 'flex';
-            document.querySelector('.modal-message').textContent = `You're about to contact our trainer on WhatsApp to book ${service}.`;
-            
-            // Store WhatsApp URL in modal for confirmation
-            modal.dataset.whatsappUrl = whatsappUrl;
-            modal.classList.add('active');
+            }, 800); // Simulate network delay
         });
     });
     
@@ -397,14 +455,38 @@ function initWhatsAppBooking() {
     });
     
     // Confirm booking handler
-    document.getElementById('confirmBooking')?.addEventListener('click', () => {
-        window.open(modal.dataset.whatsappUrl, '_blank');
-        modal.classList.remove('active');
+    document.getElementById('confirmBooking')?.addEventListener('click', function() {
+        const btnText = this.querySelector('.btn-text');
+        const spinner = this.querySelector('.btn-spinner');
+        
+        // Show loading state
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        
+        // Simulate processing delay
+        setTimeout(() => {
+            window.open(modal.dataset.whatsappUrl, '_blank');
+            modal.classList.remove('active');
+            
+            // Reset button
+            btnText.style.display = 'inline-block';
+            spinner.style.display = 'none';
+            
+            // Show success notification
+            showPopup('WhatsApp opened successfully! Please complete your booking with the trainer.', 'success');
+        }, 1000);
     });
     
     // Sign in from modal handler
-    document.getElementById('signInButtonModal')?.addEventListener('click', (e) => {
+    document.getElementById('signInButtonModal')?.addEventListener('click', function(e) {
         e.preventDefault();
+        const btnText = this.querySelector('.btn-text');
+        const spinner = this.querySelector('.btn-spinner');
+        
+        // Show loading state
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        
         const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider)
             .then(() => {
@@ -413,6 +495,23 @@ function initWhatsAppBooking() {
             })
             .catch(error => {
                 showPopup(`Sign in failed: ${error.message}`, 'error');
+            })
+            .finally(() => {
+                // Reset button
+                btnText.style.display = 'inline-block';
+                spinner.style.display = 'none';
             });
     });
+    
+    // Check for offers when page loads
+    checkForOffers();
+    
+    // Simulate periodic offer checks (in real app, use WebSockets or polling)
+    setInterval(() => {
+        // Rotate offers for demo purposes
+        const alerts = document.querySelectorAll('.service-alert');
+        alerts.forEach(alert => {
+            alert.style.display = alert.style.display === 'none' ? 'flex' : 'none';
+        });
+    }, 15000); // Check every 15 seconds
 }
