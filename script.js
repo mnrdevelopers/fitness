@@ -314,6 +314,7 @@ function initApp() {
     initAuthListeners();
     initTestimonialsSlider();
     handleContactForm();
+    initWhatsAppBooking();
     
     // Add floating labels functionality
     const formInputs = document.querySelectorAll('.form-control');
@@ -326,3 +327,92 @@ function initApp() {
 
 // Start the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);
+
+// WhatsApp Booking Functionality
+function initWhatsAppBooking() {
+    const bookButtons = document.querySelectorAll('.book-btn');
+    
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'booking-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3 class="modal-title">Confirm Booking</h3>
+            <p class="modal-message">You're about to contact our trainer on WhatsApp to book this service. Make sure you're signed in to your account.</p>
+            <div class="modal-actions">
+                <button id="confirmBooking" class="btn btn-primary">Continue to WhatsApp</button>
+                <button class="btn btn-outline cancel-booking">Cancel</button>
+            </div>
+            <div id="signinPrompt" class="signin-prompt" style="display: none;">
+                <p>Please sign in to book this service</p>
+                <button id="signInButtonModal" class="btn btn-primary">
+                    <i class="fab fa-google"></i> Sign In with Google
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Handle book button clicks
+    bookButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const user = auth.currentUser;
+            const service = this.dataset.service;
+            const price = this.dataset.price;
+            const whatsappNumber = this.dataset.whatsapp;
+            
+            if (!user) {
+                // Show sign-in prompt
+                document.getElementById('signinPrompt').style.display = 'block';
+                document.querySelector('.modal-actions').style.display = 'none';
+                document.querySelector('.modal-message').textContent = 'You need to be signed in to book services.';
+                modal.classList.add('active');
+                return;
+            }
+            
+            // User is signed in - prepare WhatsApp message
+            const message = `Hi, I'd like to book your ${service} (${price}).\n\nMy details:\nName: ${user.displayName}\nEmail: ${user.email}`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Show confirmation modal
+            document.getElementById('signinPrompt').style.display = 'none';
+            document.querySelector('.modal-actions').style.display = 'flex';
+            document.querySelector('.modal-message').textContent = `You're about to contact our trainer on WhatsApp to book ${service}.`;
+            
+            // Store WhatsApp URL in modal for confirmation
+            modal.dataset.whatsappUrl = whatsappUrl;
+            modal.classList.add('active');
+        });
+    });
+    
+    // Modal close handlers
+    document.querySelector('.modal-close')?.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+    
+    document.querySelector('.cancel-booking')?.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+    
+    // Confirm booking handler
+    document.getElementById('confirmBooking')?.addEventListener('click', () => {
+        window.open(modal.dataset.whatsappUrl, '_blank');
+        modal.classList.remove('active');
+    });
+    
+    // Sign in from modal handler
+    document.getElementById('signInButtonModal')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then(() => {
+                modal.classList.remove('active');
+                showPopup('Signed in successfully! You can now book services.', 'success');
+            })
+            .catch(error => {
+                showPopup(`Sign in failed: ${error.message}`, 'error');
+            });
+    });
+}
