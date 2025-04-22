@@ -155,6 +155,36 @@ function initTestimonialsSlider() {
     }, 5000);
 }
 
+// AI Workout Planner
+async function generateWorkoutPlan(userData) {
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer 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`
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{
+          role: "system",
+          content: "You are an expert fitness trainer. Create detailed workout plans."
+        },{
+          role: "user",
+          content: `Create a ${userData.goal} workout plan for ${userData.level} level. Equipment available: ${userData.equipment}. Focus on ${userData.focusArea}.`
+        }],
+        temperature: 0.7
+      })
+    });
+    
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error("AI Error:", error);
+    return "Sorry, I couldn't generate a plan right now.";
+  }
+}
+
 // Enhanced handleContactForm function
 function handleContactForm() {
     const form = document.getElementById('contactForm');
