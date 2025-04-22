@@ -12,6 +12,27 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
+const messaging = firebase.messaging();
+
+Notification.requestPermission().then((permission) => {
+  if (permission === "granted") {
+    messaging.getToken({
+      vapidKey: "BFSLJsuJmdg3JZmS9ZoGtTL6YMfQZislIXyiQRESQ7307pmYvN3wjxJyG1NgQFGgcbYNlKjWNWvNW-lSsOQFI2c"
+    }).then((currentToken) => {
+      if (currentToken) {
+        console.log("FCM Token:", currentToken);
+        // TODO: Send token to your server and store it
+      } else {
+        console.warn("No registration token available. Request permission to generate one.");
+      }
+    }).catch((err) => {
+      console.error("An error occurred while retrieving token.", err);
+    });
+  } else {
+    console.warn("Notification permission denied.");
+  }
+});
+
 // DOM Elements
 const loader = document.querySelector('.loader');
 const header = document.querySelector('.header');
