@@ -368,8 +368,8 @@ function initWhatsAppBooking() {
         const offers = {
             "Personal Training": {
                 priceDrop: true,
-                newPrice: "₹599/month",
-                message: "Limited time offer! Now ₹599/month (was ₹699)"
+                newPrice: "₹699/month",
+                message: "Limited time offer! Now ₹699/month (was ₹999)"
             },
             "Diet Planning": {
                 specialOffer: true,
