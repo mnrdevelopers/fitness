@@ -155,36 +155,6 @@ function initTestimonialsSlider() {
     }, 5000);
 }
 
-// AI Workout Planner
-async function generateWorkoutPlan(userData) {
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer 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`
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [{
-          role: "system",
-          content: "You are an expert fitness trainer. Create detailed workout plans."
-        },{
-          role: "user",
-          content: `Create a ${userData.goal} workout plan for ${userData.level} level. Equipment available: ${userData.equipment}. Focus on ${userData.focusArea}.`
-        }],
-        temperature: 0.7
-      })
-    });
-    
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error("AI Error:", error);
-    return "Sorry, I couldn't generate a plan right now.";
-  }
-}
-
 // Enhanced handleContactForm function
 function handleContactForm() {
     const form = document.getElementById('contactForm');
@@ -376,45 +346,6 @@ function initApp() {
     });
 }
 
-// Add to your initApp() function
-document.getElementById('generatePlan')?.addEventListener('click', async function() {
-  const goal = document.getElementById('goal').value;
-  const level = document.getElementById('level').value;
-  
-  if (!goal || !level) {
-    showPopup('Please select both goal and level', 'warning');
-    return;
-  }
-  
-  const resultDiv = document.getElementById('aiPlanResult');
-  resultDiv.innerHTML = '<div class="loading-ai"><i class="fas fa-spinner fa-spin fa-2x"></i></div>';
-  resultDiv.style.display = 'block';
-  
-  const userData = {
-    goal,
-    level,
-    equipment: 'resistance bands, dumbbells', // Can make this dynamic
-    focusArea: 'full body' // Can make this dynamic
-  };
-  
-  const plan = await generateWorkoutPlan(userData);
-  resultDiv.innerHTML = `
-    <h4>Your Personalized ${goal} Plan</h4>
-    <div class="plan-content">${plan.replace(/\n/g, '<br>')}</div>
-    <button class="btn btn-outline save-plan">Save to Calendar</button>
-  `;
-  
-  // Add save to calendar functionality
-  document.querySelector('.save-plan')?.addEventListener('click', () => {
-    addToCalendar({
-      title: `${goal} Workout Plan`,
-      description: plan,
-      start: new Date(),
-      end: new Date(Date.now() + 3600000)
-    });
-  });
-});
-
 // Start the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);
 
@@ -451,7 +382,48 @@ function initWhatsAppBooking() {
         </div>
     `;
     document.body.appendChild(modal);
+    
+    // Check for price drops and offers
+    function checkForOffers() {
+        // In a real app, you would fetch this from your backend
+        const offers = {
+            "Personal Training": {
+                priceDrop: true,
+                newPrice: "₹699/month",
+                message: "Limited time offer! Now ₹699/month (was ₹999)"
+            },
+            "Diet Planning": {
+                specialOffer: true,
+                message: "Combo discount available! Save 15% when booked with training"
+            }
+        };
         
+        document.querySelectorAll('.service-card').forEach(card => {
+            const serviceTitle = card.querySelector('h3').textContent;
+            const offer = offers[serviceTitle];
+            const alertEl = card.querySelector('.service-alert');
+            
+            if (offer) {
+                alertEl.style.display = 'flex';
+                alertEl.querySelector('.alert-text').textContent = offer.message;
+                
+                if (offer.priceDrop) {
+                    alertEl.classList.add('price-drop');
+                    // Add price drop badge
+                    const priceBadge = document.createElement('div');
+                    priceBadge.className = 'price-drop-badge';
+                    priceBadge.textContent = 'SALE';
+                    card.appendChild(priceBadge);
+                    
+                    // Update displayed price
+                    if (offer.newPrice) {
+                        card.querySelector('.price').textContent = offer.newPrice.split('/')[0];
+                    }
+                }
+            }
+        });
+    }
+    
     // Handle book button clicks
     bookButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -551,6 +523,9 @@ function initWhatsAppBooking() {
                 spinner.style.display = 'none';
             });
     });
+    
+    // Check for offers when page loads
+    checkForOffers();
     
     // Simulate periodic offer checks (in real app, use WebSockets or polling)
     setInterval(() => {
