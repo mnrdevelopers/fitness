@@ -553,36 +553,6 @@ body {
     border-radius: 15px;
 }
 
-/* AI Planner Styles */
-.ai-planner {
-  position: relative;
-}
-
-.ai-form {
-  display: grid;
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.ai-result {
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(245, 196, 94, 0.1);
-  border-radius: 10px;
-  display: none;
-}
-
-.ai-result h4 {
-  color: var(--primary);
-  margin-bottom: 10px;
-}
-
-.loading-ai {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
 /* Testimonials Section */
 .testimonials {
     padding: 80px 0;
