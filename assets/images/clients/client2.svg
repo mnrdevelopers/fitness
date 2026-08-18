@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4E65FF"/>
+      <stop offset="100%" stop-color="#92EFFD"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#1A1F2C" stroke="url(#grad2)" stroke-width="4"/>
+  <circle cx="60" cy="46" r="21" fill="#92EFFD"/>
+  <path d="M28 105 C 28 78, 92 78, 92 105 Z" fill="#92EFFD" opacity="0.9"/>
+  <!-- Hair styling female -->
+  <path d="M38 48 C 38 22, 82 22, 82 48 C 82 65, 78 72, 78 72 C 78 72, 70 38, 60 38 C 50 38, 42 72, 42 72 C 42 72, 38 65, 38 48 Z" fill="#0A0D14"/>
+</svg>

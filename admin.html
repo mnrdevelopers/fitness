@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5C45E">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Coach Rajashekar | Master Admin Command Center</title>
+    
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="admin-body-bg">
+
+    <!-- 1. Security Authentication Gate (Locks unauthorized users out) -->
+    <div id="adminAuthGate" class="admin-auth-overlay">
+        <div class="admin-login-card">
+            <div class="logo-icon-box" style="margin: 0 auto 16px; width: 56px; height: 56px; font-size: 1.6rem;">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 class="admin-login-title">Coach Rajashekar</h2>
+            <p class="admin-login-subtitle">Master Administrative Command Center</p>
+
+            <div id="adminLoginError" class="admin-auth-error-msg" style="display: none;"></div>
+
+            <form id="adminLoginForm" class="admin-pin-form">
+                <div class="form-group-custom" style="text-align: left; margin-bottom: 20px;">
+                    <label class="form-label-custom" for="adminPinInput">Enter Security Passkey / Master PIN</label>
+                    <input type="password" id="adminPinInput" class="input-custom" placeholder="••••••••••" required autofocus>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; font-size: 1rem;">
+                    <i class="fas fa-lock-open"></i> Unlock Dashboard
+                </button>
+            </form>
+
+            <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px; color: var(--text-sub); font-size: 0.82rem;">
+                <span style="flex: 1; height: 1px; background: var(--border-glass);"></span>
+                <span>OR SIGN IN AS COACH</span>
+                <span style="flex: 1; height: 1px; background: var(--border-glass);"></span>
+            </div>
+
+            <button type="button" id="adminGoogleLoginBtn" class="btn btn-outline btn-block" style="padding: 12px; font-size: 0.9rem;">
+                <i class="fab fa-google" style="color: #EA4335;"></i> Verify with Google Account
+            </button>
+
+            <div style="margin-top: 24px;">
+                <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Return to Live Website
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Main Admin Dashboard Layout (Visible when authenticated) -->
+    <div id="adminDashboardWrap" class="admin-dashboard-container" style="display: none;">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="brand-logo" style="margin-bottom: 0;">
+                    <div class="logo-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="logo-text-wrap">
+                        <span class="logo-title" style="font-size: 1.2rem;">FITNESS</span>
+                        <span class="logo-tagline" style="font-size: 0.6rem;">Admin Suite</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="admin-sidebar-nav">
+                <a href="#overview" class="admin-nav-item active" data-target="panelOverview">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview & KPIs</span>
+                </a>
+                <a href="#leads" class="admin-nav-item" data-target="panelLeads">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Client Inquiries CRM</span>
+                    <span class="admin-nav-badge" id="badgeNewLeadsCount" style="display: none;">0</span>
+                </a>
+                <a href="#transformations" class="admin-nav-item" data-target="panelTransformations">
+                    <i class="fas fa-images"></i>
+                    <span>Transformations Manager</span>
+                </a>
+                <a href="#pricing" class="admin-nav-item" data-target="panelPricing">
+                    <i class="fas fa-tags"></i>
+                    <span>Programs & Pricing</span>
+                </a>
+                <a href="#recipes" class="admin-nav-item" data-target="panelRecipes">
+                    <i class="fas fa-utensils"></i>
+                    <span>Diet Recipes Manager</span>
+                </a>
+                <a href="#analytics" class="admin-nav-item" data-target="panelAnalytics">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Visitors & User Tracking</span>
+                </a>
+                <a href="#broadcast" class="admin-nav-item" data-target="panelBroadcast">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Plan Generator</span>
+                </a>
+                <a href="#settings" class="admin-nav-item" data-target="panelSettings">
+                    <i class="fas fa-cog"></i>
+                    <span>Site & Security</span>
+                </a>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <div class="coach-mini-card">
+                    <div class="coach-avatar-mini">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="coach-meta-mini">
+                        <strong>Coach Rajashekar</strong>
+                        <span>Online (Direct Admin)</span>
+                    </div>
+                </div>
+                <button id="adminLogoutBtn" class="btn btn-outline btn-block" style="padding: 9px; font-size: 0.82rem; margin-top: 14px;">
+                    <i class="fas fa-sign-out-alt"></i> Secure Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main-viewport">
+            
+            <!-- Top App Bar -->
+            <header class="admin-topbar">
+                <div class="admin-topbar-left">
+                    <h2 class="admin-topbar-title">Coach Command Center</h2>
+                    <span class="admin-live-badge"><i class="fas fa-circle"></i> Live Website Connected</span>
+                </div>
+
+                <div class="admin-topbar-right">
+                    <a href="index.html" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">
+                        <i class="fas fa-external-link-alt"></i> View Live Site
+                    </a>
+                    <button class="theme-toggle-btn" id="adminThemeToggle" title="Toggle Theme" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Panels Viewport -->
+            <div class="admin-content-scrollable">
+
+                <!-- PANEL 1: OVERVIEW & KPIS -->
+                <section id="panelOverview" class="admin-section-panel active">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Business Overview & Growth Metrics</h3>
+                            <p class="admin-panel-sub">Real-time coaching performance, website traffic, signed-in users, and program demand.</p>
+                        </div>
+                        <div>
+                            <button id="exportLeadsBtn" class="btn btn-outline" style="padding: 10px 18px; font-size: 0.88rem;">
+                                <i class="fas fa-file-csv"></i> Export Leads CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards Grid (6 High-Value Metrics) -->
+                    <div class="admin-kpi-grid">
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box gold">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">Total Website Visits</span>
+                                <h3 class="kpi-val" id="statTotalVisits">0</h3>
+                                <span class="kpi-trend positive"><i class="fas fa-users"></i> Live Traffic</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box cyan">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">Signed-in Members</span>
+                                <h3 class="kpi-val" id="statSignedUsers">0</h3>
+                                <span class="kpi-trend positive"><i class="fab fa-google"></i> Google Accounts</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box purple">
+                                <i class="fas fa-mouse-pointer"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">Program Interest Clicks</span>
+                                <h3 class="kpi-val" id="statProgramClicks">0</h3>
+                                <span class="kpi-trend positive"><i class="fas fa-fire"></i> Purchase Intent</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box emerald">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">New Inquiries Pending</span>
+                                <h3 class="kpi-val" id="statNewInquiries">0</h3>
+                                <span class="kpi-trend neutral"><i class="fas fa-clock"></i> Action Required</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box gold">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">Total Inquiries</span>
+                                <h3 class="kpi-val" id="statTotalInquiries">0</h3>
+                                <span class="kpi-trend positive"><i class="fas fa-check-circle"></i> Live Inquiries</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-kpi-card">
+                            <div class="kpi-icon-box purple">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="kpi-data">
+                                <span class="kpi-label">Published Transformations</span>
+                                <h3 class="kpi-val" id="statTotalTfs">0</h3>
+                                <span class="kpi-trend positive"><i class="fas fa-star"></i> Live on Website</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="admin-card-surface" style="margin-top: 32px;">
+                        <h4 style="font-family: var(--font-heading); margin-bottom: 16px;">Quick Coach Actions</h4>
+                        <div class="quick-actions-row">
+                            <a href="https://wa.me/918187808710" target="_blank" class="quick-action-pill">
+                                <i class="fab fa-whatsapp" style="color: #25D366;"></i> Open Official WhatsApp
+                            </a>
+                            <a href="#recipes" class="quick-action-pill" onclick="document.querySelector('[data-target=panelRecipes]')?.click();">
+                                <i class="fas fa-utensils" style="color: var(--primary);"></i> Manage Diet Recipes
+                            </a>
+                            <a href="tools.html" target="_blank" class="quick-action-pill">
+                                <i class="fas fa-calculator" style="color: var(--accent-cyan);"></i> Launch Scientific Tools
+                            </a>
+                            <a href="results.html" target="_blank" class="quick-action-pill">
+                                <i class="fas fa-images" style="color: var(--accent-emerald);"></i> View Results Gallery
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL 2: LEADS & INQUIRIES CRM -->
+                <section id="panelLeads" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Client Leads & Consultation CRM</h3>
+                            <p class="admin-panel-sub">Manage all website consultation submissions with 1-click WhatsApp follow-ups.</p>
+                        </div>
+                    </div>
+
+                    <!-- Filters and Search Toolbar -->
+                    <div class="admin-table-toolbar">
+                        <div class="toolbar-search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="leadSearchInput" placeholder="Search by client name, phone, or service...">
+                        </div>
+                        <div class="toolbar-filter-box">
+                            <label for="leadStatusFilter" style="font-size: 0.85rem; color: var(--text-muted); margin-right: 8px;">Status:</label>
+                            <select id="leadStatusFilter" class="input-custom" style="padding: 8px 16px; width: auto;">
+                                <option value="all">All Inquiries</option>
+                                <option value="New">New</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Enrolled">Enrolled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Leads Table Container -->
+                    <div class="admin-table-container">
+                        <table class="admin-data-table">
+                            <colgroup>
+                                <col style="width: 24%; min-width: 200px;">
+                                <col style="width: 16%; min-width: 140px;">
+                                <col style="width: 24%; min-width: 200px;">
+                                <col style="width: 14%; min-width: 130px;">
+                                <col style="width: 10%; min-width: 100px;">
+                                <col style="width: 12%; min-width: 120px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Client Name & Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Requested Program & Goals</th>
+                                    <th>Submission Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTableBody">
+                                <!-- Dynamic rows rendered by admin.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- PANEL 3: TRANSFORMATIONS MANAGER -->
+                <section id="panelTransformations" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Transformations & Results Manager</h3>
+                            <p class="admin-panel-sub">Publish new client success stories and before/after photos live to the website.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-two-col-grid">
+                        <!-- Add Transformation Form -->
+                        <div class="admin-card-surface">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 20px;">
+                                <i class="fas fa-plus-circle" style="color: var(--primary); margin-right: 6px;"></i> Add New Success Story
+                            </h4>
+
+                            <form id="addTransformationForm">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="tfTitleInput">Transformation Title / Milestone</label>
+                                    <input type="text" id="tfTitleInput" class="input-custom" placeholder="e.g. 15 Kgs Lost in 90 Days" required>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="tfCategoryInput">Category</label>
+                                    <select id="tfCategoryInput" class="input-custom" required>
+                                        <option value="fatloss">Fat Loss (Cut)</option>
+                                        <option value="muscle">Muscle Hypertrophy</option>
+                                        <option value="recomp">Body Recomposition</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="tfStatsInput">Statistics / Achievements Badge</label>
+                                    <input type="text" id="tfStatsInput" class="input-custom" placeholder="e.g. -15 kg Lost • Waist -4 inches" required>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="tfImageInput">Image Path or URL</label>
+                                    <input type="text" id="tfImageInput" class="input-custom" placeholder="assets/images/result10.jpg" value="assets/images/result10.jpg" required>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="tfQuoteInput">Client Testimonial Quote</label>
+                                    <textarea id="tfQuoteInput" rows="3" class="input-custom" placeholder="What the client said about Coach Rajashekar's guidance..." required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-upload"></i> Publish Transformation Live
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Active Transformations List -->
+                        <div class="admin-card-surface">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 20px;">
+                                <i class="fas fa-list" style="color: var(--primary); margin-right: 6px;"></i> Active Live Transformations
+                            </h4>
+                            <div id="transformationsListAdmin" class="admin-tf-list">
+                                <!-- Dynamic items rendered by admin.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL 4: PROGRAMS & PRICING -->
+                <section id="panelPricing" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Coaching Programs & Specifications Manager</h3>
+                            <p class="admin-panel-sub">Create, edit, delete, and customize coaching packages, prices, and feature specifications live on your website.</p>
+                        </div>
+                        <div>
+                            <button id="openAddProgramBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.88rem;">
+                                <i class="fas fa-plus"></i> Add New Program
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Programs Grid -->
+                    <div id="adminProgramsGrid" class="admin-programs-grid">
+                        <!-- Rendered dynamically by admin.js -->
+                    </div>
+                </section>
+
+                <!-- PANEL 6: DIET RECIPES MANAGER -->
+                <section id="panelRecipes" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Diet & Nutrition Recipes Manager</h3>
+                            <p class="admin-panel-sub">Create, edit, categorize, and publish Veg & Non-Veg macro-calculated recipes on the live kitchen page.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="resetDefaultRecipesBtn" class="btn btn-outline" style="padding: 9px 16px; font-size: 0.84rem;">
+                                <i class="fas fa-undo"></i> Reset Default Recipes
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Grid: Form + Live Recipes List -->
+                    <div class="admin-two-col-grid">
+                        <!-- Recipe Editor Form -->
+                        <div class="admin-card-surface">
+                            <h4 id="recipeFormHeaderTitle" style="font-family: var(--font-heading); margin-bottom: 20px;">
+                                <i class="fas fa-plus-circle" style="color: var(--primary); margin-right: 6px;"></i> Add / Edit Recipe
+                            </h4>
+
+                            <form id="adminRecipeForm">
+                                <input type="hidden" id="recipeEditId" value="">
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="recipeTitleInput">Recipe Name / Dish Title</label>
+                                    <input type="text" id="recipeTitleInput" class="input-custom" placeholder="e.g. High-Protein Paneer Bhurji & Multigrain Toast" required>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeTypeSelect">Dietary Category</label>
+                                        <select id="recipeTypeSelect" class="input-custom" required>
+                                            <option value="veg">🌱 Vegetarian (Pure Veg)</option>
+                                            <option value="nonveg">🍗 Non-Vegetarian (Lean Meat/Eggs)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeMealSelect">Meal Timing Type</label>
+                                        <select id="recipeMealSelect" class="input-custom" required>
+                                            <option value="breakfast fat-loss">🍳 Breakfast & Fat Loss</option>
+                                            <option value="lunch-dinner">🍱 Lunch & Dinner</option>
+                                            <option value="post-workout">🥤 Post-Workout Fuel</option>
+                                            <option value="fat-loss">🔥 Low Calorie (Cut)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Macros Grid Input -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeProteinInput">Protein</label>
+                                        <input type="text" id="recipeProteinInput" class="input-custom" placeholder="e.g. 32g" required>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeCaloriesInput">Calories</label>
+                                        <input type="text" id="recipeCaloriesInput" class="input-custom" placeholder="e.g. 380 kcal" required>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeCarbsInput">Carbs</label>
+                                        <input type="text" id="recipeCarbsInput" class="input-custom" placeholder="e.g. 28g" required>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeFatsInput">Fats</label>
+                                        <input type="text" id="recipeFatsInput" class="input-custom" placeholder="e.g. 14g" required>
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipePrepTimeInput">Prep Time</label>
+                                        <input type="text" id="recipePrepTimeInput" class="input-custom" placeholder="e.g. 5 Mins" required>
+                                    </div>
+                                    <div class="form-group-custom">
+                                        <label class="form-label-custom" for="recipeCookTimeInput">Cook Time</label>
+                                        <input type="text" id="recipeCookTimeInput" class="input-custom" placeholder="e.g. 10 Mins" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="recipeDescInput">Short Summary</label>
+                                    <textarea id="recipeDescInput" rows="2" class="input-custom" placeholder="Brief description of the dish..." required></textarea>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="recipeIngredientsInput">Ingredients (One per line)</label>
+                                    <textarea id="recipeIngredientsInput" rows="4" class="input-custom" placeholder="150g Low-fat Paneer&#10;2 Slices Multigrain Bread&#10;1/2 Capsicum" required></textarea>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="recipeInstructionsInput">Step-by-Step Cooking Instructions (One per line)</label>
+                                    <textarea id="recipeInstructionsInput" rows="4" class="input-custom" placeholder="Heat oil in pan and sauté cumin seeds&#10;Add chopped onions and capsicum&#10;Stir in paneer and spices" required></textarea>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="recipeCoachTipInput">Coach Rajashekar's Nutrition Pro-Tip</label>
+                                    <input type="text" id="recipeCoachTipInput" class="input-custom" placeholder="e.g. Low-fat paneer delivers slow-digesting casein protein..." required>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <button type="submit" id="saveRecipeBtn" class="btn btn-primary" style="flex: 1;">
+                                        <i class="fas fa-save"></i> Save Recipe Live
+                                    </button>
+                                    <button type="button" id="cancelEditRecipeBtn" class="btn btn-outline" style="display: none;">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Active Recipes Library -->
+                        <div class="admin-card-surface">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                                <h4 style="font-family: var(--font-heading);">
+                                    <i class="fas fa-utensils" style="color: var(--primary); margin-right: 6px;"></i> Active Recipes Library
+                                </h4>
+                                <span id="adminRecipeCountBadge" class="service-pill-tag">12 Recipes Live</span>
+                            </div>
+
+                            <!-- Filter & Search within Admin -->
+                            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                                <input type="text" id="adminRecipeSearchInput" class="input-custom" placeholder="Search recipe..." style="padding: 8px 14px; font-size: 0.85rem;">
+                                <select id="adminRecipeTypeFilter" class="input-custom" style="width: 140px; padding: 8px; font-size: 0.85rem;">
+                                    <option value="all">All Types</option>
+                                    <option value="veg">🌱 Veg</option>
+                                    <option value="nonveg">🍗 Non-Veg</option>
+                                </select>
+                            </div>
+
+                            <div id="recipesListAdmin" class="admin-tf-list" style="max-height: 720px;">
+                                <!-- Dynamic recipe cards rendered by admin.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL 5: VISITORS & USER TRACKING ANALYTICS -->
+                <section id="panelAnalytics" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Visitors, Signed-in Members & Program Demand Analytics</h3>
+                            <p class="admin-panel-sub">Real-time breakdown of website traffic, registered Google accounts, and program click intent.</p>
+                        </div>
+                        <div>
+                            <button id="clearAnalyticsBtn" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.82rem;">
+                                <i class="fas fa-trash-alt"></i> Reset Analytics Logs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Two Column Section: Signed-In Users + Program Demand Distribution -->
+                    <div class="admin-analytics-grid">
+                        
+                        <!-- Col 1: Program Interest Demand Breakdown -->
+                        <div class="admin-card-surface">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                <span><i class="fas fa-fire" style="color: var(--primary); margin-right: 6px;"></i> Program Interest & Click Intent</span>
+                                <span id="totalClicksBadge" class="service-pill-tag">0 Clicks</span>
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                                Tracks every time visitors click "Book Program", "Choose Diet Plan", or inquire on WhatsApp.
+                            </p>
+
+                            <div id="programDemandBarsContainer">
+                                <!-- Rendered dynamically by admin.js -->
+                            </div>
+                        </div>
+
+                        <!-- Col 2: Traffic & Visitor Summary -->
+                        <div class="admin-card-surface">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 16px;">
+                                <i class="fas fa-chart-bar" style="color: var(--accent-cyan); margin-right: 6px;"></i> Website Traffic Summary
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+                                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 14px;">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">Total Page Views</span>
+                                    <h3 id="statAnalyticsPageViews" style="font-size: 1.6rem; color: var(--primary); margin-top: 4px;">0</h3>
+                                </div>
+                                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 14px;">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">Unique Visitors</span>
+                                    <h3 id="statAnalyticsUniqueVisitors" style="font-size: 1.6rem; color: var(--accent-emerald); margin-top: 4px;">0</h3>
+                                </div>
+                            </div>
+
+                            <h5 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-main);">Recent Visitor Activity Stream</h5>
+                            <div style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border-glass); border-radius: var(--radius-md);">
+                                <table class="admin-table" style="margin: 0; font-size: 0.82rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Page</th>
+                                            <th>Time</th>
+                                            <th>Device</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="trafficLogTableBody">
+                                        <!-- Rendered dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Width: Signed-in Users Directory -->
+                    <div class="admin-card-surface" style="margin-top: 24px;">
+                        <h4 style="font-family: var(--font-heading); margin-bottom: 8px;">
+                            <i class="fab fa-google" style="color: #EA4335; margin-right: 6px;"></i> Signed-in Google Members Directory
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                            Visitors who authenticated via Google Account on the website contact form or tools.
+                        </p>
+
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <colgroup>
+                                    <col style="width: 26%; min-width: 220px;">
+                                    <col style="width: 28%; min-width: 240px;">
+                                    <col style="width: 16%; min-width: 150px;">
+                                    <col style="width: 16%; min-width: 150px;">
+                                    <col style="width: 14%; min-width: 140px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>Member Profile</th>
+                                        <th>Email Address</th>
+                                        <th>First Joined</th>
+                                        <th>Last Active</th>
+                                        <th>Quick Outreach</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="signedUsersTableBody">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Program Intent Click Stream Log -->
+                    <div class="admin-card-surface" style="margin-top: 24px;">
+                        <h4 style="font-family: var(--font-heading); margin-bottom: 8px;">
+                            <i class="fas fa-mouse-pointer" style="color: var(--primary); margin-right: 6px;"></i> Live Program Interest Intent Log
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+                            Chronological history of program selections and booking interactions.
+                        </p>
+
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <colgroup>
+                                    <col style="width: 25%; min-width: 210px;">
+                                    <col style="width: 15%; min-width: 130px;">
+                                    <col style="width: 24%; min-width: 180px;">
+                                    <col style="width: 18%; min-width: 150px;">
+                                    <col style="width: 18%; min-width: 160px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>Program Selected</th>
+                                        <th>Target Price</th>
+                                        <th>User / Visitor</th>
+                                        <th>Timestamp</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="programIntentLogTableBody">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL 6: WHATSAPP QUICK BLUEPRINT GENERATOR -->
+                <section id="panelBroadcast" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">WhatsApp Client Blueprint Generator</h3>
+                            <p class="admin-panel-sub">Quickly format and send custom workout splits and macro plans directly to clients.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-two-col-grid">
+                        <div class="admin-card-surface">
+                            <form id="broadcastGeneratorForm">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcClientName">Client Name</label>
+                                    <input type="text" id="bcClientName" class="input-custom" placeholder="e.g. Rahul Sharma" required>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcPlanType">Program Focus</label>
+                                    <select id="bcPlanType" class="input-custom">
+                                        <option value="Fat Loss & Calorie Deficit">Fat Loss & Calorie Deficit</option>
+                                        <option value="Muscle Hypertrophy & Recomp">Muscle Hypertrophy & Recomp</option>
+                                        <option value="PCOS / Lifestyle Wellness">PCOS / Lifestyle Wellness</option>
+                                        <option value="Strength & Powerlifting">Strength & Powerlifting</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcCalories">Target Daily Calories (kcal)</label>
+                                    <input type="number" id="bcCalories" class="input-custom" placeholder="e.g. 1950">
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcProtein">Daily Protein Target (g)</label>
+                                    <input type="number" id="bcProtein" class="input-custom" placeholder="e.g. 140">
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcRoutine">Workout Split Schedule</label>
+                                    <input type="text" id="bcRoutine" class="input-custom" placeholder="e.g. Push-Pull-Legs (4 Days / Week)">
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="bcNotes">Key Advice / Reminders</label>
+                                    <textarea id="bcNotes" rows="2" class="input-custom" placeholder="e.g. Hit 3.5L water daily, 8 hours sleep, and log meals by 9:00 PM."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-magic"></i> Generate WhatsApp Template
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Formatted Preview -->
+                        <div class="admin-card-surface">
+                            <h4 style="font-family: var(--font-heading); margin-bottom: 14px;">WhatsApp Formatted Message</h4>
+                            <textarea id="broadcastOutput" rows="12" class="input-custom" readonly style="font-family: monospace; font-size: 0.88rem; line-height: 1.5;"></textarea>
+                            
+                            <div style="margin-top: 16px;">
+                                <a id="sendBroadcastBtn" href="#" target="_blank" class="btn btn-whatsapp btn-block" style="display: none;">
+                                    <i class="fab fa-whatsapp"></i> Send Directly via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL 6: SITE & SECURITY SETTINGS -->
+                <section id="panelSettings" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Business & Security Configuration</h3>
+                            <p class="admin-panel-sub">Manage official contact information and coach administrative settings.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card-surface" style="max-width: 700px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Official WhatsApp & Phone</label>
+                            <input type="text" class="input-custom" value="+91 81878 08710" readonly>
+                            <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; display: block;">Synchronized across all website booking buttons.</small>
+                        </div>
+
+                        <div class="form-group-custom" style="margin-top: 20px;">
+                            <label class="form-label-custom">Official Coach Email</label>
+                            <input type="text" class="input-custom" value="itsrajashekar12@gmail.com" readonly>
+                        </div>
+
+                        <div class="form-group-custom" style="margin-top: 20px;">
+                            <label class="form-label-custom">Operating Location</label>
+                            <input type="text" class="input-custom" value="Nizamabad, Telangana, India" readonly>
+                        </div>
+
+                        <div class="form-group-custom" style="margin-top: 20px;">
+                            <label class="form-label-custom">Admin Security Status</label>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); color: var(--accent-emerald); font-size: 0.9rem; font-weight: 600;">
+                                <i class="fas fa-shield-alt"></i> Master Admin Session Active & Encrypted
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Program Create / Edit Modal -->
+    <div id="programModal" class="admin-modal-overlay">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3 id="programModalTitle" class="admin-modal-title">Add Coaching Program</h3>
+                <button type="button" id="closeProgramModalBtn" class="admin-modal-close" aria-label="Close Modal">&times;</button>
+            </div>
+            <form id="programEditorForm">
+                <input type="hidden" id="progIdInput" value="">
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="progTitleInput">Program Title</label>
+                    <input type="text" id="progTitleInput" class="input-custom" placeholder="e.g. 1-on-1 Personal Training" required>
+                </div>
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="progDescInput">Short Description / Subtitle</label>
+                    <textarea id="progDescInput" rows="2" class="input-custom" placeholder="e.g. Dedicated 1-on-1 workout routines, biomechanics form correction, and progressive overload tracking." required></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="progIconInput">Program Icon</label>
+                        <select id="progIconInput" class="input-custom">
+                            <option value="fas fa-dumbbell">🏋️ Dumbbell (Strength & PT)</option>
+                            <option value="fas fa-fire">🔥 Flame (Transformation / Fat Loss)</option>
+                            <option value="fas fa-utensils">🥗 Utensils / Fork (Diet & Nutrition)</option>
+                            <option value="fas fa-trophy">🏆 Trophy (Contest / Elite Coaching)</option>
+                            <option value="fas fa-heartbeat">❤️ Heartbeat (Cardio & Stamina)</option>
+                            <option value="fas fa-bolt">⚡ Bolt (High Energy / Athlete)</option>
+                            <option value="fas fa-user-friends">👥 Couple / Duo Group Plan</option>
+                            <option value="fas fa-medal">🏅 Medal (Specialist)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="progDurationInput">Duration Period</label>
+                        <input type="text" id="progDurationInput" class="input-custom" placeholder="e.g. / month, / 3 months, / 6 months" value="/ month" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="progPriceInput">Offer Price (₹)</label>
+                        <input type="number" id="progPriceInput" class="input-custom" placeholder="e.g. 699" required>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="progOrigPriceInput">Original Price (₹)</label>
+                        <input type="number" id="progOrigPriceInput" class="input-custom" placeholder="e.g. 999">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="progDiscountInput">Discount Ribbon</label>
+                        <input type="text" id="progDiscountInput" class="input-custom" placeholder="e.g. 30% OFF" value="30% OFF">
+                    </div>
+                </div>
+
+                <div class="form-group-custom" style="margin: 16px 0;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                        <input type="checkbox" id="progFeaturedInput" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span>Highlight as "Most Popular / Featured" Package</span>
+                    </label>
+                </div>
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="progFeaturesInput">
+                        Program Specifications / Bullet Points 
+                        <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem;">(Enter each specification on a new line)</span>
+                    </label>
+                    <textarea id="progFeaturesInput" rows="5" class="input-custom" placeholder="Custom Home/Gym Workout Split&#10;Video Exercise Form Analysis&#10;Weekly Strength Progress Review&#10;WhatsApp Support" required></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-glass);">
+                    <button type="button" id="cancelProgramModalBtn" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> Save & Publish Program
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

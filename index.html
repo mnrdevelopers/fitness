@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5C45E">
+    <meta name="description" content="FITNESS - Elite 1-on-1 Personal Training, Tailored Nutrition & Lifestyle Transformation Coaching by Coach Rajashekar.">
+    <meta name="keywords" content="fitness coach, personal training, diet plan, fat loss, muscle building, online fitness trainer">
+    <title>FITNESS | Elite Personal Training & Custom Nutrition</title>
+    
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Page Loading Screen -->
+    <div id="pageLoader" class="loader-wrapper">
+        <div class="loader-spinner"></div>
+        <span class="loader-brand">FITNESS</span>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <!-- Brand Logo -->
+                <a href="#home" class="brand-logo" id="brandLogo">
+                    <div class="logo-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="logo-text-wrap">
+                        <span class="logo-title">FITNESS</span>
+                        <span class="logo-tagline">Healthy Lifestyle</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#services" class="nav-link">Programs</a></li>
+                    <li><a href="recipes.html" class="nav-link"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 4px;"></i> Diet Recipes</a></li>
+                    <li><a href="tools.html" class="nav-link"><i class="fas fa-calculator" style="color: var(--primary); margin-right: 4px;"></i> Tools Suite</a></li>
+                    <li><a href="results.html" class="nav-link">Results</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <!-- Header Actions (Theme, Auth, Mobile Toggle) -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <!-- Auth Button / Profile -->
+                    <button id="signInButton" class="nav-auth-btn">
+                        <i class="fab fa-google"></i>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="userInfo" class="user-profile-badge" style="display: none;">
+                        <div class="user-avatar-wrap" id="userAvatarContainer" title="User Profile">
+                            <img class="user-avatar" id="userAvatarImg" src="assets/images/clients/client1.svg" alt="User Profile" referrerpolicy="no-referrer">
+                            <div class="user-avatar-initials" id="userAvatarInitials" style="display: none;">U</div>
+                        </div>
+                        <button id="signOutButton" class="nav-icon-btn" title="Sign Out" aria-label="Sign Out">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Hamburger Button -->
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Navigation Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span>
+                        <span>Personalized 1-on-1 Coaching Available</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Transform Your <span class="highlight-text">Body & Mind</span> With Expert Guidance
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Achieve sustainable fat loss, peak athletic strength, and lifelong health with science-backed nutrition and personalized workout regimens.
+                    </p>
+                    
+                    <div class="hero-cta-group">
+                        <a href="#services" class="btn btn-primary">
+                            <i class="fas fa-bolt"></i> Explore Programs
+                        </a>
+                        <a href="#calculator" class="btn btn-outline">
+                            <i class="fas fa-calculator"></i> Free BMI Check
+                        </a>
+                    </div>
+                    
+                    <div class="hero-stats-row">
+                        <div class="hero-stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Clients Transformed</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <span class="stat-number">98%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                        <div class="hero-stat-item">
+                            <span class="stat-number">1-on-1</span>
+                            <span class="stat-label">Daily Support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-media-wrapper">
+                    <div class="hero-glow-backdrop"></div>
+                    <img src="assets/images/fitness-heroo.png" alt="Fitness Training Hero" class="hero-img">
+                    
+                    <!-- Floating Stat Badges -->
+                    <div class="floating-stat-card top-right">
+                        <div class="floating-icon-box">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="floating-text-wrap">
+                            <h5>Certified Coaching</h5>
+                            <p>Proven Results</p>
+                        </div>
+                    </div>
+
+                    <div class="floating-stat-card bottom-left">
+                        <div class="floating-icon-box">
+                            <i class="fas fa-apple-alt"></i>
+                        </div>
+                        <div class="floating-text-wrap">
+                            <h5>Custom Macros</h5>
+                            <p>Easy-to-follow Diets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services & Pricing Section -->
+    <section id="services" class="section services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Programs & Pricing</span>
+                <h2 class="section-title">Invest in Your <span class="highlight-text">Health & Vitality</span></h2>
+                <p class="section-subtitle">Flexible, results-driven coaching packages tailored to your lifestyle and goals.</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Personal Training -->
+                <div class="service-card">
+                    <div class="service-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Personal Training</h3>
+                    <p class="service-desc">Dedicated 1-on-1 workout routines, form correction, and progressive overload tracking.</p>
+                    
+                    <div class="pricing-box">
+                        <div class="price-strike-row">
+                            <span class="original-price">₹999</span>
+                            <span class="discount-pill">30% OFF</span>
+                        </div>
+                        <div class="price-main">
+                            <span class="price-amount" id="displayPricePT">₹699</span>
+                            <span class="price-duration">/ month</span>
+                        </div>
+                    </div>
+
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Custom Home/Gym Workout Split</li>
+                        <li><i class="fas fa-check-circle"></i> Video Exercise Form Analysis</li>
+                        <li><i class="fas fa-check-circle"></i> Weekly Strength Progress Review</li>
+                        <li><i class="fas fa-check-circle"></i> WhatsApp Support</li>
+                    </ul>
+
+                    <button class="btn btn-outline btn-block book-btn" 
+                            id="bookBtnPT"
+                            data-service="Personal Training" 
+                            data-price="₹699/month" 
+                            data-whatsapp="+918187808710">
+                        <i class="fab fa-whatsapp"></i> Book Training
+                    </button>
+                </div>
+
+                <!-- Combo Package (Featured) -->
+                <div class="service-card featured">
+                    <div class="featured-ribbon">Most Popular</div>
+                    <div class="service-icon-box">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Total Body Transformation</h3>
+                    <p class="service-desc">Complete workout coaching + tailored nutrition planning + weekly body recomposition checks.</p>
+                    
+                    <div class="pricing-box">
+                        <div class="price-strike-row">
+                            <span class="original-price">₹2,999</span>
+                            <span class="discount-pill">45% OFF</span>
+                        </div>
+                        <div class="price-main">
+                            <span class="price-amount" id="displayPriceCombo">₹1,699</span>
+                            <span class="price-duration">/ 3 months</span>
+                        </div>
+                    </div>
+
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Complete Training & Workout Protocol</li>
+                        <li><i class="fas fa-check-circle"></i> Customized Macro & Calorie Meal Plan</li>
+                        <li><i class="fas fa-check-circle"></i> Weekly Weight & Measurement Audits</li>
+                        <li><i class="fas fa-check-circle"></i> 24/7 Priority WhatsApp Consultation</li>
+                        <li><i class="fas fa-check-circle"></i> Supplement Guidance & Recipe E-book</li>
+                    </ul>
+
+                    <button class="btn btn-primary btn-block book-btn" 
+                            id="bookBtnCombo"
+                            data-service="Total Body Transformation Combo" 
+                            data-price="₹1699/3 months" 
+                            data-whatsapp="+918187808710">
+                        <i class="fab fa-whatsapp"></i> Start Transformation
+                    </button>
+                </div>
+
+                <!-- Diet Planning -->
+                <div class="service-card">
+                    <div class="service-icon-box">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Custom Diet Planning</h3>
+                    <p class="service-desc">Personalized nutrition guide crafted around your regional food preferences, budget, and targets.</p>
+                    
+                    <div class="pricing-box">
+                        <div class="price-strike-row">
+                            <span class="original-price">₹499</span>
+                            <span class="discount-pill">60% OFF</span>
+                        </div>
+                        <div class="price-main">
+                            <span class="price-amount" id="displayPriceDiet">₹199</span>
+                            <span class="price-duration">/ month</span>
+                        </div>
+                    </div>
+
+                    <ul class="service-features-list">
+                        <li><i class="fas fa-check-circle"></i> Tailored Macro & Micro Breakdown</li>
+                        <li><i class="fas fa-check-circle"></i> Veg / Non-Veg / Vegan Options</li>
+                        <li><i class="fas fa-check-circle"></i> Grocery Checklist & Easy Meal Prep</li>
+                        <li><i class="fas fa-check-circle"></i> Bi-weekly Calorie Adjustments</li>
+                    </ul>
+
+                    <button class="btn btn-outline btn-block book-btn" 
+                            id="bookBtnDiet"
+                            data-service="Custom Diet Planning" 
+                            data-price="₹199/month" 
+                            data-whatsapp="+918187808710">
+                        <i class="fab fa-whatsapp"></i> Choose Diet Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Live BMI Calculator Section -->
+    <section id="calculator" class="section calculator-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Interactive Fitness Tool</span>
+                <h2 class="section-title">Live <span class="highlight-text">BMI & Calorie</span> Calculator</h2>
+                <p class="section-subtitle">Enter your measurements to get instant insights into your current health metrics.</p>
+            </div>
+
+            <div class="calculator-card">
+                <div class="calc-form-wrap">
+                    <h3>Calculate Your Numbers</h3>
+                    <p>Track your baseline body mass index and find the right strategy.</p>
+                    
+                    <form id="bmiCalculatorForm">
+                        <div class="calc-grid-2">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="calcHeight">Height (cm)</label>
+                                <input type="number" id="calcHeight" class="input-custom" placeholder="e.g. 175" value="175" min="100" max="250" required>
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="calcWeight">Weight (kg)</label>
+                                <input type="number" id="calcWeight" class="input-custom" placeholder="e.g. 70" value="72" min="30" max="250" required>
+                            </div>
+                        </div>
+
+                        <div class="calc-grid-2">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="calcAge">Age (Years)</label>
+                                <input type="number" id="calcAge" class="input-custom" placeholder="e.g. 26" value="26" min="12" max="100">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="calcActivity">Daily Activity</label>
+                                <select id="calcActivity" class="input-custom">
+                                    <option value="1.2">Sedentary (Desk Job)</option>
+                                    <option value="1.375" selected>Lightly Active (1-3 days/wk)</option>
+                                    <option value="1.55">Moderately Active (3-5 days/wk)</option>
+                                    <option value="1.725">Very Active (6-7 days/wk)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="document.getElementById('bmiCalculatorForm').dispatchEvent(new Event('input'))" class="btn btn-primary btn-block" style="margin-top: 10px;">
+                            <i class="fas fa-sync-alt"></i> Refresh Calculation
+                        </button>
+                    </form>
+                </div>
+
+                <div class="calc-result-box">
+                    <div class="bmi-meter-wrap">
+                        <span class="stat-label">YOUR BODY MASS INDEX (BMI)</span>
+                        <div class="bmi-value-display" id="bmiValueDisplay">23.5</div>
+                        <span class="bmi-status-badge" id="bmiStatusBadge">Healthy & Optimal Weight</span>
+                    </div>
+                    
+                    <p class="bmi-recommendation" id="bmiRecommendationText">
+                        Great job maintaining a healthy BMI! To tone, boost stamina, and build athletic endurance, check out our <strong>Personal Training</strong> program.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%;">
+                        <a href="tools.html" class="btn btn-primary">
+                            <i class="fas fa-layer-group"></i> Open Full Tools Suite (TDEE, Body Fat, 1RM)
+                        </a>
+                        <a href="#services" class="btn btn-outline">
+                            <i class="fas fa-arrow-right"></i> View Recommended Program
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformations Section -->
+    <section id="transformations" class="section transformation-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Proof of Results</span>
+                <h2 class="section-title">Real People, <span class="highlight-text">Real Results</span></h2>
+                <p class="section-subtitle">Witness the life-changing results achieved through discipline and customized guidance.</p>
+            </div>
+
+            <div class="transformation-grid">
+                <!-- Result 11: 112kg to 80kg -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result11.jpg" alt="112kg to 80kg Transformation" loading="lazy">
+                        <span class="transformation-badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #0A0D14;">-32 KG Turnaround</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">112 Kgs → 80 Kgs (-32kg)</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-trophy"></i> -32 kg Fat Lost • Life-Changing Makeover
+                        </div>
+                        <p class="transformation-quote">"Lost 32kg sustainably through consistent strength training and macro-focused meal planning with Coach Rajashekar."</p>
+                    </div>
+                </div>
+
+                <!-- Result 1: 115kg to 78kg -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result10.jpg" alt="115kg to 78kg Extreme Transformation" loading="lazy">
+                        <span class="transformation-badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #0A0D14;">-37 KG Milestone</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">115 Kgs → 78 Kgs (-37kg)</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-fire"></i> -37 kg Total Weight Loss • Complete Transformation
+                        </div>
+                        <p class="transformation-quote">"From 115kg down to 78kg! Coach Rajashekar's nutrition guidance and exercise plan completely saved my health and lifestyle."</p>
+                    </div>
+                </div>
+
+                <!-- Result 2: Lost 20kgs -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result6.jpg" alt="Lost 20kg Client Journey" loading="lazy">
+                        <span class="transformation-badge">20 KG Fat Loss</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">Lost 20 Kgs Full Body Shred</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-arrow-down"></i> -20 kg Body Fat • Visible Abdominal Toning
+                        </div>
+                        <p class="transformation-quote">"The customized workouts and daily accountability gave me the discipline to drop 20kg without giving up home food."</p>
+                    </div>
+                </div>
+
+                <!-- Result 3: 14kg in 100 Days -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result1.jpg" alt="14kg Weight Loss in 100 Days" loading="lazy">
+                        <span class="transformation-badge">100-Day Fat Loss</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">14 Kgs Lost in 100 Days</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-fire"></i> -14 kg Pure Fat Loss • Waist -5 inches
+                        </div>
+                        <p class="transformation-quote">"Structured calorie deficit and 1-on-1 WhatsApp tracking made this 14kg drop feel effortless and totally sustainable."</p>
+                    </div>
+                </div>
+
+                <!-- Result 4: 120 Days of Consistency Back Recomp -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result2.jpg" alt="120 Days of Consistency Back Transformation" loading="lazy">
+                        <span class="transformation-badge">120 Days Consistency</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">V-Taper & Back Recomposition</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-dumbbell"></i> Back Fat Shredded • +4kg Muscle
+                        </div>
+                        <p class="transformation-quote">"120 days of disciplined strength programming. My lower back fat vanished and my lats developed insane width."</p>
+                    </div>
+                </div>
+
+                <!-- Result 6: Gym Posture & Muscle Recomp -->
+                <div class="transformation-card">
+                    <div class="transformation-img-container">
+                        <img src="assets/images/result9.jpg" alt="Gym Posture & Muscle Recomp" loading="lazy">
+                        <span class="transformation-badge">Hypertrophy & Posture</span>
+                    </div>
+                    <div class="transformation-info">
+                        <h3 class="transformation-title">Chest, Posture & Arm Recomp</h3>
+                        <div class="transformation-stats-badge">
+                            <i class="fas fa-arrow-up"></i> +5.5 kg Muscle Mass • Chest Defined
+                        </div>
+                        <p class="transformation-quote">"Progressive overload lifting corrected my rounded shoulders and added noticeable size across my upper chest and arms."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View More Results Button -->
+            <div style="text-align: center; margin-top: 48px;">
+                <a href="results.html" class="btn btn-primary" style="padding: 16px 36px; font-size: 1.05rem; box-shadow: 0 8px 25px var(--primary-glow);">
+                    <i class="fas fa-images"></i> View All Transformations & Results Gallery <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Coach Rajashekar Section -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-coach-image-card">
+                    <img src="assets/images/fitness-bg.jpeg" alt="Coach Rajashekar Training" loading="lazy">
+                    <div class="coach-experience-badge">
+                        <span class="coach-exp-num">5+</span>
+                        <div class="coach-exp-text">
+                            <h5>Years of Coaching</h5>
+                            <p>Empowering clients across India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-content">
+                    <span class="section-tag"><i class="fas fa-certificate" style="color: var(--primary); margin-right: 5px;"></i> Certified Master Trainer</span>
+                    <h3>Hi, I'm <span class="highlight-text">Coach Rajashekar</span></h3>
+                    <p>
+                        I am an internationally certified personal trainer and sports nutritionist dedicated to helping individuals build sustainable strength, shred body fat, and optimize metabolic health.
+                    </p>
+                    <p>
+                        Through scientifically proven progressive resistance training, biomechanics coaching, and flexible macronutrient diet strategies, I help busy professionals, students, and fitness beginners conquer their health goals without giving up their favorite foods.
+                    </p>
+
+                    <!-- Certified Trainer Credentials Grid -->
+                    <div class="trainer-certifications-box">
+                        <div class="cert-badge-item">
+                            <div class="cert-icon-circle"><i class="fas fa-user-graduate"></i></div>
+                            <div class="cert-info">
+                                <h6>Certified Personal Trainer (CPT)</h6>
+                                <span>Advanced Biomechanics & Resistance Programming</span>
+                            </div>
+                        </div>
+                        <div class="cert-badge-item">
+                            <div class="cert-icon-circle"><i class="fas fa-apple-alt"></i></div>
+                            <div class="cert-info">
+                                <h6>Certified Sports Nutritionist</h6>
+                                <span>Clinical Macronutrient & Meal Formulation</span>
+                            </div>
+                        </div>
+                        <div class="cert-badge-item">
+                            <div class="cert-icon-circle"><i class="fas fa-dumbbell"></i></div>
+                            <div class="cert-info">
+                                <h6>Strength & Conditioning Specialist</h6>
+                                <span>Hypertrophy, Powerlifting & Athletic Conditioning</span>
+                            </div>
+                        </div>
+                        <div class="cert-badge-item">
+                            <div class="cert-icon-circle"><i class="fas fa-heartbeat"></i></div>
+                            <div class="cert-info">
+                                <h6>CPR / AED Certified Professional</h6>
+                                <span>Safety, First Aid & Injury Prevention Standards</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="coach-pillars">
+                        <div class="pillar-item">
+                            <div class="pillar-icon"><i class="fas fa-check"></i></div>
+                            <div>
+                                <h5>Evidence-Based</h5>
+                                <p>No pseudoscience or crash diets.</p>
+                            </div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-icon"><i class="fas fa-heart"></i></div>
+                            <div>
+                                <h5>1-on-1 Accountability</h5>
+                                <p>Direct WhatsApp coaching & guidance.</p>
+                            </div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-icon"><i class="fas fa-shield-alt"></i></div>
+                            <div>
+                                <h5>Injury Prevention</h5>
+                                <p>Strict focus on biomechanics & posture.</p>
+                            </div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-icon"><i class="fas fa-award"></i></div>
+                            <div>
+                                <h5>Sustainable Habits</h5>
+                                <p>Lifelong results that last forever.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20would%20like%20to%20consult%20for%20certified%20fitness%20coaching" target="_blank" rel="noopener" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> Chat with Coach Rajashekar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Slider Section -->
+    <section id="testimonials" class="section testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Client Reviews</span>
+                <h2 class="section-title">Loved by <span class="highlight-text">Hundreds of Clients</span></h2>
+                <p class="section-subtitle">Real experiences and authentic reviews from individuals who transformed with us.</p>
+            </div>
+
+            <div class="testimonials-slider-wrap">
+                <!-- Slide 1 -->
+                <div class="testimonial-card-item active">
+                    <div class="stars-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text-content">
+                        "I dropped 12kg in just 3 months on the combo package! The customized meal plan accommodated my vegetarian South Indian dietary habits seamlessly. Best decision ever."
+                    </p>
+                    <div class="client-profile-wrap">
+                        <img src="assets/images/clients/client1.svg" alt="Rahul Sharma" class="client-avatar-img">
+                        <div class="client-name-title">
+                            <h4>Rahul Sharma</h4>
+                            <p>Senior Software Engineer, Nizamabad</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="testimonial-card-item">
+                    <div class="stars-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text-content">
+                        "The diet plan helped me manage my PCOS symptoms while losing weight sustainably without feeling weak. My stamina and daily energy have skyrocketed!"
+                    </p>
+                    <div class="client-profile-wrap">
+                        <img src="assets/images/clients/client2.svg" alt="Priya Patel" class="client-avatar-img">
+                        <div class="client-name-title">
+                            <h4>Priya Patel</h4>
+                            <p>Marketing Consultant, Bangalore</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="testimonial-card-item">
+                    <div class="stars-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text-content">
+                        "At 45 with chronic knee pain, I thought strength training was impossible. Rajashekar designed low-impact knee-friendly lifts. Down 8kg and completely pain-free!"
+                    </p>
+                    <div class="client-profile-wrap">
+                        <img src="assets/images/clients/client3.svg" alt="Arun Desai" class="client-avatar-img">
+                        <div class="client-name-title">
+                            <h4>Arun Desai</h4>
+                            <p>Banking Executive, Mumbai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="slider-controls-row">
+                    <button class="slider-arrow-btn slider-prev" aria-label="Previous Review">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="slider-dots-box"></div>
+                    <button class="slider-arrow-btn slider-next" aria-label="Next Review">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section faq-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Frequently Asked Questions</span>
+                <h2 class="section-title">Got <span class="highlight-text">Questions?</span> We've Got Answers</h2>
+                <p class="section-subtitle">Everything you need to know about our fitness coaching and diet plans.</p>
+            </div>
+
+            <div class="faq-accordion-wrap">
+                <div class="faq-item active">
+                    <button class="faq-question-btn">
+                        <span>Do I need a gym membership for these programs?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        Not at all! We provide fully customized home workout plans with bodyweight or resistance bands, as well as full commercial gym protocols depending on your equipment access.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn">
+                        <span>Can I follow the diet plan if I am vegetarian?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        Yes! All nutrition plans are tailored to your dietary preferences — Vegetarian, Eggetarian, Non-Vegetarian, or Vegan — with easy-to-cook whole foods rich in high protein.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn">
+                        <span>How does the WhatsApp consultation work?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        After selecting your program, you connect directly with Coach Rajashekar on WhatsApp for form reviews, weekly check-ins, routine adjustments, and daily motivation.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question-btn">
+                        <span>How quickly can I expect to see tangible results?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        Most dedicated clients see marked improvements in energy and strength in the first 2 weeks, with visible fat loss and muscle tone becoming noticeable by weeks 4 to 6.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Consultation Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Get in Touch</span>
+                <h2 class="section-title">Start Your <span class="highlight-text">Transformation Today</span></h2>
+                <p class="section-subtitle">Reach out directly or leave a message for a custom fitness assessment.</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Info Column -->
+                <div class="contact-info-wrap">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 12px;">Let's Connect</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Have questions about pricing, customized plans, or health conditions? We are here to help.</p>
+
+                        <div class="contact-card-list">
+                            <a href="tel:+918187808710" class="contact-info-tile" style="text-decoration: none;">
+                                <div class="contact-tile-icon"><i class="fas fa-phone-alt"></i></div>
+                                <div class="contact-tile-info">
+                                    <h5>Call Coach</h5>
+                                    <p>+91 81878 08710</p>
+                                </div>
+                            </a>
+
+                            <a href="mailto:itsrajashekar12@gmail.com" class="contact-info-tile" style="text-decoration: none;">
+                                <div class="contact-tile-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="contact-tile-info">
+                                    <h5>Email Inquiry</h5>
+                                    <p>itsrajashekar12@gmail.com</p>
+                                </div>
+                            </a>
+
+                            <a href="https://wa.me/918187808710" target="_blank" rel="noopener" class="contact-info-tile" style="text-decoration: none;">
+                                <div class="contact-tile-icon"><i class="fab fa-whatsapp"></i></div>
+                                <div class="contact-tile-info">
+                                    <h5>Direct WhatsApp</h5>
+                                    <p>+91 81878 08710 (Online)</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h5 style="font-family: var(--font-heading); color: var(--text-muted); margin-bottom: 14px; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 1px;">Follow Socials</h5>
+                        <div class="social-links-row">
+                            <a href="https://wa.me/918187808710" target="_blank" rel="noopener" class="social-icon-btn" title="WhatsApp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            <a href="https://www.instagram.com/its_rajashekar_12?igsh=MWNza3JjZXluOHNzMw==" target="_blank" rel="noopener" class="social-icon-btn" title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/share/1BYopkzZbM/" target="_blank" rel="noopener" class="social-icon-btn" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://youtube.com/@itsrajashekar-xk9im?si=xAyf4GEmG9y1dUm7" target="_blank" rel="noopener" class="social-icon-btn" title="YouTube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Column -->
+                <div class="contact-form-card">
+                    <h3>Send Us a Message</h3>
+                    
+                    <div id="authRequiredMessage" class="auth-notice-box">
+                        <p>Sign in with your Google account to quickly autofill and submit your inquiry.</p>
+                        <button id="signInButtonForm" class="btn btn-primary">
+                            <i class="fab fa-google"></i> Sign In with Google
+                        </button>
+                    </div>
+
+                    <form id="contactForm">
+                        <div id="formFields" style="display: none;">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="name">Your Full Name</label>
+                                <input type="text" name="name" id="name" class="input-custom" placeholder="e.g. John Doe" required>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="email">Your Email Address</label>
+                                <input type="email" name="email" id="email" class="input-custom" placeholder="name@domain.com" required readonly>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="phone">Phone Number (Optional)</label>
+                                <input type="tel" name="phone" id="phone" class="input-custom" placeholder="e.g. +91 9876543210">
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="service">Service Interested In</label>
+                                <select name="service" id="service" class="input-custom" required>
+                                    <option value="Personal Training" id="optServicePT">Personal Training (₹699/mo)</option>
+                                    <option value="Custom Diet Planning" id="optServiceDiet">Custom Diet Planning (₹199/mo)</option>
+                                    <option value="Total Body Transformation Combo" id="optServiceCombo" selected>Transformation Combo (₹1699/3 mo)</option>
+                                    <option value="General Inquiry">General Inquiry / Consultation</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="message">Your Message & Goals</label>
+                                <textarea name="message" id="message" rows="4" class="input-custom" placeholder="Tell us about your fitness targets, schedule, and current routine..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-paper-plane"></i> Send Consultation Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="bookingModal" class="booking-modal">
+        <div class="modal-content-box">
+            <button class="modal-close-btn" aria-label="Close Modal">&times;</button>
+            <h3 class="modal-title">Confirm Consultation</h3>
+            <p class="modal-message">You are about to start a direct consultation via WhatsApp.</p>
+            <div class="modal-actions-wrap">
+                <button id="confirmBookingModal" class="btn btn-whatsapp btn-block">
+                    <i class="fab fa-whatsapp"></i> Continue to WhatsApp
+                </button>
+                <button class="btn btn-outline btn-block cancel-booking">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Widget (Right side icon-only) -->
+    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20would%20like%20to%20consult%20regarding%20fitness%20training" target="_blank" rel="noopener" class="floating-whatsapp-widget" title="Chat with Coach on WhatsApp" aria-label="Chat with Coach on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-online-dot"></span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="brand-logo" style="margin-bottom: 16px;">
+                        <div class="logo-icon-box">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="logo-text-wrap">
+                            <span class="logo-title">FITNESS</span>
+                            <span class="logo-tagline">Healthy Lifestyle</span>
+                        </div>
+                    </div>
+                    <p>Dedicated to helping individuals achieve peak strength, metabolic wellness, and long-term physique transformations.</p>
+                    <div id="pwaInstallContainer" style="margin-top: 20px;">
+                        <button id="pwaInstallBtn" class="btn btn-outline" style="display: none; padding: 8px 18px; font-size: 0.85rem;">
+                            <i class="fas fa-download"></i> Install Web App
+                        </button>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Coaching Programs</a></li>
+                        <li><a href="recipes.html">Diet Recipes</a></li>
+                        <li><a href="#calculator">Live BMI Tool</a></li>
+                        <li><a href="#transformations">Client Results</a></li>
+                        <li><a href="#about">About Coach</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="#testimonials">Success Stories</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact Form</a></li>
+                        <li><a href="https://wa.me/918187808710" target="_blank" rel="noopener">WhatsApp Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Direct Contact</h4>
+                    <p><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 8px;"></i> +91 81878 08710</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 8px;"></i> itsrajashekar12@gmail.com</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i> Nizamabad, Telangana, India</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p>&copy; 2026 FITNESS - Healthy Lifestyle. All Rights Reserved.</p>
+                <p>Designed for Performance & Results.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <!-- Application Script -->
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

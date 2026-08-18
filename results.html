@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5C45E">
+    <meta name="description" content="Real Client Transformations & Results Gallery - 100-day fat loss, muscle recomposition, and lifestyle wellness stories by Coach Rajashekar.">
+    <meta name="keywords" content="fitness transformations, before and after fitness, fat loss results, muscle gain results, client stories">
+    <title>FITNESS | Client Transformations & Results Gallery</title>
+    
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Page Loading Screen -->
+    <div id="pageLoader" class="loader-wrapper">
+        <div class="loader-spinner"></div>
+        <span class="loader-brand">RESULTS GALLERY</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <!-- Brand Logo -->
+                <a href="index.html" class="brand-logo" id="brandLogo">
+                    <div class="logo-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="logo-text-wrap">
+                        <span class="logo-title">FITNESS</span>
+                        <span class="logo-tagline">Healthy Lifestyle</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#services" class="nav-link">Programs</a></li>
+                    <li><a href="recipes.html" class="nav-link"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 4px;"></i> Diet Recipes</a></li>
+                    <li><a href="tools.html" class="nav-link"><i class="fas fa-calculator" style="color: var(--primary); margin-right: 4px;"></i> Tools Suite</a></li>
+                    <li><a href="results.html" class="nav-link active">Results</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20start%20my%20own%20transformation%21" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 9px 20px; font-size: 0.88rem;">
+                        <i class="fab fa-whatsapp"></i> Start Yours
+                    </a>
+
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Navigation Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Results Hero Banner -->
+    <section class="tools-hero" style="padding: 140px 0 30px;">
+        <div class="container">
+            <span class="section-tag">Hall of Fame</span>
+            <h1 class="section-title">Client <span class="highlight-text">Transformation</span> Showcase</h1>
+            <p class="section-subtitle">Real people, real consistency, real results. Explore verified fat loss, muscle recomposition, and lifestyle journeys.</p>
+
+            <!-- Filter Buttons -->
+            <div class="gallery-filters-row">
+                <button class="gallery-filter-btn active" data-filter="all">All Transformations</button>
+                <button class="gallery-filter-btn" data-filter="fatloss">Fat Loss (Cut)</button>
+                <button class="gallery-filter-btn" data-filter="muscle">Muscle Hypertrophy</button>
+                <button class="gallery-filter-btn" data-filter="recomp">Body Recomposition</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformations Grid Gallery -->
+    <main class="container" style="padding-bottom: 90px;">
+        <div class="transformation-grid" id="galleryGrid">
+            
+            <!-- Result 11: 112kg to 80kg -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result11.jpg" alt="112kg to 80kg Life Transformation" loading="lazy">
+                    <span class="transformation-badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #0A0D14;">-32 KG Turnaround</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">112 Kgs → 80 Kgs (-32kg)</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-trophy"></i> -32 kg Fat Lost • Complete Lifestyle Makeover
+                    </div>
+                    <p class="transformation-quote">"Lost 32kg sustainably through consistent strength training and macro-focused meal planning with Coach Rajashekar."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20achieve%20a%20weight%20loss%20transformation%20like%20112kg%20to%2080kg%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 10: 115kg to 78kg -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result10.jpg" alt="115kg to 78kg Extreme Transformation" loading="lazy">
+                    <span class="transformation-badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #0A0D14;">-37 KG Milestone</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">115 Kgs → 78 Kgs (-37kg)</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-fire"></i> -37 kg Total Weight Loss • Total Health Turnaround
+                    </div>
+                    <p class="transformation-quote">"From 115kg down to 78kg! Coach Rajashekar's nutrition guidance and exercise plan completely saved my health and lifestyle."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20achieve%20a%20major%20weight%20loss%20transformation%20like%20115kg%20to%2078kg%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 6: Lost 20kgs -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result6.jpg" alt="Lost 20kg Client Journey" loading="lazy">
+                    <span class="transformation-badge">20 KG Fat Loss</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Lost 20 Kgs - Client Journey</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-down"></i> -20 kg Body Fat • Visible Abdominal Toning
+                    </div>
+                    <p class="transformation-quote">"The customized workouts and daily accountability gave me the discipline to drop 20kg without giving up home food."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20achieve%20a%2020kg%20fat%20loss%20transformation%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 1: 14kgs Lost in 100 Days -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result1.jpg" alt="14kg Weight Loss in 100 Days" loading="lazy">
+                    <span class="transformation-badge">100-Day Milestone</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">14 Kgs Lost in 100 Days</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-fire"></i> -14 kg Lost • 100 Days of Consistency
+                    </div>
+                    <p class="transformation-quote">"Structured calorie deficit and daily WhatsApp check-ins made this weight drop sustainable without extreme fasting."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20achieve%20a%20100-day%20fat%20loss%20transformation%20like%2014kg%20loss%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 2: 120 Days Back Recomp -->
+            <div class="transformation-card" data-category="recomp">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result2.jpg" alt="120 Days of Consistency Back Transformation" loading="lazy">
+                    <span class="transformation-badge">120-Day V-Taper</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">120 Days of Back Consistency</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-dumbbell"></i> Back Fat Shredded • Lat Width Growth
+                    </div>
+                    <p class="transformation-quote">"120 days of progressive pull and row training. Lower back fat disappeared and my shoulders widened significantly."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20build%20a%20V-taper%20back%20transformation%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 8: Abdominal Profile Shred -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result8.jpg" alt="Abdominal Profile Fat Shred" loading="lazy">
+                    <span class="transformation-badge">Core Fat Shred</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Abdominal Profile & Core Shred</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-check-circle"></i> Waist Trimmed • Core Tightened
+                    </div>
+                    <p class="transformation-quote">"Lost the protruding belly and built real core tightness with tailored metabolic resistance circuits."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20flatten%20my%20stomach%20and%20tighten%20my%20waist%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 7: Side Profile Waist -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result7.jpg" alt="Side Profile Waist Reduction" loading="lazy">
+                    <span class="transformation-badge">Love Handles Trim</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Side Profile & Waist Reduction</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-down"></i> -10 kg Fat • Flanks Flattened
+                    </div>
+                    <p class="transformation-quote">"Lost the side love handles and back rolls through precise macronutrient cycling and compound lifting."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20trim%20my%20waist%20and%20reduce%20side%20fat%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 9: Gym Posture & Muscle Recomp -->
+            <div class="transformation-card" data-category="muscle">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result9.jpg" alt="Gym Posture and Upper Body Muscle Recomp" loading="lazy">
+                    <span class="transformation-badge">Upper Body Recomp</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Chest, Posture & Arm Recomp</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-up"></i> +5.5 kg Muscle Mass • Chest Defined
+                    </div>
+                    <p class="transformation-quote">"Progressive overload lifting corrected my rounded shoulders and added noticeable size across my chest and arms."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20build%20my%20chest%20and%20correct%20my%20posture%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 3: Belly Fat Shred -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result3.jpg" alt="Abdominal Fat Reduction" loading="lazy">
+                    <span class="transformation-badge">Fat Loss & Toning</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Abdominal & Chest Fat Shred</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-down"></i> -12 kg Visceral Fat • Chest Flattened
+                    </div>
+                    <p class="transformation-quote">"I struggled with stubborn belly fat for years. Rajashekar's high-protein Indian diet plan reshaped my midsection."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20shred%20stubborn%20belly%20fat%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 4: Delts & Upper Body Hypertrophy -->
+            <div class="transformation-card" data-category="muscle">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result4.jpg" alt="Upper Body Muscle Gain" loading="lazy">
+                    <span class="transformation-badge">Upper Body Hypertrophy</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Shoulders & Delts Mass Building</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-up"></i> +6.5 kg Lean Muscle • Biceps & Chest
+                    </div>
+                    <p class="transformation-quote">"Replaced random gym workouts with a structured Push-Pull-Legs split. Gained lean mass and shoulder cap roundness."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20build%20upper%20body%20hypertrophy%20and%20muscle%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 5: Full Gym Recomp -->
+            <div class="transformation-card" data-category="muscle">
+                <div class="transformation-img-container">
+                    <img src="assets/images/result5.jpg" alt="Full Body Strength Transformation" loading="lazy">
+                    <span class="transformation-badge">Full Body Recomp</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Strength & Athletic Recomposition</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-trophy"></i> +8 kg Clean Mass • 1RM Bench +35kg
+                    </div>
+                    <p class="transformation-quote">"The 1-on-1 technique corrections on Bench and Deadlifts took my lifting numbers to athlete levels."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20gain%20strength%20and%20recompose%20my%20body%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 6: Kiran's 90-Day Cut -->
+            <div class="transformation-card" data-category="fatloss">
+                <div class="transformation-img-container">
+                    <img src="assets/images/transform1.jpeg" alt="90-Day Fat Loss" loading="lazy">
+                    <span class="transformation-badge">90-Day Cut</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Kiran's 90-Day Fat Loss</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-down"></i> -15 kg Lost • Body Fat: 28% → 16%
+                    </div>
+                    <p class="transformation-quote">"The customized meal plans were easy to cook and I never felt starved. Dropped 15kg in 3 months!"</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20to%20start%20a%2090-day%20fat%20loss%20program%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 7: Muscle Recomp -->
+            <div class="transformation-card" data-category="muscle">
+                <div class="transformation-img-container">
+                    <img src="assets/images/transform2.jpeg" alt="Muscle Recomp" loading="lazy">
+                    <span class="transformation-badge">Hypertrophy & Posture</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Siddharth's Muscle Recomp</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-arrow-up"></i> +5.5 kg Lean Muscle Gained
+                    </div>
+                    <p class="transformation-quote">"Progressive overload strategy transformed my entire chest, arms, and posture."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20muscle%20recomposition%20coaching%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+            <!-- Result 8: PCOS Recovery -->
+            <div class="transformation-card" data-category="recomp">
+                <div class="transformation-img-container">
+                    <img src="assets/images/transform3.jpeg" alt="PCOS Recovery" loading="lazy">
+                    <span class="transformation-badge">Lifestyle Reconditioning</span>
+                </div>
+                <div class="transformation-info">
+                    <h3 class="transformation-title">Ananya's PCOS Health Journey</h3>
+                    <div class="transformation-stats-badge">
+                        <i class="fas fa-heartbeat"></i> Normalized Hormones • -11 kg
+                    </div>
+                    <p class="transformation-quote">"Designed an anti-inflammatory diet that eliminated fatigue and stabilized energy levels."</p>
+                    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20guidance%20on%20PCOS%20and%20lifestyle%20nutrition%21" target="_blank" rel="noopener" class="btn btn-outline btn-block" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Get Similar Results
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Consultation Banner -->
+        <div class="result-card-highlight" style="margin-top: 60px; padding: 48px 30px; text-align: center;">
+            <span class="section-tag">Your Turn Next</span>
+            <h2 class="section-title">Ready to Write Your <span class="highlight-text">Transformation Story?</span></h2>
+            <p class="section-subtitle" style="margin-bottom: 30px;">Join 500+ successful clients who transformed their body, mindset, and health with 1-on-1 coaching.</p>
+            <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20am%20ready%20to%20start%20my%20personal%20fitness%20transformation%21" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 16px 36px; font-size: 1.05rem; box-shadow: 0 8px 25px var(--primary-glow);">
+                <i class="fab fa-whatsapp"></i> Chat with Coach Rajashekar on WhatsApp
+            </a>
+        </div>
+    </main>
+
+    <!-- Floating WhatsApp Widget (Right side icon-only) -->
+    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20saw%20the%20results%20gallery%20and%20want%20to%20consult" target="_blank" rel="noopener" class="floating-whatsapp-widget" title="Chat with Coach on WhatsApp" aria-label="Chat with Coach on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-online-dot"></span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="brand-logo" style="margin-bottom: 16px;">
+                        <div class="logo-icon-box">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="logo-text-wrap">
+                            <span class="logo-title">FITNESS</span>
+                            <span class="logo-tagline">Healthy Lifestyle</span>
+                        </div>
+                    </div>
+                    <p>Dedicated to helping individuals achieve peak strength, metabolic wellness, and long-term physique transformations.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#services">Coaching Programs</a></li>
+                        <li><a href="results.html">Results Gallery</a></li>
+                        <li><a href="tools.html">Fitness Tools Suite</a></li>
+                        <li><a href="index.html#about">About Coach</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="index.html#testimonials">Success Stories</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact Form</a></li>
+                        <li><a href="https://wa.me/918187808710" target="_blank" rel="noopener">WhatsApp Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Direct Contact</h4>
+                    <p><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 8px;"></i> +91 81878 08710</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 8px;"></i> itsrajashekar12@gmail.com</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i> Nizamabad, Telangana, India</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p>&copy; 2026 FITNESS - Healthy Lifestyle. All Rights Reserved.</p>
+                <p>Designed for Performance & Results.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Results Filter Script -->
+    <script>
+        function recordTrafficAndVisit(pageName = 'Results Gallery') {
+            try {
+                const trafficData = JSON.parse(localStorage.getItem('fit_analytics_traffic') || '{"totalVisits": 0, "uniqueVisitors": 0, "visitsLog": []}');
+                trafficData.totalVisits = (trafficData.totalVisits || 0) + 1;
+                
+                let visitorId = localStorage.getItem('fit_visitor_id');
+                if (!visitorId) {
+                    visitorId = 'vis_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('fit_visitor_id', visitorId);
+                    trafficData.uniqueVisitors = (trafficData.uniqueVisitors || 0) + 1;
+                }
+
+                const visitEntry = {
+                    id: 'v_' + Date.now(),
+                    page: pageName,
+                    time: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile Device' : 'Desktop / PC',
+                    visitorId
+                };
+
+                if (!trafficData.visitsLog) trafficData.visitsLog = [];
+                trafficData.visitsLog.unshift(visitEntry);
+                if (trafficData.visitsLog.length > 50) trafficData.visitsLog = trafficData.visitsLog.slice(0, 50);
+
+                localStorage.setItem('fit_analytics_traffic', JSON.stringify(trafficData));
+            } catch (e) {
+                console.warn('Traffic tracking notice:', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Record pageview traffic
+            recordTrafficAndVisit('Results & Transformations Gallery');
+
+            // Hide Loader
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                setTimeout(() => loader.classList.add('loaded'), 350);
+            }
+
+            // Theme Toggle
+            const themeBtn = document.getElementById('themeToggleBtn');
+            const savedTheme = localStorage.getItem('fit_theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeBtn?.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLight = document.body.classList.contains('light-theme');
+                localStorage.setItem('fit_theme', isLight ? 'light' : 'dark');
+                themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+
+            // Mobile menu toggle
+            const hamburger = document.getElementById('hamburgerBtn');
+            const navMenu = document.getElementById('navMenu');
+            hamburger?.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu?.classList.toggle('active');
+            });
+
+            // Header scroll
+            const header = document.querySelector('.header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 40) header?.classList.add('scrolled');
+                else header?.classList.remove('scrolled');
+            });
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            // Gallery Category Filtering
+            const filterBtns = document.querySelectorAll('.gallery-filter-btn');
+            const getCards = () => document.querySelectorAll('#galleryGrid .transformation-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const category = btn.getAttribute('data-filter');
+                    const currentCards = getCards();
+
+                    currentCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

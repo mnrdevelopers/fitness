@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login | FITNESS - Healthy Lifestyle</title>
+    <meta name="description" content="Sign in with your Google account for free instant access to the Scientific Fitness Tools Suite, personalized macro calculators, and body fat analysis.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="admin-body-bg" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
+
+    <!-- Top Navigation Bar -->
+    <header style="padding: 20px 0; width: 100%;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="footer-logo" style="text-decoration: none;">
+                <div class="logo-icon-box">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="logo-text-wrap">
+                    <span class="logo-title">FITNESS</span>
+                    <span class="logo-tagline">Healthy Lifestyle</span>
+                </div>
+            </a>
+
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="index.html" class="nav-auth-btn" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Login Viewport -->
+    <main class="container" style="display: flex; align-items: center; justify-content: center; flex: 1; padding: 40px 20px;">
+        <div class="admin-login-card" style="max-width: 480px; width: 100%; text-align: center;">
+            
+            <div class="logo-icon-box" style="margin: 0 auto 20px; width: 64px; height: 64px; font-size: 1.8rem;">
+                <i class="fas fa-user-lock"></i>
+            </div>
+            
+            <h2 class="admin-login-title" style="font-size: 1.8rem; margin-bottom: 8px;">Member Access</h2>
+            <p class="admin-login-subtitle" style="font-size: 0.92rem; line-height: 1.5; margin-bottom: 24px;">
+                Sign in with your Google Account for free instant access to our scientific fitness suite and personalized coaching tools.
+            </p>
+
+            <div id="authStatusNotice" class="admin-auth-error-msg" style="display: none;"></div>
+
+            <!-- Member Features Box -->
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 18px; text-align: left; margin-bottom: 26px;">
+                <h5 style="font-family: var(--font-heading); font-size: 0.88rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+                    <i class="fas fa-shield-alt" style="margin-right: 6px;"></i> What You Unlock (100% Free):
+                </h5>
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+                    <li style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--accent-emerald);"></i> <span>US Navy Body Fat % & Lean Muscle Calculator</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--accent-emerald);"></i> <span>1-Rep Max & Progressive Strength Multipliers</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--accent-emerald);"></i> <span>Target Heart Rate & Zone 2 Fat-Burning Zones</span>
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--accent-emerald);"></i> <span>1-Click Priority WhatsApp Direct Coach Access</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Google Sign In Button -->
+            <button type="button" id="googleLoginBtn" class="btn btn-primary btn-block" style="padding: 15px; font-size: 1.02rem; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 8px 25px var(--primary-glow);">
+                <i class="fab fa-google" style="font-size: 1.2rem;"></i>
+                <span>Continue with Google</span>
+            </button>
+
+            <div style="margin-top: 24px;">
+                <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Return to Homepage
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding: 20px 0; text-align: center; font-size: 0.8rem; color: var(--text-sub);">
+        <p>&copy; 2026 FITNESS - Healthy Lifestyle • Coach Rajashekar</p>
+    </footer>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
+            authDomain: "mnr-devops-2e97d.firebaseapp.com",
+            projectId: "mnr-devops-2e97d",
+            storageBucket: "mnr-devops-2e97d.firebasestorage.app",
+            messagingSenderId: "464172080556",
+            appId: "1:464172080556:web:97cecddd2e236f387aee09",
+            measurementId: "G-9SXTYCDF9W"
+        };
+
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+
+        // Get redirect parameter from URL (e.g. ?redirect=tools.html)
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectTarget = urlParams.get('redirect') || 'tools.html';
+
+        // Record User in Admin Dashboard Directory
+        function recordSignedInUser(user) {
+            if (!user) return;
+            try {
+                const usersList = JSON.parse(localStorage.getItem('fit_analytics_users') || '[]');
+                const existingIdx = usersList.findIndex(u => u.uid === user.uid || (u.email && u.email === user.email));
+                const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+                
+                if (existingIdx >= 0) {
+                    usersList[existingIdx].lastActive = now;
+                    usersList[existingIdx].displayName = user.displayName || usersList[existingIdx].displayName || 'Member';
+                    usersList[existingIdx].photoURL = user.photoURL || usersList[existingIdx].photoURL || '';
+                } else {
+                    usersList.unshift({
+                        uid: user.uid,
+                        displayName: user.displayName || 'Fitness Member',
+                        email: user.email || 'Email Private',
+                        photoURL: user.photoURL || '',
+                        joinedDate: now,
+                        lastActive: now
+                    });
+                }
+                localStorage.setItem('fit_analytics_users', JSON.stringify(usersList));
+            } catch (e) {
+                console.warn('Analytics user record notice:', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle
+            const themeBtn = document.getElementById('themeToggleBtn');
+            const savedTheme = localStorage.getItem('fit_theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeBtn?.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const isLight = document.body.classList.contains('light-theme');
+                localStorage.setItem('fit_theme', isLight ? 'light' : 'dark');
+                themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            const noticeEl = document.getElementById('authStatusNotice');
+
+            // If user is already logged in, redirect immediately to target
+            if (auth) {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        recordSignedInUser(user);
+                        window.location.replace(redirectTarget);
+                    }
+                });
+            }
+
+            googleLoginBtn?.addEventListener('click', async () => {
+                if (!auth) {
+                    noticeEl.textContent = 'Authentication service is initializing. Please try again.';
+                    noticeEl.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    googleLoginBtn.disabled = true;
+                    googleLoginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Signing in...</span>';
+
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+                    const result = await auth.signInWithPopup(provider);
+                    const user = result.user;
+
+                    if (user) {
+                        recordSignedInUser(user);
+                        window.location.replace(redirectTarget);
+                    }
+                } catch (err) {
+                    console.error('Login error:', err);
+                    googleLoginBtn.disabled = false;
+                    googleLoginBtn.innerHTML = '<i class="fab fa-google" style="font-size: 1.2rem;"></i> <span>Continue with Google</span>';
+
+                    if (err.code === 'auth/popup-closed-by-user') {
+                        noticeEl.textContent = 'Sign-in cancelled. Please click the button to try again.';
+                    } else {
+                        noticeEl.textContent = 'Sign-in issue: ' + (err.message || 'Please retry.');
+                    }
+                    noticeEl.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

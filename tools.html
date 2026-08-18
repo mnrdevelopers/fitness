@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5C45E">
+    <meta name="description" content="Free Scientific Fitness Tools: TDEE & Macro Calculator, US Navy Body Fat %, 1-Rep Max, Hydration, and Target Heart Rate Training Zones by FITNESS.">
+    <meta name="keywords" content="tdee calculator, macro calculator, body fat calculator, 1rm calculator, heart rate zones, hydration tool, fitness guidance">
+    <title>FITNESS | Free Interactive Fitness Tools & Scientific Guidance</title>
+    
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Page Loading Screen -->
+    <div id="pageLoader" class="loader-wrapper">
+        <div class="loader-spinner"></div>
+        <span class="loader-brand">FITNESS TOOLS</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <!-- Brand Logo -->
+                <a href="index.html" class="brand-logo" id="brandLogo">
+                    <div class="logo-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="logo-text-wrap">
+                        <span class="logo-title">FITNESS</span>
+                        <span class="logo-tagline">Healthy Lifestyle</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#services" class="nav-link">Programs</a></li>
+                    <li><a href="recipes.html" class="nav-link"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 4px;"></i> Diet Recipes</a></li>
+                    <li><a href="tools.html" class="nav-link active"><i class="fas fa-calculator" style="color: var(--primary); margin-right: 4px;"></i> Fitness Suite</a></li>
+                    <li><a href="results.html" class="nav-link">Results</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <!-- Header Actions (Theme, Auth, Mobile Toggle) -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <!-- Auth Button / Profile -->
+                    <button id="signInButton" class="nav-auth-btn">
+                        <i class="fab fa-google"></i>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="userInfo" class="user-profile-badge" style="display: none;">
+                        <div class="user-avatar-wrap" id="userAvatarContainer" title="User Profile">
+                            <img class="user-avatar" id="userAvatarImg" src="assets/images/clients/client1.svg" alt="User Profile" referrerpolicy="no-referrer">
+                            <div class="user-avatar-initials" id="userAvatarInitials" style="display: none;">U</div>
+                        </div>
+                        <button id="signOutButton" class="nav-icon-btn" title="Sign Out" aria-label="Sign Out">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Mobile Hamburger -->
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Navigation Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Tools Hero Banner -->
+    <section class="tools-hero">
+        <div class="container">
+            <span class="section-tag">Evidence-Based Suite</span>
+            <h1 class="section-title">Scientific <span class="highlight-text">Fitness Tools</span> & Guidance</h1>
+            <p class="section-subtitle">Accurate, peer-reviewed calculators to calibrate your nutrition, body composition, lifting strength, and heart rate zones.</p>
+
+            <!-- Tool Tabs Bar -->
+            <div class="tool-tabs-container">
+                <div class="tool-tabs-list">
+                    <button class="tool-tab-item active" data-tool="tdeePanel">
+                        <i class="fas fa-utensils"></i> TDEE & Macros
+                    </button>
+                    <button class="tool-tab-item" data-tool="bodyFatPanel">
+                        <i class="fas fa-percentage"></i> Navy Body Fat %
+                    </button>
+                    <button class="tool-tab-item" data-tool="ormPanel">
+                        <i class="fas fa-dumbbell"></i> 1-Rep Max & Strength
+                    </button>
+                    <button class="tool-tab-item" data-tool="hydrationPanel">
+                        <i class="fas fa-tint"></i> Hydration Target
+                    </button>
+                    <button class="tool-tab-item" data-tool="heartRatePanel">
+                        <i class="fas fa-heartbeat"></i> Heart Rate Zones
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Tools Container -->
+    <main class="container" style="padding-bottom: 90px;">
+
+        <!-- 1. TDEE & Macro Target Calculator Panel -->
+        <section id="tdeePanel" class="tool-panel active">
+            <div class="tool-grid-layout">
+                <div class="tool-card">
+                    <h3>TDEE & Macronutrient Targets</h3>
+                    <p class="tool-desc">Calculates your Basal Metabolic Rate (BMR) using Mifflin-St Jeor and generates exact daily grams of Protein, Carbs, and Fats.</p>
+                    
+                    <form id="tdeeMacroForm">
+                        <div class="calc-grid-2" style="margin-bottom: 18px;">
+                            <div class="form-group-custom" style="margin-bottom: 0;">
+                                <label class="form-label-custom">Biological Sex</label>
+                                <div style="display: flex; gap: 16px; margin-top: 6px;">
+                                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                                        <input type="radio" name="tdeeGender" value="male" checked> Male
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                                        <input type="radio" name="tdeeGender" value="female"> Female
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group-custom" style="margin-bottom: 0;">
+                                <label class="form-label-custom" for="tdeeAge">Age (Years)</label>
+                                <input type="number" id="tdeeAge" class="input-custom" value="26" min="12" max="100" required>
+                            </div>
+                        </div>
+
+                        <div class="calc-grid-2">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="tdeeWeight">Weight (kg)</label>
+                                <input type="number" id="tdeeWeight" class="input-custom" value="74" min="30" max="250" required>
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="tdeeHeight">Height (cm)</label>
+                                <input type="number" id="tdeeHeight" class="input-custom" value="175" min="100" max="250" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="tdeeActivity">Activity Multiplier</label>
+                            <select id="tdeeActivity" class="input-custom">
+                                <option value="1.2">Sedentary (Little or no exercise, desk work)</option>
+                                <option value="1.375" selected>Lightly Active (Training 1-3 days/week)</option>
+                                <option value="1.55">Moderately Active (Training 3-5 days/week)</option>
+                                <option value="1.725">Very Active (Hard training 6-7 days/week)</option>
+                                <option value="1.9">Extra Active (Athlete / Physical labor job)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="tdeeGoal">Physique Objective</label>
+                            <select id="tdeeGoal" class="input-custom">
+                                <option value="aggressive_cut">Aggressive Fat Loss (-25% Deficit)</option>
+                                <option value="cut" selected>Sustainable Fat Loss (-18% Deficit)</option>
+                                <option value="maintain">Maintenance / Body Recomposition (0%)</option>
+                                <option value="lean_bulk">Lean Muscle Hypertrophy (+10% Surplus)</option>
+                                <option value="bulk">Strength & Muscle Mass (+18% Surplus)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tool-card">
+                    <div class="result-card-highlight">
+                        <span class="stat-label">DAILY TARGET ENERGY INTAKE</span>
+                        <div class="result-big-val"><span id="tdeeTargetCalories">2050</span> <span style="font-size: 1.4rem; color: var(--text-muted);">kcal</span></div>
+                        <span class="bmi-status-badge" id="tdeeGoalBadge">Sustainable Fat Loss</span>
+                        <div style="display: flex; justify-content: center; gap: 24px; margin-top: 14px; font-size: 0.82rem; color: var(--text-muted);">
+                            <span>BMR: <strong id="tdeeBmrVal" style="color: var(--text-main);">1680 kcal</strong></span>
+                            <span>TDEE Maintenance: <strong id="tdeeMaintVal" style="color: var(--text-main);">2310 kcal</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Macro Progress Visual Bar -->
+                    <h5 style="font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700;">Macro Energy Distribution:</h5>
+                    <div class="macro-progress-bar">
+                        <div id="macroBarProtein" class="macro-bar-seg macro-seg-protein" style="width: 32%;" title="Protein"></div>
+                        <div id="macroBarCarbs" class="macro-bar-seg macro-seg-carbs" style="width: 43%;" title="Carbohydrates"></div>
+                        <div id="macroBarFats" class="macro-bar-seg macro-seg-fats" style="width: 25%;" title="Fats"></div>
+                    </div>
+
+                    <!-- 3 Macro Cards -->
+                    <div class="macro-cards-grid">
+                        <div class="macro-pill-card protein">
+                            <div class="macro-pill-title" style="color: var(--accent-cyan);">Protein</div>
+                            <div class="macro-pill-grams" id="macroProteinGrams">163g</div>
+                            <div class="macro-pill-cal" id="macroProteinCal">652 kcal</div>
+                        </div>
+                        <div class="macro-pill-card carbs">
+                            <div class="macro-pill-title" style="color: var(--primary);">Carbs</div>
+                            <div class="macro-pill-grams" id="macroCarbsGrams">221g</div>
+                            <div class="macro-pill-cal" id="macroCarbsCal">884 kcal</div>
+                        </div>
+                        <div class="macro-pill-card fats">
+                            <div class="macro-pill-title" style="color: var(--accent-rose);">Fats</div>
+                            <div class="macro-pill-grams" id="macroFatsGrams">57g</div>
+                            <div class="macro-pill-cal" id="macroFatsCal">513 kcal</div>
+                        </div>
+                    </div>
+
+                    <a id="shareTdeeWhatsApp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block">
+                        <i class="fab fa-whatsapp"></i> Get Custom Meal Plan from Coach
+                    </a>
+
+                    <div class="tool-guidance-box">
+                        <h5><i class="fas fa-lightbulb"></i> Coach Guidance & Science</h5>
+                        <p>Protein is fixed at 2.0-2.2g per kg of bodyweight to prevent muscle catabolism during calorie deficits. Consume healthy unsaturated fats for hormonal synthesis and distribute carbohydrates around your pre- and post-workout windows for peak training output.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. US Navy Body Fat % Estimator Panel -->
+        <section id="bodyFatPanel" class="tool-panel">
+            <div class="tool-grid-layout">
+                <div class="tool-card">
+                    <h3>US Navy Body Fat Calculator</h3>
+                    <p class="tool-desc">Estimates body fat percentage with high clinical correlation using circumference tape measurements.</p>
+                    
+                    <form id="bodyFatForm">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Biological Sex</label>
+                            <div style="display: flex; gap: 16px; margin-top: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                                    <input type="radio" name="bfGender" value="male" checked> Male
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                                    <input type="radio" name="bfGender" value="female"> Female
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="calc-grid-2">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="bfWeight">Weight (kg)</label>
+                                <input type="number" id="bfWeight" class="input-custom" value="75" min="30" max="250" required>
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="bfHeight">Height (cm)</label>
+                                <input type="number" id="bfHeight" class="input-custom" value="175" min="100" max="250" required>
+                            </div>
+                        </div>
+
+                        <div class="calc-grid-2">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="bfNeck">Neck Circumference (cm)</label>
+                                <input type="number" id="bfNeck" class="input-custom" placeholder="Measure below Adam's apple" value="38" min="20" max="80" required>
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom" for="bfWaist">Waist at Navel (cm)</label>
+                                <input type="number" id="bfWaist" class="input-custom" placeholder="Measure horizontally at navel" value="84" min="40" max="180" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom" id="femaleHipGroup" style="display: none;">
+                            <label class="form-label-custom" for="bfHip">Hips at Widest Point (cm - Women Only)</label>
+                            <input type="number" id="bfHip" class="input-custom" placeholder="Measure at widest part of glutes" value="96" min="50" max="200">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tool-card">
+                    <div class="result-card-highlight">
+                        <span class="stat-label">ESTIMATED BODY FAT PERCENTAGE</span>
+                        <div class="result-big-val" id="bfResultVal">16.4%</div>
+                        <span class="bmi-status-badge" id="bfCategoryBadge" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">Fitness (Healthy & Toned)</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                        <div class="macro-pill-card">
+                            <div class="macro-pill-title">Lean Muscle Mass</div>
+                            <div class="macro-pill-grams" id="bfLeanMassVal" style="color: var(--accent-emerald);">62.7 kg</div>
+                            <div class="macro-pill-cal">Metabolic tissue</div>
+                        </div>
+                        <div class="macro-pill-card">
+                            <div class="macro-pill-title">Fat Mass</div>
+                            <div class="macro-pill-grams" id="bfFatMassVal" style="color: var(--primary);">12.3 kg</div>
+                            <div class="macro-pill-cal">Stored energy</div>
+                        </div>
+                    </div>
+
+                    <a id="shareBfWhatsApp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block">
+                        <i class="fab fa-whatsapp"></i> Consult Coach for Body Recomposition
+                    </a>
+
+                    <div class="tool-guidance-box">
+                        <h5><i class="fas fa-lightbulb"></i> Measurement Instructions</h5>
+                        <p>Take measurements first thing in the morning before eating. Keep the tape snug against the skin without compressing soft tissue. For men, measure the neck below the larynx and waist at the level of the navel.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 1-Rep Max Strength Calculator Panel -->
+        <section id="ormPanel" class="tool-panel">
+            <div class="tool-grid-layout">
+                <div class="tool-card">
+                    <h3>1-Rep Max (1RM) Calculator</h3>
+                    <p class="tool-desc">Calculate your single-rep maximum capacity and working percentages for Bench Press, Squat, Deadlift, or Overhead Press.</p>
+                    
+                    <form id="ormForm">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="ormWeight">Weight Lifted (kg)</label>
+                            <input type="number" id="ormWeight" class="input-custom" value="80" min="1" max="500" required>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="ormReps">Repetitions Performed (1 - 12)</label>
+                            <input type="number" id="ormReps" class="input-custom" value="5" min="1" max="15" required>
+                        </div>
+                    </form>
+
+                    <div class="tool-guidance-box">
+                        <h5><i class="fas fa-dumbbell"></i> Progressive Overload Rule</h5>
+                        <p>For maximal strength gains, train in the 85-95% range (1-5 reps). For muscle hypertrophy (mass), focus on the 70-80% 1RM range (8-12 reps) with 2-3 RIR (Reps in Reserve).</p>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="result-card-highlight">
+                        <span class="stat-label">ESTIMATED 1-REP MAXIMUM (100%)</span>
+                        <div class="result-big-val" id="ormResultVal">93 kg</div>
+                        <span class="bmi-status-badge" style="color: var(--primary); border-color: var(--primary);">Based on Epley & Brzycki Model</span>
+                    </div>
+
+                    <h5 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 8px;">Working Load Percentages:</h5>
+                    <div class="strength-table-wrap">
+                        <table class="strength-table">
+                            <thead>
+                                <tr>
+                                    <th>% 1RM</th>
+                                    <th>Target Load</th>
+                                    <th>Rep Range</th>
+                                    <th>Training Focus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ormTableBody">
+                                <!-- Dynamic JS Population -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <a id="shareOrmWhatsApp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block" style="margin-top: 14px;">
+                        <i class="fab fa-whatsapp"></i> Get Custom Strength Coaching
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Daily Hydration & Electrolyte Calculator Panel -->
+        <section id="hydrationPanel" class="tool-panel">
+            <div class="tool-grid-layout">
+                <div class="tool-card">
+                    <h3>Hydration & Fluid Intake Calculator</h3>
+                    <p class="tool-desc">Determine your baseline fluid needs, sweat replacement rate during workouts, and hydration schedule.</p>
+                    
+                    <form id="hydrationForm">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="hydroWeight">Body Weight (kg)</label>
+                            <input type="number" id="hydroWeight" class="input-custom" value="72" min="30" max="250" required>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="hydroDuration">Daily Exercise Duration (Minutes)</label>
+                            <input type="number" id="hydroDuration" class="input-custom" value="45" min="0" max="300" required>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="hydroClimate">Environment / Climate</label>
+                            <select id="hydroClimate" class="input-custom">
+                                <option value="moderate">Moderate / Air-Conditioned Gym</option>
+                                <option value="hot" selected>Hot & Warm Outdoors</option>
+                                <option value="humid">Humid & High Sweat Rate</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tool-card">
+                    <div class="result-card-highlight">
+                        <span class="stat-label">RECOMMENDED DAILY WATER INTAKE</span>
+                        <div class="result-big-val" id="hydroResultLiters">3.6 L</div>
+                        <span class="bmi-status-badge" id="hydroResultGlasses" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">approx. 14 Glasses / day</span>
+                    </div>
+
+                    <h5 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 12px;">Timed Hydration Strategy:</h5>
+                    <div class="hr-zones-grid">
+                        <div class="hr-zone-card zone-2">
+                            <div class="hr-zone-meta">
+                                <h5>Pre-Workout (2 Hrs Prior)</h5>
+                                <p id="hydroPreWorkout">500 ml water</p>
+                            </div>
+                            <div class="hr-zone-bpm" style="color: var(--accent-emerald); font-size: 1rem;">Prime Muscles</div>
+                        </div>
+                        <div class="hr-zone-card zone-3">
+                            <div class="hr-zone-meta">
+                                <h5>Intra-Workout (Every 15 mins)</h5>
+                                <p id="hydroIntraWorkout">300 ml in small sips</p>
+                            </div>
+                            <div class="hr-zone-bpm" style="color: var(--accent-cyan); font-size: 1rem;">Prevent Cramps</div>
+                        </div>
+                        <div class="hr-zone-card zone-4">
+                            <div class="hr-zone-meta">
+                                <h5>Post-Workout Recovery</h5>
+                                <p id="hydroPostWorkout">500-750 ml + electrolytes</p>
+                            </div>
+                            <div class="hr-zone-bpm" style="color: var(--primary); font-size: 1rem;">Restore Fluids</div>
+                        </div>
+                    </div>
+
+                    <a id="shareHydroWhatsApp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block" style="margin-top: 14px;">
+                        <i class="fab fa-whatsapp"></i> Ask Coach About Hydration & Supplements
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Target Heart Rate & Cardio Zones Panel -->
+        <section id="heartRatePanel" class="tool-panel">
+            <div class="tool-grid-layout">
+                <div class="tool-card">
+                    <h3>Heart Rate & Fat-Burn Zones</h3>
+                    <p class="tool-desc">Computes your Maximum Heart Rate (Tanaka formula) and outlines 5 targeted aerobic/anaerobic zones.</p>
+                    
+                    <form id="heartRateForm">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="hrAge">Your Age (Years)</label>
+                            <input type="number" id="hrAge" class="input-custom" value="26" min="12" max="100" required>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="hrResting">Resting Heart Rate (BPM - Optional)</label>
+                            <input type="number" id="hrResting" class="input-custom" value="68" min="40" max="120">
+                        </div>
+                    </form>
+
+                    <div class="tool-guidance-box">
+                        <h5><i class="fas fa-running"></i> Optimal Fat Oxidation Zone</h5>
+                        <p><strong>Zone 2 (60-70% Max HR)</strong> provides the highest percentage of energy expenditure from fatty acids and builds high mitochondrial density without accumulating high CNS fatigue.</p>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="result-card-highlight">
+                        <span class="stat-label">ESTIMATED MAXIMUM HEART RATE</span>
+                        <div class="result-big-val" id="hrMaxVal">190 BPM</div>
+                        <span class="bmi-status-badge" style="color: var(--primary); border-color: var(--primary);">Tanaka Physiological Model</span>
+                    </div>
+
+                    <h5 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 12px;">5 Aerobic & Anaerobic Training Zones:</h5>
+                    <div class="hr-zones-grid">
+                        <div class="hr-zone-card zone-1">
+                            <div class="hr-zone-meta">
+                                <h5>Zone 1: Active Recovery (50 - 60%)</h5>
+                                <p>Warmup, cool down, and post-heavy-lift recovery</p>
+                            </div>
+                            <div class="hr-zone-bpm" id="hrZone1">95 - 114 BPM</div>
+                        </div>
+
+                        <div class="hr-zone-card zone-2">
+                            <div class="hr-zone-meta">
+                                <h5>Zone 2: Fat Burning & Aerobic Base (60 - 70%)</h5>
+                                <p>Maximal fat oxidation, mitochondrial health & endurance</p>
+                            </div>
+                            <div class="hr-zone-bpm" id="hrZone2" style="color: var(--accent-emerald);">114 - 133 BPM</div>
+                        </div>
+
+                        <div class="hr-zone-card zone-3">
+                            <div class="hr-zone-meta">
+                                <h5>Zone 3: Aerobic Cardio & Stamina (70 - 80%)</h5>
+                                <p>Improves cardiovascular efficiency and lung capacity</p>
+                            </div>
+                            <div class="hr-zone-bpm" id="hrZone3" style="color: var(--accent-cyan);">133 - 152 BPM</div>
+                        </div>
+
+                        <div class="hr-zone-card zone-4">
+                            <div class="hr-zone-meta">
+                                <h5>Zone 4: Anaerobic Threshold (80 - 90%)</h5>
+                                <p>Lactate tolerance, speed endurance, high calorie burn</p>
+                            </div>
+                            <div class="hr-zone-bpm" id="hrZone4">152 - 171 BPM</div>
+                        </div>
+
+                        <div class="hr-zone-card zone-5">
+                            <div class="hr-zone-meta">
+                                <h5>Zone 5: VO2 Max & Neuromuscular (90 - 100%)</h5>
+                                <p>Maximal sprint intervals, high CNS recruitment</p>
+                            </div>
+                            <div class="hr-zone-bpm" id="hrZone5" style="color: var(--accent-rose);">171 - 190 BPM</div>
+                        </div>
+                    </div>
+
+                    <a id="shareHrWhatsApp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp btn-block" style="margin-top: 14px;">
+                        <i class="fab fa-whatsapp"></i> Discuss Cardio & HIIT With Coach
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating WhatsApp Widget (Right side icon-only) -->
+    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20am%20using%20the%20fitness%20tools%20and%20would%20like%20guidance" target="_blank" rel="noopener" class="floating-whatsapp-widget" title="Chat with Coach on WhatsApp" aria-label="Chat with Coach on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-online-dot"></span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <a href="index.html" class="footer-logo">
+                        <div class="logo-icon-box">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="logo-text-wrap">
+                            <span class="logo-title">FITNESS</span>
+                            <span class="logo-tagline">Healthy Lifestyle</span>
+                        </div>
+                    </a>
+                    <p class="footer-bio">
+                        Evidence-based personal training, nutritional prescription, and biomechanical optimization for lasting fat loss and muscular development.
+                    </p>
+                    <div class="social-links-row">
+                        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="https://wa.me/918187808710" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Fitness Tools</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="tools.html#tdeePanel">TDEE & Macro Calculator</a></li>
+                        <li><a href="tools.html#bodyFatPanel">US Navy Body Fat %</a></li>
+                        <li><a href="tools.html#ormPanel">1-Rep Max Strength Tool</a></li>
+                        <li><a href="tools.html#hydrationPanel">Daily Hydration Needs</a></li>
+                        <li><a href="tools.html#heartRatePanel">Target Heart Rate Zones</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Main Links</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="index.html#home">Home Page</a></li>
+                        <li><a href="index.html#services">Coaching Programs</a></li>
+                        <li><a href="index.html#transformations">Client Transformations</a></li>
+                        <li><a href="index.html#about">About Coach</a></li>
+                        <li><a href="index.html#contact">Contact & Consultation</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Direct Contact</h4>
+                    <p><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 8px;"></i> +91 81878 08710</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 8px;"></i> itsrajashekar12@gmail.com</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i> Nizamabad, Telangana, India</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p>&copy; 2026 FITNESS - Healthy Lifestyle. All Rights Reserved.</p>
+                <p>Validated exercise physiology models.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <!-- Tools Application Script -->
+    <script src="assets/js/tools.js"></script>
+</body>
+</html>

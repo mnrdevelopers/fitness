@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5C45E">
+    <meta name="description" content="Macro-Calculated Diet Recipes & Meal Prep Guide by Coach Rajashekar. High-protein Veg & Non-Veg recipes engineered for fat loss and muscle building.">
+    <meta name="keywords" content="diet recipes, high protein veg recipes, non veg fitness recipes, fat loss meal prep, indian fitness diet">
+    <title>FITNESS | Diet Recipes & High-Protein Meal Prep</title>
+    
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/png" href="assets/images/icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Page Loading Screen -->
+    <div id="pageLoader" class="loader-wrapper">
+        <div class="loader-spinner"></div>
+        <span class="loader-brand">DIET KITCHEN</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <!-- Brand Logo -->
+                <a href="index.html" class="brand-logo" id="brandLogo">
+                    <div class="logo-icon-box">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="logo-text-wrap">
+                        <span class="logo-title">FITNESS</span>
+                        <span class="logo-tagline">Healthy Lifestyle</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#services" class="nav-link">Programs</a></li>
+                    <li><a href="recipes.html" class="nav-link active"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 4px;"></i> Diet Recipes</a></li>
+                    <li><a href="tools.html" class="nav-link"><i class="fas fa-calculator" style="color: var(--primary); margin-right: 4px;"></i> Tools Suite</a></li>
+                    <li><a href="results.html" class="nav-link">Results</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <!-- Auth Button / Profile -->
+                    <button id="signInButton" class="nav-auth-btn">
+                        <i class="fab fa-google"></i>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="userInfo" class="user-profile-badge" style="display: none;">
+                        <div class="user-avatar-wrap" id="userAvatarContainer" title="User Profile">
+                            <img class="user-avatar" id="userAvatarImg" src="assets/images/clients/client1.svg" alt="User Profile" referrerpolicy="no-referrer">
+                            <div class="user-avatar-initials" id="userAvatarInitials" style="display: none;">U</div>
+                        </div>
+                        <button id="signOutButton" class="nav-icon-btn" title="Sign Out" aria-label="Sign Out">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Mobile Hamburger -->
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Navigation Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Diet Hero Section -->
+    <section class="diet-hero">
+        <div class="container">
+            <span class="section-tag"><i class="fas fa-seedling"></i> Nutrition & Meal Prep</span>
+            <h1 class="section-title">Macro-Calculated <span class="highlight-text">Diet Recipes</span></h1>
+            <p class="section-subtitle" style="max-width: 680px; margin: 0 auto 24px;">
+                Healthy eating that actually tastes incredible. Explore high-protein, calorie-controlled recipes engineered for sustainable fat loss, clean muscle growth, and all-day energy.
+            </p>
+
+            <!-- Recipe Filtering Controls -->
+            <div class="recipe-filters-wrap">
+                <!-- Main Dietary Category Toggle -->
+                <div class="diet-category-switch">
+                    <button class="diet-toggle-btn active" data-type="all">
+                        <i class="fas fa-layer-group"></i> All Recipes
+                    </button>
+                    <button class="diet-toggle-btn veg-btn" data-type="veg">
+                        <i class="fas fa-leaf" style="color: #10B981;"></i> Vegetarian (High Protein)
+                    </button>
+                    <button class="diet-toggle-btn nonveg-btn" data-type="nonveg">
+                        <i class="fas fa-drumstick-bite" style="color: #F43F5E;"></i> Non-Vegetarian (Lean Meat)
+                    </button>
+                </div>
+
+                <!-- Meal Type Sub-Filters -->
+                <div class="diet-meal-chips">
+                    <button class="meal-chip-btn active" data-meal="all">All Meals</button>
+                    <button class="meal-chip-btn" data-meal="breakfast">🍳 Breakfast</button>
+                    <button class="meal-chip-btn" data-meal="lunch-dinner">🍱 Lunch & Dinner</button>
+                    <button class="meal-chip-btn" data-meal="post-workout">🥤 Post-Workout Fuel</button>
+                    <button class="meal-chip-btn" data-meal="fat-loss">🔥 Low Calorie (Cut)</button>
+                </div>
+
+                <!-- Quick Search Bar -->
+                <div class="recipe-search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="recipeSearchInput" placeholder="Search by recipe name or ingredient (e.g. Paneer, Chicken, Oats)...">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipes Grid -->
+    <main class="container">
+        <div class="recipes-grid" id="recipesGrid">
+            <!-- Dynamic Recipe Cards rendered from fit_admin_recipes in localStorage -->
+        </div>
+
+        <!-- Custom Diet Plan CTA Banner -->
+        <div class="result-card-highlight" style="margin: 40px 0 80px; padding: 48px 30px; text-align: center;">
+            <span class="section-tag"><i class="fas fa-fire"></i> Personalized Nutrition</span>
+            <h2 class="section-title">Need a 100% Customized <span class="highlight-text">Diet Plan?</span></h2>
+            <p class="section-subtitle" style="margin-bottom: 28px;">
+                Get exact macro targets, Indian grocery lists, and meal timings matched to your target weight, work schedule, and dietary preference.
+            </p>
+            <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20want%20a%20personalized%20nutrition%20and%20diet%20plan%21" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 16px 36px; font-size: 1.05rem; box-shadow: 0 8px 25px var(--primary-glow);">
+                <i class="fab fa-whatsapp"></i> Get Custom Diet Plan with Coach Rajashekar
+            </a>
+        </div>
+    </main>
+
+    <!-- Recipe Modal Backdrop & Detail Popup -->
+    <div class="recipe-modal-backdrop" id="recipeModalBackdrop">
+        <div class="recipe-modal-card" id="recipeModalCard">
+            <button class="recipe-modal-close-btn" id="recipeModalCloseBtn" aria-label="Close Recipe">&times;</button>
+            <div id="recipeModalContent">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20have%20a%20question%20about%20diet%20recipes" target="_blank" rel="noopener" class="floating-whatsapp-widget" title="Chat with Coach on WhatsApp" aria-label="Chat with Coach on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-online-dot"></span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer-wrap">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="brand-logo" style="margin-bottom: 16px;">
+                        <div class="logo-icon-box">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="logo-text-wrap">
+                            <span class="logo-title">FITNESS</span>
+                            <span class="logo-tagline">Healthy Lifestyle</span>
+                        </div>
+                    </div>
+                    <p>Dedicated to helping individuals achieve peak strength, metabolic wellness, and long-term physique transformations.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#services">Coaching Programs</a></li>
+                        <li><a href="recipes.html">Diet Recipes Kitchen</a></li>
+                        <li><a href="results.html">Results Gallery</a></li>
+                        <li><a href="tools.html">Fitness Tools Suite</a></li>
+                        <li><a href="index.html#about">About Coach</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="index.html#testimonials">Success Stories</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact Form</a></li>
+                        <li><a href="https://wa.me/918187808710" target="_blank" rel="noopener">WhatsApp Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Direct Contact</h4>
+                    <p><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 8px;"></i> +91 81878 08710</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary); margin-right: 8px;"></i> itsrajashekar12@gmail.com</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i> Nizamabad, Telangana, India</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <p>&copy; 2026 FITNESS - Healthy Lifestyle. All Rights Reserved.</p>
+                <p>Designed for Performance & Results.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <!-- Dynamic Recipe Engine & Interactive Controller Script -->
+    <script>
+        const defaultRecipes = [
+            {
+                id: 'veg-1',
+                title: 'High-Protein Paneer Bhurji with Multigrain Toast',
+                type: 'veg',
+                meal: 'breakfast fat-loss',
+                prepTime: '5 Mins',
+                cookTime: '10 Mins',
+                protein: '32g',
+                calories: '380 kcal',
+                carbs: '28g',
+                fats: '14g',
+                desc: 'Crumpled low-fat paneer sautéed with turmeric, onions, bell peppers, and fresh coriander served with toasted multigrain bread.',
+                ingredients: [
+                    '150g Low-fat Fresh Paneer (Cottage cheese, crumbled)',
+                    '2 Slices 100% Whole Wheat / Multigrain Bread',
+                    '1/2 Medium Onion & 1/2 Green Capsicum (finely chopped)',
+                    '1 Small Tomato & 1 Green Chili',
+                    '1/2 tsp Turmeric, 1/2 tsp Cumin seeds, 1/2 tsp Garam masala',
+                    '1 tsp Cold-pressed Mustard Oil or Ghee',
+                    'Fresh Coriander leaves & Salt to taste'
+                ],
+                instructions: [
+                    'Heat 1 tsp oil in a pan, add cumin seeds, chopped green chili, and sauté onions till golden brown.',
+                    'Add chopped tomatoes and capsicum, cook for 3 minutes until soft.',
+                    'Stir in turmeric powder, garam masala, and salt.',
+                    'Add the crumbled paneer and toss gently on medium flame for 3-4 minutes. Do not overcook to keep paneer soft.',
+                    'Garnish with fresh coriander leaves.',
+                    'Toast 2 multigrain bread slices until golden crisp and serve hot with the bhurji.'
+                ],
+                coachTip: 'Low-fat paneer delivers high biological value casein and whey protein. Perfect for starting the day with sustained satiety without insulin spikes.'
+            },
+            {
+                id: 'nv-1',
+                title: 'Grilled Lemon Herb Chicken & Steamed Veggies',
+                type: 'nonveg',
+                meal: 'lunch-dinner fat-loss',
+                prepTime: '10 Mins',
+                cookTime: '12 Mins',
+                protein: '44g',
+                calories: '340 kcal',
+                carbs: '12g',
+                fats: '8g',
+                desc: 'Skinless chicken breast marinated in fresh lemon juice, garlic, oregano, and olive oil, grilled to juicy perfection with broccoli and carrots.',
+                ingredients: [
+                    '200g Boneless Skinless Chicken Breast (butterflied)',
+                    '1 tbsp Fresh Lemon Juice',
+                    '1 tsp Crushed Garlic & 1/2 tsp Black Pepper',
+                    '1/2 tsp Dried Oregano & Mixed Italian Herbs',
+                    '1 tsp Extra Virgin Olive Oil',
+                    '100g Broccoli Florets & 50g Sliced Carrots',
+                    'Pink Himalayan Salt to taste'
+                ],
+                instructions: [
+                    'Butterfly the chicken breast and prick with a fork for tender marinade penetration.',
+                    'Rub with lemon juice, minced garlic, oregano, black pepper, salt, and 1/2 tsp olive oil. Marinate for 15 mins.',
+                    'Heat a grill pan on medium-high heat with the remaining 1/2 tsp olive oil.',
+                    'Grill chicken breast for 5-6 minutes per side until charred grill marks form and internal temperature reaches 75°C.',
+                    'Steam broccoli and carrots in a steamer basket for 4 minutes until vibrant and tender-crisp.',
+                    'Rest the grilled chicken for 3 minutes to retain natural juices, then slice and serve with the steamed veggies.'
+                ],
+                coachTip: 'Resting the chicken breast for 3 minutes before cutting locks in the juices, ensuring lean meat never tastes dry.'
+            },
+            {
+                id: 'veg-2',
+                title: 'Spiced Soya Chunks & Veggie Brown Rice Bowl',
+                type: 'veg',
+                meal: 'lunch-dinner',
+                prepTime: '8 Mins',
+                cookTime: '15 Mins',
+                protein: '38g',
+                calories: '420 kcal',
+                carbs: '52g',
+                fats: '6g',
+                desc: 'High-protein boiled soya chunks simmered in a light tomato-onion masala gravy, served over steaming fiber-rich brown basmati rice.',
+                ingredients: [
+                    '60g Raw Soya Chunks (gives ~160g cooked)',
+                    '150g Cooked Brown Basmati Rice',
+                    '1 Medium Onion & 1 Tomato (pureed)',
+                    '1/2 tsp Ginger-Garlic Paste',
+                    '1/2 tsp Coriander Powder, 1/2 tsp Cumin, 1/2 tsp Kashmiri Red Chili',
+                    '1 tsp Mustard Oil',
+                    'Fresh Coriander for garnish'
+                ],
+                instructions: [
+                    'Boil soya chunks in water with a pinch of salt for 6 minutes. Drain and squeeze out excess water completely.',
+                    'Heat oil in a pan, add cumin seeds, and sauté ginger-garlic paste with finely chopped onions.',
+                    'Add tomato puree and spices, cooking until oil separates slightly.',
+                    'Add the squeezed soya chunks and 1/4 cup water. Simmer on low heat for 6-8 minutes so chunks absorb the flavor.',
+                    'Serve hot over freshly steamed brown basmati rice with a side of cucumber slices.'
+                ],
+                coachTip: 'Soya chunks are 52% pure plant protein by weight. Squeezing out all water after boiling eliminates any raw soy aftertaste and allows them to absorb rich spices.'
+            },
+            {
+                id: 'nv-2',
+                title: 'Egg White Masala Scramble & Whole Wheat Roti',
+                type: 'nonveg',
+                meal: 'breakfast fat-loss',
+                prepTime: '5 Mins',
+                cookTime: '7 Mins',
+                protein: '30g',
+                calories: '290 kcal',
+                carbs: '22g',
+                fats: '6g',
+                desc: '5 egg whites and 1 whole egg scrambled with green chilies, tomatoes, and cumin, served with a soft whole wheat roti.',
+                ingredients: [
+                    '5 Egg Whites + 1 Whole Egg (beaten)',
+                    '1 Soft Handmade Whole Wheat Roti (approx. 35g dough)',
+                    '1/2 Finely Chopped Onion & 1 Green Chili',
+                    '1/2 Chopped Tomato & Fresh Coriander',
+                    '1/4 tsp Turmeric & Black Pepper',
+                    '1/2 tsp Desi Cow Ghee'
+                ],
+                instructions: [
+                    'In a bowl, whisk 5 egg whites and 1 whole egg with a pinch of salt and turmeric.',
+                    'Heat 1/2 tsp ghee in a non-stick skillet. Sauté onions and green chilies for 2 minutes.',
+                    'Add chopped tomatoes and cook for 1 minute.',
+                    'Pour the whisked egg mixture over medium-low heat. Stir slowly in sweeping motions to create fluffy curds.',
+                    'Remove from heat just before fully set to prevent dryness. Garnish with fresh cracked black pepper and coriander.',
+                    'Serve immediately with 1 warm whole wheat roti.'
+                ],
+                coachTip: 'Keeping 1 whole egg with 5 whites delivers essential fat-soluble vitamins (A, D, E, K) and choline while keeping fat under 6 grams.'
+            },
+            {
+                id: 'veg-3',
+                title: 'Moong Dal & Grated Paneer Protein Chilla',
+                type: 'veg',
+                meal: 'breakfast post-workout',
+                prepTime: '10 Mins',
+                cookTime: '10 Mins',
+                protein: '28g',
+                calories: '320 kcal',
+                carbs: '34g',
+                fats: '8g',
+                desc: 'Crispy golden yellow moong dal crepes stuffed with spiced grated paneer and served with refreshing homemade green mint chutney.',
+                ingredients: [
+                    '1 Cup Soaked Yellow Moong Dal Batter (blended with ginger & green chili)',
+                    '80g Fresh Low-Fat Paneer (grated)',
+                    '1/2 tsp Cumin powder & Chaat Masala',
+                    '1/2 tsp Oil / Ghee for griddle',
+                    '2 tbsp Mint-Coriander Yogurt Chutney'
+                ],
+                instructions: [
+                    'Blend soaked moong dal with a small piece of ginger, green chili, and salt into a smooth pouring batter.',
+                    'Heat a non-stick tawa, lightly grease with a few drops of oil, and pour a ladle of batter, spreading in concentric circles.',
+                    'Cook on medium flame until edges crisp up and turn golden brown. Flip once.',
+                    'Sprinkle grated paneer seasoned with chaat masala evenly over the center.',
+                    'Fold the chilla into a roll and slice into halves. Serve with fresh mint chutney.'
+                ],
+                coachTip: 'Moong dal is light on digestion and rich in lysine amino acid. Combined with paneer, it creates a complete amino acid profile for muscle recovery.'
+            },
+            {
+                id: 'nv-3',
+                title: 'Air-Fried Tandoori Fish Tikka & Mint Salad',
+                type: 'nonveg',
+                meal: 'lunch-dinner fat-loss',
+                prepTime: '10 Mins',
+                cookTime: '12 Mins',
+                protein: '36g',
+                calories: '290 kcal',
+                carbs: '6g',
+                fats: '7g',
+                desc: 'Lean Basa / Rohu cubes marinated in hung curd, Kashmiri red chili, carom seeds (ajwain), and mustard oil, air-fried with onion rings.',
+                ingredients: [
+                    '220g Fresh Fish Fillet (Basa, Rohu, or Salmon cubes)',
+                    '2 tbsp Thick Hung Curd (Greek yogurt)',
+                    '1/2 tsp Ajwain (Carom seeds)',
+                    '1 tsp Kashmiri Red Chili Powder & 1/2 tsp Kasuri Methi',
+                    '1 tsp Mustard Oil & 1 tsp Lemon Juice',
+                    'Sliced Onion Rings & Lemon Wedges'
+                ],
+                instructions: [
+                    'Pat fish cubes completely dry with paper towels.',
+                    'In a bowl, mix hung curd, mustard oil, ajwain, Kashmiri red chili, kasuri methi, lemon juice, and salt.',
+                    'Coat fish cubes evenly with the marinade and let rest for 15 minutes.',
+                    'Preheat air fryer to 190°C (375°F). Arrange fish pieces in a single layer with space between.',
+                    'Air fry for 10-12 minutes, flipping gently at the halfway mark until edges are lightly charred.',
+                    'Sprinkle chaat masala and serve with crisp onion rings and lemon wedges.'
+                ],
+                coachTip: 'White fish like Basa and Tilapia provide nearly 100% protein calories with zero carbs. Ideal for evening dinners during aggressive fat loss phases.'
+            },
+            {
+                id: 'veg-4',
+                title: 'Overnight Peanut Butter & Chia High-Protein Oats',
+                type: 'veg',
+                meal: 'breakfast post-workout',
+                prepTime: '5 Mins',
+                cookTime: '0 Mins',
+                protein: '26g',
+                calories: '380 kcal',
+                carbs: '46g',
+                fats: '10g',
+                desc: 'Rolled oats soaked overnight with plant/dairy protein, organic chia seeds, natural peanut butter, and topped with sliced banana.',
+                ingredients: [
+                    '50g Whole Rolled Oats',
+                    '10g Organic Chia Seeds',
+                    '15g 100% Roasted Natural Peanut Butter (No sugar/oil added)',
+                    '200ml Skimmed Milk or Unsweetened Almond Milk',
+                    '1/2 Sliced Banana & Pinch of Cinnamon Powder'
+                ],
+                instructions: [
+                    'In a glass jar, combine rolled oats, chia seeds, and cinnamon powder.',
+                    'Pour in milk and add natural peanut butter. Stir thoroughly until well combined.',
+                    'Seal the jar and refrigerate overnight (minimum 6 hours).',
+                    'In the morning, top with fresh sliced banana and enjoy a ready-to-eat power meal.'
+                ],
+                coachTip: 'Chia seeds absorb 10x their weight in liquid, forming a soluble fiber gel that keeps blood glucose steady throughout morning workouts.'
+            },
+            {
+                id: 'nv-4',
+                title: 'Lean Chicken Keema Bowl with Brown Rice',
+                type: 'nonveg',
+                meal: 'lunch-dinner post-workout',
+                prepTime: '8 Mins',
+                cookTime: '18 Mins',
+                protein: '42g',
+                calories: '460 kcal',
+                carbs: '48g',
+                fats: '10g',
+                desc: 'Minced lean chicken breast cooked with sweet green peas, ginger-garlic paste, and whole spices over steamed brown rice.',
+                ingredients: [
+                    '200g Lean Minced Chicken Breast (Keema)',
+                    '150g Steamed Brown Basmati Rice',
+                    '30g Fresh Green Peas',
+                    '1 Onion & 1 Tomato (finely diced)',
+                    '1 tsp Ginger-Garlic Paste & 1/2 tsp Garam Masala',
+                    '1 tsp Ghee / Mustard Oil'
+                ],
+                instructions: [
+                    'Heat 1 tsp oil in a pan, add whole cumin and sauté onions and ginger-garlic paste.',
+                    'Add tomatoes, turmeric, coriander powder, chili powder, and salt. Cook until softened.',
+                    'Add minced chicken breast and break up any clumps with a spatula.',
+                    'Add green peas and 1/3 cup water. Cover and cook on medium flame for 12 minutes.',
+                    'Garnish with fresh lemon juice and serve over steamed brown rice.'
+                ],
+                coachTip: 'Minced chicken breast cooks in half the time of whole breasts and absorbs Indian spices exceptionally well for effortless meal prep batches.'
+            },
+            {
+                id: 'veg-5',
+                title: 'Crisp Tofu & Bell Pepper Quinoa Stir-Fry',
+                type: 'veg',
+                meal: 'lunch-dinner fat-loss',
+                prepTime: '10 Mins',
+                cookTime: '10 Mins',
+                protein: '30g',
+                calories: '350 kcal',
+                carbs: '32g',
+                fats: '9g',
+                desc: 'Golden pan-seared organic firm tofu tossed with colorful crunchy bell peppers, broccoli, soy-ginger glaze, and served with fluffy quinoa.',
+                ingredients: [
+                    '200g Extra-Firm Organic Tofu (cubed)',
+                    '120g Cooked Quinoa',
+                    '1 Cup Diced Red & Yellow Bell Peppers, Broccoli, and Onions',
+                    '1 tbsp Low Sodium Soy Sauce & 1 tsp Minced Garlic',
+                    '1 tsp Sesame Oil & 1 tsp Toasted White Sesame Seeds'
+                ],
+                instructions: [
+                    'Press tofu with a kitchen towel to remove moisture, then cut into bite-sized cubes.',
+                    'Heat sesame oil in a non-stick wok on high heat. Add minced garlic and tofu cubes.',
+                    'Sear tofu cubes for 4-5 minutes until golden on all sides.',
+                    'Toss in bell peppers and broccoli. Stir-fry on high flame for 3 minutes for crisp texture.',
+                    'Drizzle soy sauce, toss well, and serve over warm fluffy quinoa with toasted sesame seeds.'
+                ],
+                coachTip: 'Quinoa is one of the only complete plant proteins containing all 9 essential amino acids. Paired with firm tofu, it creates a clean, anti-inflammatory dinner.'
+            },
+            {
+                id: 'nv-5',
+                title: 'Boiled Egg, Avocado & Greek Yogurt Power Salad',
+                type: 'nonveg',
+                meal: 'breakfast fat-loss',
+                prepTime: '8 Mins',
+                cookTime: '0 Mins',
+                protein: '26g',
+                calories: '330 kcal',
+                carbs: '10g',
+                fats: '15g',
+                desc: '4 hard-boiled egg whites and 1 whole egg paired with creamy hass avocado cubes, cherry tomatoes, and a light Greek yogurt herb dressing.',
+                ingredients: [
+                    '4 Hard-Boiled Egg Whites + 1 Whole Egg (chopped)',
+                    '50g Fresh Ripe Hass Avocado (cubed)',
+                    '2 tbsp Plain Greek Yogurt (hung curd)',
+                    'Handful of Cherry Tomatoes & Cucumber slices',
+                    '1/2 tsp Black Pepper, Lemon juice, and Fresh Parsley'
+                ],
+                instructions: [
+                    'In a salad bowl, whisk Greek yogurt with lemon juice, salt, and black pepper to make a creamy, guilt-free dressing.',
+                    'Add chopped boiled eggs, diced avocado, cucumber, and halved cherry tomatoes.',
+                    'Toss gently so avocado maintains its shape and eggs are lightly coated.',
+                    'Serve cold as a refreshing, high-protein powerhouse breakfast or mid-day meal.'
+                ],
+                coachTip: 'Avocado provides monounsaturated fatty acids that slow gastric emptying, keeping hunger completely at bay for 4-5 hours.'
+            },
+            {
+                id: 'veg-6',
+                title: 'Sprouted Kala Chana & Pomegranate Protein Chaat',
+                type: 'veg',
+                meal: 'fat-loss post-workout',
+                prepTime: '5 Mins',
+                cookTime: '5 Mins',
+                protein: '18g',
+                calories: '260 kcal',
+                carbs: '42g',
+                fats: '3g',
+                desc: 'Steamed high-fiber sprouted black chickpeas tossed with fresh pomegranate pearls, cucumbers, chaat masala, and fresh lemon squeeze.',
+                ingredients: [
+                    '150g Sprouted Black Chickpeas (Kala Chana)',
+                    '30g Fresh Pomegranate Arils',
+                    '1/2 Cucumber & 1 Small Tomato (finely diced)',
+                    '1 Green Chili & Fresh Mint leaves',
+                    '1/2 tsp Roasted Cumin Powder & Chaat Masala',
+                    '1 tbsp Fresh Lemon Juice'
+                ],
+                instructions: [
+                    'Steam sprouted black chana for 5 minutes to make them tender and enhance bioavailability.',
+                    'In a large mixing bowl, combine warm chana, diced cucumber, tomatoes, green chili, and pomegranate.',
+                    'Add roasted cumin powder, chaat masala, salt, and freshly squeezed lemon juice.',
+                    'Toss well and serve immediately as an energizing pre-workout or evening fat-loss snack.'
+                ],
+                coachTip: 'Sprouting chickpeas increases protein digestibility by 20% and reduces phytic acid, making mineral absorption twice as effective.'
+            },
+            {
+                id: 'nv-6',
+                title: 'Tandoori Spiced Chicken Breast Skewers',
+                type: 'nonveg',
+                meal: 'lunch-dinner post-workout',
+                prepTime: '15 Mins',
+                cookTime: '12 Mins',
+                protein: '40g',
+                calories: '310 kcal',
+                carbs: '8g',
+                fats: '7g',
+                desc: 'Tender bite-sized chicken breast cubes skewered with crunchy onions and capsicum, roasted under high heat with tandoori spices.',
+                ingredients: [
+                    '200g Boneless Chicken Breast (cut into 1-inch cubes)',
+                    '2 tbsp Low-Fat Curd (Dahi)',
+                    '1 tsp Ginger-Garlic Paste & 1 tsp Kashmiri Red Chili',
+                    '1/2 tsp Garam Masala & 1/2 tsp Kasuri Methi',
+                    '1/2 Capsicum & 1/2 Onion (cut into square chunks)',
+                    'Wooden skewers (soaked in water)'
+                ],
+                instructions: [
+                    'Mix curd, ginger-garlic paste, spices, salt, and 1/2 tsp lemon juice in a bowl.',
+                    'Add chicken breast cubes and marinate for 20 minutes.',
+                    'Thread alternating pieces of marinated chicken, capsicum, and onion onto soaked skewers.',
+                    'Cook on a hot grill pan or in an oven at 200°C for 12-14 minutes, turning periodically until slightly charred.',
+                    'Brush with a touch of ghee, sprinkle chaat masala, and serve hot with green salad.'
+                ],
+                coachTip: 'Cooking chicken on skewers promotes even heat circulation, preventing the exterior from drying out while keeping the inside tender.'
+            }
+        ];
+
+        // Firebase Auth Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
+            authDomain: "mnr-devops-2e97d.firebaseapp.com",
+            projectId: "mnr-devops-2e97d",
+            storageBucket: "mnr-devops-2e97d.firebasestorage.app",
+            messagingSenderId: "464172080556",
+            appId: "1:464172080556:web:97cecddd2e236f387aee09",
+            measurementId: "G-9SXTYCDF9W"
+        };
+
+        if (typeof firebase !== 'undefined') {
+            try {
+                firebase.initializeApp(firebaseConfig);
+            } catch (e) {}
+        }
+
+        const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+
+        function hideLoader() {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('loaded');
+                setTimeout(() => {
+                    if (loader && loader.parentNode) loader.remove();
+                }, 300);
+            }
+        }
+
+        window.addEventListener('load', hideLoader);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dismiss page loader quickly
+            setTimeout(hideLoader, 200);
+
+            // Traffic Analytics
+            try {
+                const trafficData = JSON.parse(localStorage.getItem('fit_analytics_traffic') || '{"totalVisits": 0, "uniqueVisitors": 0, "visitsLog": []}');
+                trafficData.totalVisits = (trafficData.totalVisits || 0) + 1;
+                let visitorId = localStorage.getItem('fit_visitor_id');
+                if (!visitorId) {
+                    visitorId = 'vis_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('fit_visitor_id', visitorId);
+                    trafficData.uniqueVisitors = (trafficData.uniqueVisitors || 0) + 1;
+                }
+                const visitEntry = {
+                    id: 'v_' + Date.now(),
+                    page: 'Diet Recipes',
+                    time: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile Device' : 'Desktop / PC',
+                    visitorId
+                };
+                if (!trafficData.visitsLog) trafficData.visitsLog = [];
+                trafficData.visitsLog.unshift(visitEntry);
+                if (trafficData.visitsLog.length > 50) trafficData.visitsLog = trafficData.visitsLog.slice(0, 50);
+                localStorage.setItem('fit_analytics_traffic', JSON.stringify(trafficData));
+            } catch (e) {}
+
+            // Header scroll
+            const header = document.querySelector('.header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 40) header?.classList.add('scrolled');
+                else header?.classList.remove('scrolled');
+            });
+
+            // Theme Manager
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const savedTheme = localStorage.getItem('fit_theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                if (themeToggleBtn) themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeToggleBtn?.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light-theme');
+                localStorage.setItem('fit_theme', isLight ? 'light' : 'dark');
+                themeToggleBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+
+            // Auth State Controller
+            const signInBtn = document.getElementById('signInButton');
+            const userInfo = document.getElementById('userInfo');
+            const avatarImg = document.getElementById('userAvatarImg');
+            const avatarInitials = document.getElementById('userAvatarInitials');
+            const signOutBtn = document.getElementById('signOutButton');
+
+            if (auth) {
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        if (signInBtn) signInBtn.style.display = 'none';
+                        if (userInfo) userInfo.style.display = 'flex';
+                        if (user.photoURL && avatarImg) {
+                            avatarImg.src = user.photoURL;
+                            avatarImg.style.display = 'block';
+                            if (avatarInitials) avatarInitials.style.display = 'none';
+                        } else if (avatarInitials) {
+                            const name = user.displayName || user.email || 'User';
+                            avatarInitials.innerText = name.charAt(0).toUpperCase();
+                            avatarInitials.style.display = 'flex';
+                            if (avatarImg) avatarImg.style.display = 'none';
+                        }
+                    } else {
+                        if (signInBtn) signInBtn.style.display = 'inline-flex';
+                        if (userInfo) userInfo.style.display = 'none';
+                    }
+                });
+
+                signInBtn?.addEventListener('click', async () => {
+                    try {
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        await auth.signInWithPopup(provider);
+                    } catch (err) {
+                        console.error('Google Sign In Error:', err);
+                    }
+                });
+
+                signOutBtn?.addEventListener('click', async () => {
+                    try {
+                        await auth.signOut();
+                    } catch (err) {
+                        console.error('Sign Out Error:', err);
+                    }
+                });
+            }
+
+            // Mobile Menu
+            const hamburger = document.getElementById('hamburgerBtn');
+            const navMenu = document.getElementById('navMenu');
+            hamburger?.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu?.classList.toggle('active');
+            });
+
+            // ----------------------------------------------------
+            // Live Recipes Storage & Renderer Engine
+            // ----------------------------------------------------
+            if (!localStorage.getItem('fit_admin_recipes')) {
+                localStorage.setItem('fit_admin_recipes', JSON.stringify(defaultRecipes));
+            }
+
+            let liveRecipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]');
+            if (!liveRecipes || liveRecipes.length === 0) {
+                liveRecipes = defaultRecipes;
+            }
+
+            const recipesGrid = document.getElementById('recipesGrid');
+            const categoryBtns = document.querySelectorAll('.diet-toggle-btn');
+            const mealBtns = document.querySelectorAll('.meal-filter-btn');
+            const searchInput = document.getElementById('recipeSearchInput');
+
+            let currentCategory = 'all';
+            let currentMeal = 'all';
+            let searchQuery = '';
+
+            function renderLiveRecipes() {
+                if (!recipesGrid) return;
+
+                const filtered = liveRecipes.filter(r => {
+                    const matchesCategory = (currentCategory === 'all' || r.type === currentCategory);
+                    const mealStr = (r.meal || '').toLowerCase();
+                    const matchesMeal = (currentMeal === 'all' || mealStr.includes(currentMeal));
+                    const searchStr = searchQuery.toLowerCase();
+                    const matchesSearch = (!searchQuery || 
+                        r.title.toLowerCase().includes(searchStr) || 
+                        (r.desc && r.desc.toLowerCase().includes(searchStr)) ||
+                        (r.ingredients && r.ingredients.join(' ').toLowerCase().includes(searchStr))
+                    );
+                    return matchesCategory && matchesMeal && matchesSearch;
+                });
+
+                if (filtered.length === 0) {
+                    recipesGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                            <i class="fas fa-utensils" style="font-size: 3rem; opacity: 0.3; margin-bottom: 16px; display: block;"></i>
+                            <h3 style="color: var(--text-main); margin-bottom: 8px;">No matching recipes found</h3>
+                            <p style="font-size: 0.95rem;">Try choosing another meal filter or clearing your search keywords.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                recipesGrid.innerHTML = filtered.map(r => {
+                    const isVeg = r.type === 'veg';
+                    const typeIndicator = isVeg
+                        ? `<span class="recipe-type-indicator"><i class="fas fa-leaf"></i> 100% Pure Veg</span>`
+                        : `<span class="recipe-type-indicator"><i class="fas fa-drumstick-bite"></i> Lean Protein</span>`;
+
+                    const ingredientsChips = (r.ingredients || []).slice(0, 4).map(ing => `
+                        <span class="ing-chip">${escapeHtml(ing)}</span>
+                    `).join('');
+
+                    return `
+                        <div class="recipe-card type-${r.type}" data-type="${r.type}" data-meal="${escapeHtml(r.meal || '')}" data-id="${r.id}">
+                            <div class="recipe-card-banner">
+                                ${typeIndicator}
+                                <span class="recipe-time-pill"><i class="far fa-clock"></i> ${escapeHtml(r.cookTime || r.prepTime || '10 Mins')}</span>
+                            </div>
+                            <div class="recipe-body">
+                                <h3 class="recipe-title">${escapeHtml(r.title)}</h3>
+                                <p class="recipe-desc">${escapeHtml(r.desc || '')}</p>
+                                
+                                <div class="recipe-macro-grid">
+                                    <div class="macro-box-item protein">
+                                        <span class="macro-val">${escapeHtml(r.protein || '0g')}</span>
+                                        <span class="macro-lbl">Protein</span>
+                                    </div>
+                                    <div class="macro-box-item calories">
+                                        <span class="macro-val">${escapeHtml(r.calories || '0 kcal')}</span>
+                                        <span class="macro-lbl">Calories</span>
+                                    </div>
+                                    <div class="macro-box-item carbs">
+                                        <span class="macro-val">${escapeHtml(r.carbs || '0g')}</span>
+                                        <span class="macro-lbl">Carbs</span>
+                                    </div>
+                                    <div class="macro-box-item fats">
+                                        <span class="macro-val">${escapeHtml(r.fats || '0g')}</span>
+                                        <span class="macro-lbl">Fats</span>
+                                    </div>
+                                </div>
+
+                                <div class="recipe-key-ingredients">
+                                    ${ingredientsChips}
+                                </div>
+
+                                <div class="recipe-card-footer">
+                                    <button class="btn btn-primary btn-block open-recipe-btn" data-id="${r.id}">
+                                        <i class="fas fa-book-open"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Attach modal triggers
+                document.querySelectorAll('.open-recipe-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const recipeId = btn.getAttribute('data-id');
+                        openRecipeModal(recipeId);
+                    });
+                });
+            }
+
+            // Render Initial
+            renderLiveRecipes();
+
+            // Filter Event Listeners
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.getAttribute('data-type');
+                    renderLiveRecipes();
+                });
+            });
+
+            mealBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    mealBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMeal = btn.getAttribute('data-meal');
+                    renderLiveRecipes();
+                });
+            });
+
+            searchInput?.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                renderLiveRecipes();
+            });
+
+            // ----------------------------------------------------
+            // Recipe Modal Controller
+            // ----------------------------------------------------
+            const modalBackdrop = document.getElementById('recipeModalBackdrop');
+            const modalCloseBtn = document.getElementById('recipeModalCloseBtn');
+            const modalContent = document.getElementById('recipeModalContent');
+
+            function openRecipeModal(recipeId) {
+                const recipe = liveRecipes.find(r => r.id === recipeId);
+                if (!recipe || !modalContent) return;
+
+                const isVeg = recipe.type === 'veg';
+                const typeBadge = isVeg 
+                    ? `<span class="recipe-type-indicator" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4);"><i class="fas fa-leaf"></i> 100% Pure Vegetarian</span>`
+                    : `<span class="recipe-type-indicator" style="background: rgba(244, 63, 94, 0.2); color: #F43F5E; border: 1px solid rgba(244, 63, 94, 0.4);"><i class="fas fa-drumstick-bite"></i> Lean Protein Non-Veg</span>`;
+
+                const ingredientsList = (recipe.ingredients || []).map(ing => `
+                    <li style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 0.92rem;">
+                        <i class="fas fa-check-circle" style="color: ${isVeg ? '#10B981' : '#F43F5E'}; margin-top: 4px;"></i>
+                        <span>${escapeHtml(ing)}</span>
+                    </li>
+                `).join('');
+
+                const instructionsList = (recipe.instructions || []).map(inst => `
+                    <li>${escapeHtml(inst)}</li>
+                `).join('');
+
+                const whatsappMsg = encodeURIComponent(`Hi Coach Rajashekar, I'm cooking the recipe "${recipe.title}" (${recipe.protein} Protein, ${recipe.calories}) and want to add it to my diet plan!`);
+
+                modalContent.innerHTML = `
+                    <div style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        ${typeBadge}
+                        <span style="font-size: 0.84rem; color: var(--text-muted);"><i class="far fa-clock"></i> Prep: ${escapeHtml(recipe.prepTime || '')} | Cook: ${escapeHtml(recipe.cookTime || '')}</span>
+                    </div>
+                    
+                    <h2 style="font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px; line-height: 1.3;">
+                        ${escapeHtml(recipe.title)}
+                    </h2>
+
+                    <!-- Nutrition Bar -->
+                    <div class="recipe-macro-grid" style="margin-bottom: 24px;">
+                        <div class="macro-box-item protein">
+                            <span class="macro-val">${escapeHtml(recipe.protein || '')}</span>
+                            <span class="macro-lbl">Protein</span>
+                        </div>
+                        <div class="macro-box-item calories">
+                            <span class="macro-val">${escapeHtml(recipe.calories || '')}</span>
+                            <span class="macro-lbl">Calories</span>
+                        </div>
+                        <div class="macro-box-item carbs">
+                            <span class="macro-val">${escapeHtml(recipe.carbs || '')}</span>
+                            <span class="macro-lbl">Carbs</span>
+                        </div>
+                        <div class="macro-box-item fats">
+                            <span class="macro-val">${escapeHtml(recipe.fats || '')}</span>
+                            <span class="macro-lbl">Fats</span>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Section -->
+                    <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">
+                        <i class="fas fa-carrot" style="color: var(--primary); margin-right: 8px;"></i> Ingredients & Exact Quantities:
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 24px;">
+                        ${ingredientsList}
+                    </ul>
+
+                    <!-- Step by Step Prep -->
+                    <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">
+                        <i class="fas fa-fire-burner" style="color: var(--primary); margin-right: 8px;"></i> Step-by-Step Cooking Steps:
+                    </h4>
+                    <div class="recipe-modal-instructions">
+                        <ol>
+                            ${instructionsList}
+                        </ol>
+                    </div>
+
+                    <!-- Coach Tip -->
+                    <div class="coach-recipe-tip">
+                        <strong style="color: var(--primary); display: block; margin-bottom: 4px;"><i class="fas fa-lightbulb"></i> Coach Rajashekar's Nutrition Pro-Tip:</strong>
+                        ${escapeHtml(recipe.coachTip || 'Focus on portion control and steady daily hydration.')}
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
+                        <a href="https://wa.me/918187808710?text=${whatsappMsg}" target="_blank" rel="noopener" class="btn btn-primary" style="flex: 1; min-width: 220px;">
+                            <i class="fab fa-whatsapp"></i> Ask Coach About this Meal
+                        </a>
+                        <button class="btn btn-outline" id="copyRecipeBtn" style="padding: 12px 20px;">
+                            <i class="fas fa-copy"></i> Copy Recipe
+                        </button>
+                    </div>
+                `;
+
+                modalBackdrop.classList.add('open');
+
+                // Copy recipe handler
+                document.getElementById('copyRecipeBtn')?.addEventListener('click', () => {
+                    const copyText = `${recipe.title}\n\nMacros: ${recipe.protein} Protein | ${recipe.calories} | ${recipe.carbs} Carbs | ${recipe.fats} Fats\n\nIngredients:\n- ${(recipe.ingredients || []).join('\n- ')}\n\nInstructions:\n${(recipe.instructions || []).map((ins, i) => `${i+1}. ${ins}`).join('\n')}\n\nCoach Tip: ${recipe.coachTip || ''}`;
+                    navigator.clipboard.writeText(copyText).then(() => {
+                        alert('Recipe copied to clipboard!');
+                    });
+                });
+            }
+
+            modalCloseBtn?.addEventListener('click', () => {
+                modalBackdrop.classList.remove('open');
+            });
+
+            modalBackdrop?.addEventListener('click', (e) => {
+                if (e.target === modalBackdrop) {
+                    modalBackdrop.classList.remove('open');
+                }
+            });
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+        });
+    </script>
+</body>
+</html>
