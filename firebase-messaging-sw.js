@@ -1,15 +1,15 @@
 importScripts("https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js");
 
-// Initialize Firebase in Service Worker (Configured via Admin Settings)
+// Initialize Firebase in Service Worker
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: ""
+  apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
+  authDomain: "mnr-devops-2e97d.firebaseapp.com",
+  projectId: "mnr-devops-2e97d",
+  storageBucket: "mnr-devops-2e97d.firebasestorage.app",
+  messagingSenderId: "464172080556",
+  appId: "1:464172080556:web:97cecddd2e236f387aee09",
+  measurementId: "G-9SXTYCDF9W"
 };
 
 if (firebaseConfig.apiKey && typeof firebase !== 'undefined') {

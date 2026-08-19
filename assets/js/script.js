@@ -3,15 +3,15 @@
  * Master Script: Auth, Interactive Tools, Booking, & UI State
  */
 
-// Firebase Configuration (Loaded dynamically from Coach Admin Settings)
+// Firebase Configuration (Dynamic with Admin Override Support)
 const defaultFirebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
-    measurementId: ""
+    apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
+    authDomain: "mnr-devops-2e97d.firebaseapp.com",
+    projectId: "mnr-devops-2e97d",
+    storageBucket: "mnr-devops-2e97d.firebasestorage.app",
+    messagingSenderId: "464172080556",
+    appId: "1:464172080556:web:97cecddd2e236f387aee09",
+    measurementId: "G-9SXTYCDF9W"
 };
 
 let firebaseConfig = defaultFirebaseConfig;
