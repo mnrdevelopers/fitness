@@ -877,6 +877,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('firebase-messaging-sw.js')
+                .then(reg => console.log('[Client PWA] Service Worker registered with scope:', reg.scope))
+                .catch(err => console.warn('[Client PWA] Service Worker registration failed:', err));
+        });
+    }
+
     // PWA Install Prompt handling
     let deferredPrompt;
     const installBtn = document.getElementById('pwaInstallBtn');

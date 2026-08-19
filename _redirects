@@ -1,0 +1,6 @@
+# Netlify Clean URL Redirects & PWA Routing
+/admin      /admin.html      200
+/recipes    /recipes.html    200
+/results    /results.html    200
+/tools      /tools.html      200
+/login      /login.html      200
