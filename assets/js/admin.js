@@ -640,7 +640,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (err.code === 'auth/popup-closed-by-user') {
                     showAdminToast('Sign-in cancelled. Please retry or enter Security PIN.', 'info');
                 } else if (err.code === 'auth/unauthorized-domain') {
-                    showAdminToast('Domain authorization in progress. Please enter Security PIN.', 'error');
+                    loginError.innerHTML = '<strong>Firebase Setup Required:</strong> Add <code>fitnesshealthylifestyle.netlify.app</code> to Firebase Console &rarr; Auth &rarr; Settings &rarr; Authorized Domains.<br><small style="color: var(--primary);">You can also enter your Master PIN below to unlock immediately.</small>';
+                    loginError.style.display = 'block';
+                    showAdminToast('Domain authorization needed in Firebase Console.', 'error');
                 } else {
                     showAdminToast('Authentication notice: Please verify credentials.', 'error');
                 }

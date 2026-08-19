@@ -208,9 +208,11 @@
                     googleLoginBtn.innerHTML = '<i class="fab fa-google" style="font-size: 1.2rem;"></i> <span>Continue with Google</span>';
 
                     if (err.code === 'auth/popup-closed-by-user') {
-                        noticeEl.textContent = 'Sign-in cancelled. Please click the button to try again.';
+                        noticeEl.textContent = 'Sign-in window closed. Please click below to try again.';
+                    } else if (err.code === 'auth/unauthorized-domain') {
+                        noticeEl.innerHTML = '<strong>Domain Authorization Required:</strong> Add <code>fitnesshealthylifestyle.netlify.app</code> to Firebase Console &rarr; Authentication &rarr; Settings &rarr; Authorized Domains.';
                     } else {
-                        noticeEl.textContent = 'Sign-in issue: ' + (err.message || 'Please retry.');
+                        noticeEl.textContent = 'Sign-in notice: ' + (err.message || 'Please retry.');
                     }
                     noticeEl.style.display = 'block';
                 }
