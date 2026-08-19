@@ -7,9 +7,13 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Coach Rajashekar | Master Admin Command Center</title>
     
-    <!-- Favicon & PWA Manifest -->
+    <!-- Favicon, Apple Touch & Dedicated Admin PWA Manifest -->
     <link rel="icon" type="image/png" href="assets/images/icon.png">
-    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/images/icon.png">
+    <link rel="manifest" href="admin-manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coach Admin">
     
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,10 +58,16 @@
                 <i class="fab fa-google" style="color: #EA4335;"></i> Verify with Google Account
             </button>
 
+            <!-- 1-Click Install Admin PWA Button -->
+            <button type="button" id="adminGateInstallBtn" class="btn btn-outline btn-block" style="display: none; margin-top: 14px; border-color: var(--primary); color: var(--primary); padding: 12px; font-size: 0.9rem;">
+                <i class="fas fa-download"></i> Install Coach Admin App
+            </button>
+
             <div style="margin-top: 24px;">
                 <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">
                     <i class="fas fa-arrow-left"></i> Return to Live Website
                 </a>
+            </div>
             </div>
         </div>
     </div>
@@ -150,6 +160,9 @@
                 </div>
 
                 <div class="admin-topbar-right">
+                    <button id="adminTopbarInstallBtn" class="btn btn-outline" style="display: none; padding: 8px 14px; font-size: 0.85rem; border-color: var(--primary); color: var(--primary);">
+                        <i class="fas fa-download"></i> <span class="hide-mobile-text">Install App</span>
+                    </button>
                     <a href="index.html" target="_blank" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.85rem;">
                         <i class="fas fa-external-link-alt"></i> <span class="hide-mobile-text">View Site</span>
                     </a>

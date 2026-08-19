@@ -1660,6 +1660,52 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/'/g, '&#039;');
     }
 
+    // ------------------------------------------------------------------------
+    // 9. Dedicated Admin PWA Registration & Install Handler
+    // ------------------------------------------------------------------------
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('admin-sw.js', { scope: './' })
+                .then(reg => console.log('[Admin PWA] Service Worker registered with scope:', reg.scope))
+                .catch(err => console.warn('[Admin PWA] Service Worker registration failed:', err));
+        });
+    }
+
+    let adminDeferredPrompt = null;
+    const adminGateInstallBtn = document.getElementById('adminGateInstallBtn');
+    const adminTopbarInstallBtn = document.getElementById('adminTopbarInstallBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        adminDeferredPrompt = e;
+        if (adminGateInstallBtn) adminGateInstallBtn.style.display = 'block';
+        if (adminTopbarInstallBtn) adminTopbarInstallBtn.style.display = 'inline-flex';
+    });
+
+    async function triggerAdminPwaInstall() {
+        if (!adminDeferredPrompt) {
+            showAdminToast('To install: open browser menu (3 dots or Share) and select "Add to Home screen"', 'info');
+            return;
+        }
+        adminDeferredPrompt.prompt();
+        const { outcome } = await adminDeferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            showAdminToast('Coach Admin App installed successfully!', 'success');
+        }
+        adminDeferredPrompt = null;
+        if (adminGateInstallBtn) adminGateInstallBtn.style.display = 'none';
+        if (adminTopbarInstallBtn) adminTopbarInstallBtn.style.display = 'none';
+    }
+
+    adminGateInstallBtn?.addEventListener('click', triggerAdminPwaInstall);
+    adminTopbarInstallBtn?.addEventListener('click', triggerAdminPwaInstall);
+
+    window.addEventListener('appinstalled', () => {
+        showAdminToast('Coach Admin App installed on your device!', 'success');
+        if (adminGateInstallBtn) adminGateInstallBtn.style.display = 'none';
+        if (adminTopbarInstallBtn) adminTopbarInstallBtn.style.display = 'none';
+    });
+
     // Check auth on boot
     checkAuth();
 });
