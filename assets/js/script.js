@@ -35,7 +35,7 @@ if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
     }
 }
 
-const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+const auth = (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) ? firebase.auth() : null;
 
 // --------------------------------------------------------------------------
 // Toast Notification Utility
@@ -49,21 +49,16 @@ function showToast(message, type = 'info') {
     
     const icons = {
         success: 'fa-check-circle',
-        error: 'fa-exclamation-circle',
-        warning: 'fa-exclamation-triangle',
+        error: 'fa-exclamation-triangle',
         info: 'fa-info-circle'
     };
     
-    toast.innerHTML = `
-        <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
-        <span>${message}</span>
-    `;
-    
+    toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> <span>${escapeHtml(message)}</span>`;
     document.body.appendChild(toast);
     
     setTimeout(() => {
         toast.classList.add('fade-out');
-        setTimeout(() => toast.remove(), 350);
+        setTimeout(() => toast.remove(), 400);
     }, 3500);
 }
 
@@ -91,14 +86,23 @@ function initThemeToggle() {
 // Firebase Authentication
 // --------------------------------------------------------------------------
 function initAuth() {
-    if (!auth) return;
-
     const signInBtn = document.getElementById('signInButton');
     const signOutBtn = document.getElementById('signOutButton');
     const userInfo = document.getElementById('userInfo');
     const userAvatar = document.querySelector('.user-avatar');
     const authNotice = document.getElementById('authRequiredMessage');
     const formFields = document.getElementById('formFields');
+
+    if (!auth) {
+        signInBtn?.addEventListener('click', () => {
+            window.location.href = 'login.html';
+        });
+        document.getElementById('signInButtonForm')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+        return;
+    }
 
     // Google Sign In
     const handleGoogleSignIn = () => {

@@ -133,7 +133,7 @@
             }
         }
 
-        const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+        const auth = (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) ? firebase.auth() : null;
 
         // Get redirect parameter from URL (e.g. ?redirect=tools.html)
         const urlParams = new URLSearchParams(window.location.search);
@@ -198,7 +198,7 @@
 
             googleLoginBtn?.addEventListener('click', async () => {
                 if (!auth) {
-                    noticeEl.textContent = 'Authentication service is initializing. Please try again.';
+                    noticeEl.innerHTML = '<strong>Setup Notice:</strong> Firebase credentials are not yet configured. Please save your Firebase keys under <a href="admin.html" style="color: var(--primary); text-decoration: underline;">Coach Admin &rarr; Site & Security</a>.';
                     noticeEl.style.display = 'block';
                     return;
                 }

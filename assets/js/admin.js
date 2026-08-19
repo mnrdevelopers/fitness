@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     googleLoginBtn?.addEventListener('click', async () => {
-        if (typeof firebase !== 'undefined' && firebase.auth) {
+        if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length && firebase.auth) {
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
@@ -659,7 +659,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 pinInput.focus();
             }
         } else {
-            showAdminToast('Firebase Auth service loading. Please enter Master PIN.', 'info');
+            loginError.innerHTML = '<strong>Firebase Setup:</strong> Please enter your <strong>Master PIN</strong> to unlock dashboard and configure Firebase keys under <em>Site & Security</em>.';
+            loginError.style.display = 'block';
+            showAdminToast('Please enter Master PIN to unlock.', 'info');
             pinInput.focus();
         }
     });

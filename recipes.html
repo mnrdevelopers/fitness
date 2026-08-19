@@ -616,7 +616,7 @@
             } catch (e) {}
         }
 
-        const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+        const auth = (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) ? firebase.auth() : null;
 
         function hideLoader() {
             const loader = document.getElementById('pageLoader');
