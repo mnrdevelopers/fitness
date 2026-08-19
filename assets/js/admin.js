@@ -40,55 +40,59 @@ document.addEventListener('DOMContentLoaded', () => {
     // Default Programs Catalog with Specifications
     const defaultProgramsCatalog = [
         {
-            id: 'prog-pt',
-            title: 'Personal Training',
-            icon: 'fas fa-dumbbell',
-            desc: 'Dedicated 1-on-1 workout routines, form correction, and progressive overload tracking.',
-            originalPrice: 999,
-            price: 699,
-            duration: '/ month',
-            discount: '30% OFF',
-            featured: false,
-            features: [
-                'Custom Home/Gym Workout Split',
-                'Video Exercise Form Analysis',
-                'Weekly Strength Progress Review',
-                'WhatsApp Support'
-            ]
-        },
-        {
-            id: 'prog-combo',
-            title: 'Total Body Transformation',
-            icon: 'fas fa-fire',
-            desc: 'Complete workout coaching + tailored nutrition planning + weekly body recomposition checks.',
-            originalPrice: 2999,
-            price: 1699,
-            duration: '/ 3 months',
-            discount: '45% OFF',
-            featured: true,
-            features: [
-                'Complete Training & Workout Protocol',
-                'Customized Macro & Calorie Meal Plan',
-                'Weekly Weight & Measurement Audits',
-                '24/7 Priority WhatsApp Consultation',
-                'Supplement Guidance & Recipe E-book'
-            ]
-        },
-        {
             id: 'prog-diet',
-            title: 'Custom Diet Planning',
+            title: 'Customized Diet Plan',
             icon: 'fas fa-utensils',
-            desc: 'Personalized nutrition guide crafted around your regional food preferences, budget, and targets.',
+            desc: 'Science-backed, macro-calculated nutrition tailored to your regional food preferences, budget, and body transformation targets.',
             originalPrice: 499,
             price: 199,
             duration: '/ month',
             discount: '60% OFF',
             featured: false,
             features: [
-                'Tailored Macro & Micro Breakdown',
-                'Veg / Non-Veg / Vegan Options',
-                'Grocery Checklist & Easy Meal Prep',
-                'Bi-weekly Calorie Adjustments'
+                '100% Customized Macro-Calculated Diet Plan',
+                'Veg / Non-Veg / Eggetarian Custom Options',
+                'Practical Grocery Checklist & Easy Meal Prep Guide',
+                'Evidence-Based Supplement Suggestions & Timing',
+                'Bi-Weekly Calorie & Milestone Adjustments'
+            ]
+        },
+        {
+            id: 'prog-pt',
+            title: 'Personal Training & Transformation',
+            icon: 'fas fa-dumbbell',
+            desc: 'Complete end-to-end fitness coaching combining customized diet, tailored workout regimes, and continuous daily accountability.',
+            originalPrice: 1499,
+            price: 849,
+            duration: '/ month',
+            discount: '43% OFF',
+            featured: true,
+            features: [
+                '100% Customized Diet & Nutrition Plan',
+                'Customized Workout Plan (Home or Gym Split)',
+                'Daily Progress Tracking & WhatsApp Accountability',
+                'Weekly Check-ins & Form Correction Audits',
+                'Evidence-Based Supplement Suggestions',
+                '24/7 Priority WhatsApp Consultation with Coach Rajashekar'
+            ]
+        },
+        {
+            id: 'prog-one-on-one',
+            title: 'Elite 1-on-1 VIP Live Training',
+            icon: 'fas fa-video',
+            desc: 'Dedicated private 1-on-1 coaching with 5 live online classes per week, real-time form correction, and direct VIP mentorship.',
+            originalPrice: 6999,
+            price: 3999,
+            duration: '/ month',
+            discount: 'VIP Flagship',
+            featured: false,
+            features: [
+                'Direct 1-on-1 Private Live Training Sessions',
+                '5 Live Online Classes per Week (Mon–Fri)',
+                'Real-Time Live Technique & Form Correction',
+                'Complete Custom Diet & Workout Protocol Included',
+                'Daily Live Guidance, Motivation & 24/7 VIP Access',
+                'Weekly Body Metrics, Strength & Recomposition Audits'
             ]
         }
     ];
@@ -671,9 +675,26 @@ document.addEventListener('DOMContentLoaded', () => {
         themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     });
 
-    // Navigation Tabs
+    // Navigation Tabs & Mobile Drawer
     const navItems = document.querySelectorAll('.admin-nav-item');
     const sections = document.querySelectorAll('.admin-section-panel');
+    const sidebarToggleBtn = document.getElementById('adminSidebarToggleBtn');
+    const adminSidebar = document.querySelector('.admin-sidebar');
+    const adminSidebarBackdrop = document.getElementById('adminSidebarBackdrop');
+
+    const toggleMobileSidebar = (forceClose = false) => {
+        if (!adminSidebar) return;
+        if (forceClose) {
+            adminSidebar.classList.remove('open');
+            adminSidebarBackdrop?.classList.remove('active');
+        } else {
+            adminSidebar.classList.toggle('open');
+            adminSidebarBackdrop?.classList.toggle('active');
+        }
+    };
+
+    sidebarToggleBtn?.addEventListener('click', () => toggleMobileSidebar());
+    adminSidebarBackdrop?.addEventListener('click', () => toggleMobileSidebar(true));
 
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -686,6 +707,11 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             const targetSection = document.getElementById(targetId);
             if (targetSection) targetSection.classList.add('active');
+
+            // Close sidebar drawer on mobile
+            if (window.innerWidth <= 992) {
+                toggleMobileSidebar(true);
+            }
         });
     });
 

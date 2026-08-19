@@ -466,13 +466,80 @@ function initContactForm() {
 // --------------------------------------------------------------------------
 function syncDynamicProgramsAndPricing() {
     try {
-        const programsGrid = document.querySelector('#services .services-grid');
-        const savedPrograms = JSON.parse(localStorage.getItem('fit_admin_programs') || 'null');
+        const defaultProgramsCatalog = [
+            {
+                id: 'prog-diet',
+                title: 'Customized Diet Plan',
+                icon: 'fas fa-utensils',
+                desc: 'Science-backed, macro-calculated nutrition tailored to your regional food preferences, budget, and transformation targets.',
+                originalPrice: 499,
+                price: 199,
+                duration: '/ month',
+                discount: '60% OFF',
+                featured: false,
+                features: [
+                    '100% Customized Macro-Calculated Diet Plan',
+                    'Veg / Non-Veg / Eggetarian Custom Options',
+                    'Practical Grocery Checklist & Easy Meal Prep Guide',
+                    'Evidence-Based Supplement Suggestions & Timing',
+                    'Bi-Weekly Calorie & Milestone Adjustments'
+                ]
+            },
+            {
+                id: 'prog-pt',
+                title: 'Personal Training & Transformation',
+                icon: 'fas fa-dumbbell',
+                desc: 'Complete end-to-end fitness coaching combining customized diet, tailored workout regimes, and continuous daily accountability.',
+                originalPrice: 1499,
+                price: 849,
+                duration: '/ month',
+                discount: '43% OFF',
+                featured: true,
+                features: [
+                    '100% Customized Diet & Nutrition Plan',
+                    'Customized Workout Plan (Home or Gym Split)',
+                    'Daily Progress Tracking & WhatsApp Accountability',
+                    'Weekly Check-ins & Form Correction Audits',
+                    'Evidence-Based Supplement Suggestions',
+                    '24/7 Priority WhatsApp Consultation with Coach Rajashekar'
+                ]
+            },
+            {
+                id: 'prog-one-on-one',
+                title: 'Elite 1-on-1 VIP Live Training',
+                icon: 'fas fa-video',
+                desc: 'Dedicated private 1-on-1 coaching with 5 live online classes per week, real-time form correction, and direct VIP mentorship.',
+                originalPrice: 6999,
+                price: 3999,
+                duration: '/ month',
+                discount: 'VIP Flagship',
+                featured: false,
+                features: [
+                    'Direct 1-on-1 Private Live Training Sessions',
+                    '5 Live Online Classes per Week (Mon–Fri)',
+                    'Real-Time Live Technique & Form Correction',
+                    'Complete Custom Diet & Workout Protocol Included',
+                    'Daily Live Guidance, Motivation & 24/7 VIP Access',
+                    'Weekly Body Metrics, Strength & Recomposition Audits'
+                ]
+            }
+        ];
+
+        let savedPrograms = JSON.parse(localStorage.getItem('fit_admin_programs') || 'null');
         
+        // Auto-upgrade if previous storage had legacy catalog format
+        if (!savedPrograms || !Array.isArray(savedPrograms) || !savedPrograms.some(p => p.id === 'prog-one-on-one')) {
+            savedPrograms = defaultProgramsCatalog;
+            localStorage.setItem('fit_admin_programs', JSON.stringify(defaultProgramsCatalog));
+        }
+
+        const programsGrid = document.querySelector('#services .services-grid');
         if (programsGrid && savedPrograms && savedPrograms.length > 0) {
             programsGrid.innerHTML = savedPrograms.map(prog => {
                 const isFeatured = !!prog.featured;
-                const ribbonHtml = isFeatured ? `<div class="featured-ribbon">Most Popular</div>` : '';
+                const ribbonHtml = isFeatured 
+                    ? `<div class="featured-ribbon">Most Popular</div>` 
+                    : (prog.discount === 'VIP Flagship' ? `<div class="featured-ribbon" style="background: linear-gradient(135deg, #00F0FF, #0080FF); color: #0A0D14;">VIP Coaching</div>` : '');
                 const origPriceHtml = prog.originalPrice 
                     ? `<span class="original-price">₹${Number(prog.originalPrice).toLocaleString('en-IN')}</span>` 
                     : '';
@@ -517,7 +584,7 @@ function syncDynamicProgramsAndPricing() {
                                 data-service="${escapeHtml(prog.title)}" 
                                 data-price="${escapeHtml(formattedPrice)}" 
                                 data-whatsapp="+918187808710">
-                            <i class="fab fa-whatsapp"></i> ${isFeatured ? 'Start Transformation' : 'Choose Program'}
+                            <i class="fab fa-whatsapp"></i> ${isFeatured ? 'Start Transformation' : (prog.id === 'prog-one-on-one' ? 'Book 1-on-1 VIP' : 'Choose Plan')}
                         </button>
                     </div>
                 `;
@@ -641,6 +708,134 @@ function recordProgramInterest(programTitle, price = '') {
 }
 
 // --------------------------------------------------------------------------
+// Interactive "Choose Your Fitness Goal" Selector
+// --------------------------------------------------------------------------
+function initGoalSelector() {
+    const goalChips = document.querySelectorAll('.goal-chip-btn');
+    const recTitle = document.getElementById('goalRecTitle');
+    const recDesc = document.getElementById('goalRecDesc');
+    const recBtn = document.getElementById('goalRecActionBtn');
+
+    if (!goalChips.length || !recTitle) return;
+
+    const goalData = {
+        fatloss: {
+            title: 'Recommended: Personal Training & Transformation (₹849/mo)',
+            desc: 'Comprehensive gym/home workout regimen + custom nutrition blueprint + daily accountability to burn stubborn fat fast.',
+            msg: 'Hi Coach Rajashekar, my goal is Fat Loss & Shred. I want to enroll in Personal Training (₹849/mo).'
+        },
+        muscle: {
+            title: 'Recommended: Personal Training & Transformation (₹849/mo)',
+            desc: 'Hypertrophy-focused progressive overload split + high-protein diet calculations + weekly strength progression audits.',
+            msg: 'Hi Coach Rajashekar, my goal is Lean Muscle & Bulk. I want to enroll in Personal Training (₹849/mo).'
+        },
+        livevip: {
+            title: 'Recommended: Elite 1-on-1 VIP Live Training (₹3,999/mo)',
+            desc: 'Dedicated private daily live coaching with 5 live online classes per week and continuous real-time form correction.',
+            msg: 'Hi Coach Rajashekar, I want to join the Elite 1-on-1 VIP Live Training (₹3,999/mo) with 5 live classes per week.'
+        },
+        dietonly: {
+            title: 'Recommended: Customized Diet Plan (₹199/mo)',
+            desc: 'Science-backed macro breakdown tailored to your food habits, lifestyle schedule, and metabolic wellness.',
+            msg: 'Hi Coach Rajashekar, I would like to get a 100% Customized Diet Plan (₹199/mo).'
+        }
+    };
+
+    goalChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            goalChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+
+            const goalKey = chip.getAttribute('data-goal') || 'fatloss';
+            const data = goalData[goalKey] || goalData.fatloss;
+
+            recTitle.textContent = data.title;
+            recDesc.textContent = data.desc;
+            if (recBtn) {
+                recBtn.href = `https://wa.me/918187808710?text=${encodeURIComponent(data.msg)}`;
+            }
+
+            // Highlight corresponding program card in #services
+            const targetProg = chip.getAttribute('data-rec-prog');
+            if (targetProg) {
+                document.querySelectorAll('#services .service-card').forEach(card => {
+                    const h3 = card.querySelector('h3');
+                    if (h3 && h3.textContent.trim().toLowerCase().includes(targetProg.toLowerCase().slice(0, 15))) {
+                        card.style.transition = 'transform 0.4s ease, border-color 0.4s ease';
+                        card.style.borderColor = 'var(--primary)';
+                        card.style.transform = 'translateY(-6px)';
+                        setTimeout(() => {
+                            card.style.transform = '';
+                        }, 1200);
+                    }
+                });
+            }
+        });
+    });
+}
+
+// --------------------------------------------------------------------------
+// Animated Number Counters on Scroll
+// --------------------------------------------------------------------------
+function initAnimatedCounters() {
+    const counterElements = document.querySelectorAll('.stat-number[data-count]');
+    if (!counterElements.length) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.getAttribute('data-count'), 10);
+                if (isNaN(target)) return;
+
+                let start = 0;
+                const duration = 1400;
+                const startTime = performance.now();
+
+                function updateNumber(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Ease out quart
+                    const ease = 1 - Math.pow(1 - progress, 4);
+                    const current = Math.round(start + (target - start) * ease);
+                    el.textContent = `${current}%`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        el.textContent = `${target}%`;
+                    }
+                }
+
+                requestAnimationFrame(updateNumber);
+                obs.unobserve(el);
+            }
+        });
+    }, { threshold: 0.35 });
+
+    counterElements.forEach(el => observer.observe(el));
+}
+
+// --------------------------------------------------------------------------
+// Scroll Reveal Animations
+// --------------------------------------------------------------------------
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal-init');
+    if (!revealElements.length) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal-visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => observer.observe(el));
+}
+
+// --------------------------------------------------------------------------
 // General App Initializations & DOM Listeners
 // --------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -710,4 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFAQAccordion();
     initWhatsAppBooking();
     initContactForm();
+    initGoalSelector();
+    initAnimatedCounters();
+    initScrollReveal();
 });

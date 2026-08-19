@@ -177,6 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navMenu?.classList.toggle('active');
     });
 
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger?.classList.remove('active');
+            navMenu?.classList.remove('active');
+        });
+    });
+
     // Header scroll
     const header = document.querySelector('.header');
     window.addEventListener('scroll', () => {

@@ -354,7 +354,7 @@
         <div class="result-card-highlight" style="margin-top: 60px; padding: 48px 30px; text-align: center;">
             <span class="section-tag">Your Turn Next</span>
             <h2 class="section-title">Ready to Write Your <span class="highlight-text">Transformation Story?</span></h2>
-            <p class="section-subtitle" style="margin-bottom: 30px;">Join 500+ successful clients who transformed their body, mindset, and health with 1-on-1 coaching.</p>
+            <p class="section-subtitle" style="margin-bottom: 30px;">Join our community of successful clients who transformed their body, mindset, and health with 1-on-1 coaching.</p>
             <a href="https://wa.me/918187808710?text=Hi%20Coach%20Rajashekar%2C%20I%20am%20ready%20to%20start%20my%20personal%20fitness%20transformation%21" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 16px 36px; font-size: 1.05rem; box-shadow: 0 8px 25px var(--primary-glow);">
                 <i class="fab fa-whatsapp"></i> Chat with Coach Rajashekar on WhatsApp
             </a>
@@ -483,6 +483,13 @@
             hamburger?.addEventListener('click', () => {
                 hamburger.classList.toggle('active');
                 navMenu?.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger?.classList.remove('active');
+                    navMenu?.classList.remove('active');
+                });
             });
 
             // Header scroll

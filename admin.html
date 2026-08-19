@@ -131,19 +131,27 @@
             </div>
         </aside>
 
+        <!-- Sidebar Backdrop (for mobile) -->
+        <div id="adminSidebarBackdrop" class="admin-sidebar-backdrop"></div>
+
         <!-- Main Content Area -->
         <main class="admin-main-viewport">
             
             <!-- Top App Bar -->
             <header class="admin-topbar">
                 <div class="admin-topbar-left">
-                    <h2 class="admin-topbar-title">Coach Command Center</h2>
-                    <span class="admin-live-badge"><i class="fas fa-circle"></i> Live Website Connected</span>
+                    <button id="adminSidebarToggleBtn" class="admin-mobile-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div>
+                        <h2 class="admin-topbar-title">Coach Command Center</h2>
+                        <span class="admin-live-badge"><i class="fas fa-circle"></i> Live Connected</span>
+                    </div>
                 </div>
 
                 <div class="admin-topbar-right">
-                    <a href="index.html" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">
-                        <i class="fas fa-external-link-alt"></i> View Live Site
+                    <a href="index.html" target="_blank" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.85rem;">
+                        <i class="fas fa-external-link-alt"></i> <span class="hide-mobile-text">View Site</span>
                     </a>
                     <button class="theme-toggle-btn" id="adminThemeToggle" title="Toggle Theme" aria-label="Toggle Theme">
                         <i class="fas fa-moon"></i>

@@ -635,6 +635,12 @@
                 localStorage.setItem('fit_analytics_traffic', JSON.stringify(trafficData));
             } catch (e) {}
 
+            // Hide Loader
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                setTimeout(() => loader.classList.add('loaded'), 350);
+            }
+
             // Header scroll
             const header = document.querySelector('.header');
             window.addEventListener('scroll', () => {
@@ -710,6 +716,13 @@
                 navMenu?.classList.toggle('active');
             });
 
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger?.classList.remove('active');
+                    navMenu?.classList.remove('active');
+                });
+            });
+
             // ----------------------------------------------------
             // Live Recipes Storage & Renderer Engine
             // ----------------------------------------------------
@@ -724,7 +737,7 @@
 
             const recipesGrid = document.getElementById('recipesGrid');
             const categoryBtns = document.querySelectorAll('.diet-toggle-btn');
-            const mealBtns = document.querySelectorAll('.meal-filter-btn');
+            const mealBtns = document.querySelectorAll('.meal-chip-btn');
             const searchInput = document.getElementById('recipeSearchInput');
 
             let currentCategory = 'all';
