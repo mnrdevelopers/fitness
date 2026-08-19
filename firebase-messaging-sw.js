@@ -4,7 +4,7 @@ importScripts("https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-comp
 // Initialize Firebase in Service Worker
 firebase.initializeApp({
   apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
-  authDomain: "mnr-devops-2e97d.firebaseapp.com",
+  authDomain: "fitnesshealthylifestyle.netlify.app",
   projectId: "mnr-devops-2e97d",
   storageBucket: "mnr-devops-2e97d.firebasestorage.app",
   messagingSenderId: "464172080556",
