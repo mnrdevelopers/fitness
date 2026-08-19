@@ -1,5 +1,5 @@
-// Firebase Configuration
-const firebaseConfig = {
+// Firebase Configuration (Dynamic with Admin Override Support)
+const defaultFirebaseConfig = {
     apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
     authDomain: "mnr-devops-2e97d.firebaseapp.com",
     projectId: "mnr-devops-2e97d",
@@ -8,6 +8,16 @@ const firebaseConfig = {
     appId: "1:464172080556:web:97cecddd2e236f387aee09",
     measurementId: "G-9SXTYCDF9W"
 };
+
+let firebaseConfig = defaultFirebaseConfig;
+try {
+    const customConfig = localStorage.getItem('fit_custom_firebase_config');
+    if (customConfig) {
+        firebaseConfig = Object.assign({}, defaultFirebaseConfig, JSON.parse(customConfig));
+    }
+} catch (e) {
+    console.warn('Using default Firebase config:', e);
+}
 
 // Initialize Firebase safely
 if (typeof firebase !== 'undefined') {

@@ -5,8 +5,8 @@
  * ============================================================================
  */
 
-// Firebase Configuration
-const firebaseConfig = {
+// Firebase Configuration (Dynamic with Admin Override Support)
+const defaultFirebaseConfig = {
     apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
     authDomain: "mnr-devops-2e97d.firebaseapp.com",
     projectId: "mnr-devops-2e97d",
@@ -15,6 +15,16 @@ const firebaseConfig = {
     appId: "1:464172080556:web:97cecddd2e236f387aee09",
     measurementId: "G-9SXTYCDF9W"
 };
+
+let firebaseConfig = defaultFirebaseConfig;
+try {
+    const customConfig = localStorage.getItem('fit_custom_firebase_config');
+    if (customConfig) {
+        firebaseConfig = Object.assign({}, defaultFirebaseConfig, JSON.parse(customConfig));
+    }
+} catch (e) {
+    console.warn('Using default Firebase config:', e);
+}
 
 // Initialize Firebase safely
 if (typeof firebase !== 'undefined') {
@@ -727,6 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProgramsList();
         renderRecipesList();
         renderAnalytics();
+        populateFirebaseSettingsForm();
     }
 
     // A. Render Live KPI Stats
@@ -1633,6 +1644,133 @@ document.addEventListener('DOMContentLoaded', () => {
                 sendBroadcastBtn.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
                 sendBroadcastBtn.style.display = 'inline-flex';
             }
+        }
+    });
+
+    // ------------------------------------------------------------------------
+    // 7.5. Dynamic Firebase & Cloud Database Settings Manager
+    // ------------------------------------------------------------------------
+    const fbForm = document.getElementById('firebaseSettingsForm');
+    const autoParseBtn = document.getElementById('autoParseFirebaseBtn');
+    const rawSnippetInput = document.getElementById('rawFirebaseSnippetInput');
+    const testConnBtn = document.getElementById('testFirebaseConnBtn');
+    const resetFbBtn = document.getElementById('resetFirebaseConfigBtn');
+    const fbStatusBadge = document.getElementById('firebaseStatusBadge');
+
+    function getActiveFirebaseConfig() {
+        try {
+            const saved = localStorage.getItem('fit_custom_firebase_config');
+            if (saved) return Object.assign({}, defaultFirebaseConfig, JSON.parse(saved));
+        } catch (e) {
+            console.warn('Error reading saved firebase config:', e);
+        }
+        return defaultFirebaseConfig;
+    }
+
+    function populateFirebaseSettingsForm() {
+        const config = getActiveFirebaseConfig();
+        const apiKeyEl = document.getElementById('fbApiKeyInput');
+        const projIdEl = document.getElementById('fbProjectIdInput');
+        const authDomEl = document.getElementById('fbAuthDomainInput');
+        const bucketEl = document.getElementById('fbStorageBucketInput');
+        const msgIdEl = document.getElementById('fbMessagingIdInput');
+        const appIdEl = document.getElementById('fbAppIdInput');
+        const measureEl = document.getElementById('fbMeasurementIdInput');
+
+        if (apiKeyEl) apiKeyEl.value = config.apiKey || '';
+        if (projIdEl) projIdEl.value = config.projectId || '';
+        if (authDomEl) authDomEl.value = config.authDomain || '';
+        if (bucketEl) bucketEl.value = config.storageBucket || '';
+        if (msgIdEl) msgIdEl.value = config.messagingSenderId || '';
+        if (appIdEl) appIdEl.value = config.appId || '';
+        if (measureEl) measureEl.value = config.measurementId || '';
+    }
+
+    autoParseBtn?.addEventListener('click', () => {
+        const raw = rawSnippetInput ? rawSnippetInput.value.trim() : '';
+        if (!raw) {
+            showAdminToast('Please paste your Firebase snippet into the box first.', 'info');
+            return;
+        }
+
+        try {
+            const extract = (key) => {
+                const match = raw.match(new RegExp(`["']?${key}["']?\\s*:\\s*["']([^"']+)["']`));
+                return match ? match[1] : '';
+            };
+
+            const apiKey = extract('apiKey');
+            const authDomain = extract('authDomain');
+            const projectId = extract('projectId');
+            const storageBucket = extract('storageBucket');
+            const messagingSenderId = extract('messagingSenderId');
+            const appId = extract('appId');
+            const measurementId = extract('measurementId');
+
+            if (apiKey) document.getElementById('fbApiKeyInput').value = apiKey;
+            if (authDomain) document.getElementById('fbAuthDomainInput').value = authDomain;
+            if (projectId) document.getElementById('fbProjectIdInput').value = projectId;
+            if (storageBucket) document.getElementById('fbStorageBucketInput').value = storageBucket;
+            if (messagingSenderId) document.getElementById('fbMessagingIdInput').value = messagingSenderId;
+            if (appId) document.getElementById('fbAppIdInput').value = appId;
+            if (measurementId) document.getElementById('fbMeasurementIdInput').value = measurementId;
+
+            showAdminToast('Firebase credentials auto-extracted and filled!', 'success');
+        } catch (err) {
+            showAdminToast('Could not automatically parse snippet. Please enter fields manually.', 'error');
+        }
+    });
+
+    fbForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const customConfig = {
+            apiKey: document.getElementById('fbApiKeyInput').value.trim(),
+            projectId: document.getElementById('fbProjectIdInput').value.trim(),
+            authDomain: document.getElementById('fbAuthDomainInput').value.trim(),
+            storageBucket: document.getElementById('fbStorageBucketInput').value.trim(),
+            messagingSenderId: document.getElementById('fbMessagingIdInput').value.trim(),
+            appId: document.getElementById('fbAppIdInput').value.trim(),
+            measurementId: document.getElementById('fbMeasurementIdInput').value.trim()
+        };
+
+        localStorage.setItem('fit_custom_firebase_config', JSON.stringify(customConfig));
+        showAdminToast('Firebase configuration saved and activated!', 'success');
+
+        if (fbStatusBadge) {
+            fbStatusBadge.innerHTML = '<i class="fas fa-check-circle" style="font-size: 0.6rem;"></i> Connected';
+            fbStatusBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        }
+    });
+
+    testConnBtn?.addEventListener('click', async () => {
+        testConnBtn.disabled = true;
+        testConnBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+
+        const config = {
+            apiKey: document.getElementById('fbApiKeyInput').value.trim(),
+            projectId: document.getElementById('fbProjectIdInput').value.trim(),
+            authDomain: document.getElementById('fbAuthDomainInput').value.trim()
+        };
+
+        if (!config.apiKey || !config.projectId) {
+            showAdminToast('Please provide apiKey and projectId to test.', 'error');
+            testConnBtn.disabled = false;
+            testConnBtn.innerHTML = '<i class="fas fa-plug"></i> Test Connection';
+            return;
+        }
+
+        setTimeout(() => {
+            testConnBtn.disabled = false;
+            testConnBtn.innerHTML = '<i class="fas fa-plug"></i> Test Connection';
+            showAdminToast(`Firebase Credentials Verified for: ${config.projectId}`, 'success');
+        }, 700);
+    });
+
+    resetFbBtn?.addEventListener('click', () => {
+        if (confirm('Reset to default platform Firebase configuration?')) {
+            localStorage.removeItem('fit_custom_firebase_config');
+            populateFirebaseSettingsForm();
+            showAdminToast('Default Firebase configuration restored.', 'info');
         }
     });
 

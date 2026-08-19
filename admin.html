@@ -789,6 +789,94 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Firebase & Realtime Database API Keys Management -->
+                    <div class="admin-card-surface" style="max-width: 700px; margin-top: 30px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="logo-icon-box" style="width: 36px; height: 36px; font-size: 1.1rem; background: rgba(245, 196, 94, 0.15); color: var(--primary);">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; margin: 0;">Firebase & Cloud Database Keys</h4>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Paste or update your Firebase security configuration dynamically.</p>
+                                </div>
+                            </div>
+                            <span id="firebaseStatusBadge" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-full); font-size: 0.76rem; font-weight: 700; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3);">
+                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i> Active
+                            </span>
+                        </div>
+
+                        <!-- Quick Paste Raw Config Snippet Box -->
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="rawFirebaseSnippetInput">
+                                <span>Paste Raw Firebase Config Snippet (Optional)</span>
+                                <small style="color: var(--text-sub); font-weight: 400; display: block;">Paste directly from Firebase Console &rarr; Project Settings</small>
+                            </label>
+                            <textarea id="rawFirebaseSnippetInput" rows="3" class="input-custom" style="font-family: monospace; font-size: 0.82rem;" placeholder='const firebaseConfig = { apiKey: "...", authDomain: "...", projectId: "...", ... };'></textarea>
+                            <button type="button" id="autoParseFirebaseBtn" class="btn btn-outline" style="margin-top: 8px; padding: 6px 14px; font-size: 0.82rem;">
+                                <i class="fas fa-magic"></i> Auto-Fill Fields From Snippet
+                            </button>
+                        </div>
+
+                        <!-- Individual Key Inputs Form -->
+                        <form id="firebaseSettingsForm" style="margin-top: 18px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbApiKeyInput">API Key (apiKey)</label>
+                                    <input type="text" id="fbApiKeyInput" class="input-custom" placeholder="AIzaSy..." required>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbProjectIdInput">Project ID (projectId)</label>
+                                    <input type="text" id="fbProjectIdInput" class="input-custom" placeholder="mnr-devops-..." required>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbAuthDomainInput">Auth Domain (authDomain)</label>
+                                    <input type="text" id="fbAuthDomainInput" class="input-custom" placeholder="project.firebaseapp.com" required>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbStorageBucketInput">Storage Bucket (storageBucket)</label>
+                                    <input type="text" id="fbStorageBucketInput" class="input-custom" placeholder="project.firebasestorage.app">
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbMessagingIdInput">Messaging Sender ID</label>
+                                    <input type="text" id="fbMessagingIdInput" class="input-custom" placeholder="464172080556">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom" for="fbAppIdInput">App ID (appId)</label>
+                                    <input type="text" id="fbAppIdInput" class="input-custom" placeholder="1:464172080556:web:...">
+                                </div>
+                            </div>
+
+                            <div class="form-group-custom" style="margin-top: 14px;">
+                                <label class="form-label-custom" for="fbMeasurementIdInput">Measurement ID (G-Tag / Analytics)</label>
+                                <input type="text" id="fbMeasurementIdInput" class="input-custom" placeholder="G-9SXTYCDF9W">
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                                <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">
+                                    <i class="fas fa-save"></i> Save & Activate Keys
+                                </button>
+                                <button type="button" id="testFirebaseConnBtn" class="btn btn-outline" style="padding: 10px 16px; font-size: 0.9rem;">
+                                    <i class="fas fa-plug"></i> Test Connection
+                                </button>
+                                <button type="button" id="resetFirebaseConfigBtn" class="btn btn-outline" style="padding: 10px 16px; font-size: 0.9rem; color: #EF4444; border-color: rgba(239, 68, 68, 0.4);">
+                                    <i class="fas fa-undo"></i> Reset Default
+                                </button>
+                            </div>
+                        </form>
+
+                        <div style="margin-top: 20px; padding: 12px 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--text-sub); line-height: 1.5;">
+                            <i class="fas fa-shield-alt" style="color: var(--primary); margin-right: 6px;"></i>
+                            <strong>Security Note:</strong> Firebase client keys identify your project. Your database and user records are protected by Firebase Server Rules & Authorized Domains in Google Cloud Console.
+                        </div>
+                    </div>
                 </section>
 
             </div>
