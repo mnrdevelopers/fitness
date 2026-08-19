@@ -1,12 +1,12 @@
-// Firebase Configuration (Dynamic with Admin Override Support)
+// Firebase Configuration (Loaded dynamically from Coach Admin Settings)
 const defaultFirebaseConfig = {
-    apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
-    authDomain: "mnr-devops-2e97d.firebaseapp.com",
-    projectId: "mnr-devops-2e97d",
-    storageBucket: "mnr-devops-2e97d.firebasestorage.app",
-    messagingSenderId: "464172080556",
-    appId: "1:464172080556:web:97cecddd2e236f387aee09",
-    measurementId: "G-9SXTYCDF9W"
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
 };
 
 let firebaseConfig = defaultFirebaseConfig;
@@ -16,11 +16,11 @@ try {
         firebaseConfig = Object.assign({}, defaultFirebaseConfig, JSON.parse(customConfig));
     }
 } catch (e) {
-    console.warn('Using default Firebase config:', e);
+    console.warn('Firebase config notice:', e);
 }
 
-// Initialize Firebase safely
-if (typeof firebase !== 'undefined') {
+// Initialize Firebase safely only if configured
+if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
     try {
         if (!firebase.apps || !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);

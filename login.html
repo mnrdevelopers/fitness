@@ -104,15 +104,15 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
     <script>
-        // Firebase Configuration (Dynamic with Admin Override Support)
+        // Firebase Configuration (Loaded dynamically from Coach Admin Settings)
         const defaultFirebaseConfig = {
-            apiKey: "AIzaSyBp1yyC1IF_rmOWwFdZRcbcsCHNbJ3Sdro",
-            authDomain: "mnr-devops-2e97d.firebaseapp.com",
-            projectId: "mnr-devops-2e97d",
-            storageBucket: "mnr-devops-2e97d.firebasestorage.app",
-            messagingSenderId: "464172080556",
-            appId: "1:464172080556:web:97cecddd2e236f387aee09",
-            measurementId: "G-9SXTYCDF9W"
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: "",
+            measurementId: ""
         };
 
         let firebaseConfig = defaultFirebaseConfig;
@@ -122,11 +122,15 @@
                 firebaseConfig = Object.assign({}, defaultFirebaseConfig, JSON.parse(customConfig));
             }
         } catch (e) {
-            console.warn('Using default Firebase config:', e);
+            console.warn('Firebase config notice:', e);
         }
 
-        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        if (typeof firebase !== 'undefined' && firebaseConfig.apiKey && !firebase.apps.length) {
+            try {
+                firebase.initializeApp(firebaseConfig);
+            } catch (e) {
+                console.warn('Firebase init notice:', e);
+            }
         }
 
         const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
