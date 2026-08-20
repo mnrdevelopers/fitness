@@ -111,6 +111,10 @@
                     <i class="fas fa-utensils"></i>
                     <span>Diet Recipes Manager</span>
                 </a>
+                <a href="#products" class="admin-nav-item" data-target="panelProducts">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Products & Affiliate Gear</span>
+                </a>
                 <a href="#analytics" class="admin-nav-item" data-target="panelAnalytics">
                     <i class="fas fa-chart-pie"></i>
                     <span>Visitors & User Tracking</span>
@@ -554,6 +558,43 @@
                     </div>
                 </section>
 
+                <!-- PANEL 4.5: PRODUCTS & AFFILIATE GEAR MANAGER -->
+                <section id="panelProducts" class="admin-section-panel">
+                    <div class="admin-panel-header">
+                        <div>
+                            <h3 class="admin-panel-title">Products & Affiliate Gear Manager</h3>
+                            <p class="admin-panel-sub">Manage recommended supplements, gear, diet foods, affiliate links, and exclusive coupon codes synced across the website.</p>
+                        </div>
+                        <div>
+                            <button id="openAddProductBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.88rem;">
+                                <i class="fas fa-plus"></i> Add New Product
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Products Filter & Search Bar -->
+                    <div class="admin-card-surface" style="margin-bottom: 24px; padding: 18px 24px;">
+                        <div style="display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                            <div style="display: flex; gap: 12px; flex: 1; min-width: 280px;">
+                                <input type="text" id="adminProductSearchInput" class="input-custom" placeholder="Search products by title, category, or coupon code..." style="padding: 9px 16px;">
+                                <select id="adminProductCategoryFilter" class="input-custom" style="width: 190px; padding: 9px 14px;">
+                                    <option value="all">All Categories</option>
+                                    <option value="supplements">Supplements & Whey</option>
+                                    <option value="gear">Gym Gear & Accessories</option>
+                                    <option value="diet">Diet & Healthy Foods</option>
+                                    <option value="equipment">Lifting Equipment</option>
+                                </select>
+                            </div>
+                            <span id="adminProductCountBadge" class="service-pill-tag">6 Products Live</span>
+                        </div>
+                    </div>
+
+                    <!-- Admin Products Grid -->
+                    <div id="adminProductsGrid" class="admin-programs-grid">
+                        <!-- Dynamic product cards rendered by admin.js -->
+                    </div>
+                </section>
+
                 <!-- PANEL 5: VISITORS & USER TRACKING ANALYTICS -->
                 <section id="panelAnalytics" class="admin-section-panel">
                     <div class="admin-panel-header">
@@ -863,6 +904,9 @@
                                 <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">
                                     <i class="fas fa-save"></i> Save & Activate Keys
                                 </button>
+                                <button type="button" id="forceSyncCloudBtn" class="btn btn-outline" style="padding: 10px 16px; font-size: 0.9rem; color: var(--primary); border-color: var(--primary);">
+                                    <i class="fas fa-cloud-upload-alt"></i> Push Catalog to Cloud
+                                </button>
                                 <button type="button" id="testFirebaseConnBtn" class="btn btn-outline" style="padding: 10px 16px; font-size: 0.9rem;">
                                     <i class="fas fa-plug"></i> Test Connection
                                 </button>
@@ -966,9 +1010,107 @@
         </div>
     </div>
 
+    <!-- Product Create / Edit Modal -->
+    <div id="productModal" class="admin-modal-overlay">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3 id="productModalTitle" class="admin-modal-title">Add Affiliate Product</h3>
+                <button type="button" id="closeProductModalBtn" class="admin-modal-close" aria-label="Close Modal">&times;</button>
+            </div>
+            <form id="productEditorForm">
+                <input type="hidden" id="prodEditIdInput" value="">
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="prodEditTitleInput">Product Title</label>
+                    <input type="text" id="prodEditTitleInput" class="input-custom" placeholder="e.g. Optimum Nutrition (ON) Gold Standard Whey Protein" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditCategorySelect">Category</label>
+                        <select id="prodEditCategorySelect" class="input-custom">
+                            <option value="supplements">💊 Supplements & Whey</option>
+                            <option value="gear">🏋️ Gym Gear & Accessories</option>
+                            <option value="diet">🥗 Diet & Healthy Foods</option>
+                            <option value="equipment">⛓️ Lifting Equipment</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditRatingInput">Star Rating (1.0 to 5.0)</label>
+                        <input type="number" step="0.1" min="1" max="5" id="prodEditRatingInput" class="input-custom" placeholder="4.9" value="4.9" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditPriceInput">Offer Price (₹)</label>
+                        <input type="number" id="prodEditPriceInput" class="input-custom" placeholder="e.g. 3299" required>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditOrigPriceInput">MRP / Original (₹)</label>
+                        <input type="number" id="prodEditOrigPriceInput" class="input-custom" placeholder="e.g. 4199">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditDiscountInput">Discount Ribbon</label>
+                        <input type="text" id="prodEditDiscountInput" class="input-custom" placeholder="e.g. 21% OFF" value="20% OFF">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditCouponInput">Coupon / Promo Code (Optional)</label>
+                        <input type="text" id="prodEditCouponInput" class="input-custom" placeholder="e.g. COACHRAJ">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label class="form-label-custom" for="prodEditImageInput">Product Image URL</label>
+                        <input type="url" id="prodEditImageInput" class="input-custom" placeholder="https://..." value="https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=600&q=80">
+                    </div>
+                </div>
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="prodEditAffiliateUrlInput">Affiliate / Buy Link URL</label>
+                    <input type="url" id="prodEditAffiliateUrlInput" class="input-custom" placeholder="https://www.amazon.in/dp/... or brand store URL" required>
+                </div>
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="prodEditDescInput">Short Description</label>
+                    <textarea id="prodEditDescInput" rows="2" class="input-custom" placeholder="Brief specs and features of the product..." required></textarea>
+                </div>
+
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="prodEditCoachTipInput">Coach Rajashekar's Recommendation Note</label>
+                    <input type="text" id="prodEditCoachTipInput" class="input-custom" placeholder="e.g. Gold standard post-workout fuel. Zero bloat, rapid absorption." required>
+                </div>
+
+                <div class="form-group-custom" style="margin: 16px 0;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-main); font-weight: 600;">
+                        <input type="checkbox" id="prodEditFeaturedInput" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span>Highlight as "Coach Top Choice" Badge</span>
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-glass);">
+                    <button type="button" id="cancelProductModalBtn" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> Save & Publish Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <!-- Centralized Cloud DB & Sync Layer -->
+    <script src="assets/js/firebase-db.js"></script>
+
     <script src="assets/js/admin.js"></script>
 </body>
 </html>

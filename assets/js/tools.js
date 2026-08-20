@@ -33,59 +33,14 @@ if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
 const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
 
 function recordTrafficAndVisit(pageName = 'Fitness Calculator Tools') {
-    try {
-        const trafficData = JSON.parse(localStorage.getItem('fit_analytics_traffic') || '{"totalVisits": 0, "uniqueVisitors": 0, "visitsLog": []}');
-        trafficData.totalVisits = (trafficData.totalVisits || 0) + 1;
-        
-        let visitorId = localStorage.getItem('fit_visitor_id');
-        if (!visitorId) {
-            visitorId = 'vis_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('fit_visitor_id', visitorId);
-            trafficData.uniqueVisitors = (trafficData.uniqueVisitors || 0) + 1;
-        }
-
-        const visitEntry = {
-            id: 'v_' + Date.now(),
-            page: pageName,
-            time: new Date().toISOString().slice(0, 16).replace('T', ' '),
-            device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile Device' : 'Desktop / PC',
-            visitorId
-        };
-
-        if (!trafficData.visitsLog) trafficData.visitsLog = [];
-        trafficData.visitsLog.unshift(visitEntry);
-        if (trafficData.visitsLog.length > 50) trafficData.visitsLog = trafficData.visitsLog.slice(0, 50);
-
-        localStorage.setItem('fit_analytics_traffic', JSON.stringify(trafficData));
-    } catch (e) {
-        console.warn('Traffic tracking notice:', e);
+    if (window.FitDB && window.FitDB.analytics) {
+        window.FitDB.analytics.recordVisit(pageName);
     }
 }
 
 function recordSignedInUser(user) {
-    if (!user) return;
-    try {
-        const usersList = JSON.parse(localStorage.getItem('fit_analytics_users') || '[]');
-        const existingIdx = usersList.findIndex(u => u.uid === user.uid || (u.email && u.email === user.email));
-        
-        const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        if (existingIdx >= 0) {
-            usersList[existingIdx].lastActive = now;
-            usersList[existingIdx].displayName = user.displayName || usersList[existingIdx].displayName || 'Member';
-            usersList[existingIdx].photoURL = user.photoURL || usersList[existingIdx].photoURL || '';
-        } else {
-            usersList.unshift({
-                uid: user.uid,
-                displayName: user.displayName || 'Fitness Member',
-                email: user.email || 'Email Private',
-                photoURL: user.photoURL || '',
-                joinedDate: now,
-                lastActive: now
-            });
-        }
-        localStorage.setItem('fit_analytics_users', JSON.stringify(usersList));
-    } catch (e) {
-        console.warn('User tracking notice:', e);
+    if (window.FitDB && window.FitDB.analytics) {
+        window.FitDB.analytics.syncUser(user);
     }
 }
 

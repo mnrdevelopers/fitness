@@ -732,14 +732,55 @@ document.addEventListener('DOMContentLoaded', () => {
     // ------------------------------------------------------------------------
     // 4. Dashboard Data Loading & Dynamic Engine
     // ------------------------------------------------------------------------
+    let dashboardListenersActive = false;
+
     function loadAllDashboardData() {
+        // Initial Local Render
         renderStats();
         renderLeadsTable();
         renderTransformationsList();
         renderProgramsList();
         renderRecipesList();
+        renderProductsList();
         renderAnalytics();
         populateFirebaseSettingsForm();
+
+        // Connect Real-Time Cloud Listeners if not already active
+        if (!dashboardListenersActive && window.FitDB) {
+            dashboardListenersActive = true;
+
+            // 1. Leads CRM live sync
+            window.FitDB.leads.listen(() => {
+                renderStats();
+                renderLeadsTable();
+            });
+
+            // 2. Transformations live sync
+            window.FitDB.transformations.listen(() => {
+                renderTransformationsList();
+                renderStats();
+            });
+
+            // 3. Programs & Pricing live sync
+            window.FitDB.programs.listen(() => {
+                renderProgramsList();
+            });
+
+            // 4. Recipes live sync
+            window.FitDB.recipes.listen(() => {
+                renderRecipesList();
+            });
+
+            // 4.5. Products & Affiliate Gear live sync
+            window.FitDB.products.listen(() => {
+                renderProductsList();
+            });
+
+            // 5. Analytics & Visitors live sync
+            window.FitDB.analytics.listenTraffic(() => renderAnalytics());
+            window.FitDB.analytics.listenIntent(() => renderAnalytics());
+            window.FitDB.analytics.listenUsers(() => renderAnalytics());
+        }
     }
 
     // A. Render Live KPI Stats
@@ -861,7 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Status Change Listeners
         document.querySelectorAll('.lead-status-select').forEach(select => {
             select.addEventListener('change', (e) => {
-                const leadId = e.target.getAttribute('data-id');
+                const leadId = select.getAttribute('data-id');
                 const newStatus = e.target.value;
                 updateLeadStatus(leadId, newStatus);
             });
@@ -878,19 +919,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function updateLeadStatus(id, newStatus) {
-        let leads = JSON.parse(localStorage.getItem('fit_admin_leads') || '[]');
-        leads = leads.map(l => l.id === id ? { ...l, status: newStatus } : l);
-        localStorage.setItem('fit_admin_leads', JSON.stringify(leads));
+    async function updateLeadStatus(id, newStatus) {
+        if (window.FitDB && window.FitDB.leads) {
+            await window.FitDB.leads.updateStatus(id, newStatus);
+        } else {
+            let leads = JSON.parse(localStorage.getItem('fit_admin_leads') || '[]');
+            leads = leads.map(l => l.id === id ? { ...l, status: newStatus } : l);
+            localStorage.setItem('fit_admin_leads', JSON.stringify(leads));
+        }
         renderStats();
         renderLeadsTable();
         showAdminToast(`Lead status updated to ${newStatus}`, 'success');
     }
 
-    function deleteLead(id) {
-        let leads = JSON.parse(localStorage.getItem('fit_admin_leads') || '[]');
-        leads = leads.filter(l => l.id !== id);
-        localStorage.setItem('fit_admin_leads', JSON.stringify(leads));
+    async function deleteLead(id) {
+        if (window.FitDB && window.FitDB.leads) {
+            await window.FitDB.leads.delete(id);
+        } else {
+            let leads = JSON.parse(localStorage.getItem('fit_admin_leads') || '[]');
+            leads = leads.filter(l => l.id !== id);
+            localStorage.setItem('fit_admin_leads', JSON.stringify(leads));
+        }
         renderStats();
         renderLeadsTable();
         showAdminToast('Lead deleted successfully.', 'info');
@@ -945,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tfListContainer.innerHTML = tfs.map(tf => `
             <div class="admin-tf-card">
-                <img src="${escapeHtml(tf.image)}" alt="${escapeHtml(tf.title)}" class="admin-tf-img">
+                <img src="${escapeHtml(tf.image)}" alt="${escapeHtml(tf.title)}" class="admin-tf-img" onerror="this.src='assets/images/result1.jpg'">
                 <div class="admin-tf-info" style="flex: 1;">
                     <h4>${escapeHtml(tf.title)}</h4>
                     <div class="admin-tf-badge"><i class="fas fa-tag"></i> ${escapeHtml((tf.category || 'all').toUpperCase())} • ${escapeHtml(tf.stats || '')}</div>
@@ -969,16 +1018,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function deleteTransformation(id) {
-        let tfs = JSON.parse(localStorage.getItem('fit_admin_transformations') || '[]');
-        tfs = tfs.filter(t => t.id !== id);
-        localStorage.setItem('fit_admin_transformations', JSON.stringify(tfs));
+    async function deleteTransformation(id) {
+        if (window.FitDB && window.FitDB.transformations) {
+            await window.FitDB.transformations.delete(id);
+        } else {
+            let tfs = JSON.parse(localStorage.getItem('fit_admin_transformations') || '[]');
+            tfs = tfs.filter(t => t.id !== id);
+            localStorage.setItem('fit_admin_transformations', JSON.stringify(tfs));
+        }
         renderTransformationsList();
         renderStats();
         showAdminToast('Transformation entry deleted.', 'info');
     }
 
-    addTfForm?.addEventListener('submit', (e) => {
+    addTfForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('tfTitleInput').value.trim();
         const category = document.getElementById('tfCategoryInput').value;
@@ -996,14 +1049,18 @@ document.addEventListener('DOMContentLoaded', () => {
             featured: true
         };
 
-        const tfs = JSON.parse(localStorage.getItem('fit_admin_transformations') || '[]');
-        tfs.unshift(newTf);
-        localStorage.setItem('fit_admin_transformations', JSON.stringify(tfs));
+        if (window.FitDB && window.FitDB.transformations) {
+            await window.FitDB.transformations.save(newTf);
+        } else {
+            const tfs = JSON.parse(localStorage.getItem('fit_admin_transformations') || '[]');
+            tfs.unshift(newTf);
+            localStorage.setItem('fit_admin_transformations', JSON.stringify(tfs));
+        }
 
         addTfForm.reset();
         renderTransformationsList();
         renderStats();
-        showAdminToast('New transformation story published!', 'success');
+        showAdminToast('New transformation story published live!', 'success');
     });
 
     // ------------------------------------------------------------------------
@@ -1156,7 +1213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Save Program Form Handler
-    programEditorForm?.addEventListener('submit', (e) => {
+    programEditorForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const id = progIdInput.value.trim() || ('prog-' + Date.now());
@@ -1188,26 +1245,33 @@ document.addEventListener('DOMContentLoaded', () => {
             features
         };
 
-        let programs = JSON.parse(localStorage.getItem('fit_admin_programs') || '[]');
-        const existingIdx = programs.findIndex(p => p.id === id);
-
-        if (existingIdx >= 0) {
-            programs[existingIdx] = newProgram;
-            showAdminToast(`Program "${title}" updated successfully.`, 'success');
+        if (window.FitDB && window.FitDB.programs) {
+            await window.FitDB.programs.save(newProgram);
         } else {
-            programs.push(newProgram);
-            showAdminToast(`New program "${title}" published to website!`, 'success');
+            let programs = JSON.parse(localStorage.getItem('fit_admin_programs') || '[]');
+            const existingIdx = programs.findIndex(p => p.id === id);
+
+            if (existingIdx >= 0) {
+                programs[existingIdx] = newProgram;
+            } else {
+                programs.push(newProgram);
+            }
+            localStorage.setItem('fit_admin_programs', JSON.stringify(programs));
         }
 
-        localStorage.setItem('fit_admin_programs', JSON.stringify(programs));
+        showAdminToast(`Program "${title}" saved and synced!`, 'success');
         closeProgramModal();
         renderProgramsList();
     });
 
-    function deleteProgram(id) {
-        let programs = JSON.parse(localStorage.getItem('fit_admin_programs') || '[]');
-        programs = programs.filter(p => p.id !== id);
-        localStorage.setItem('fit_admin_programs', JSON.stringify(programs));
+    async function deleteProgram(id) {
+        if (window.FitDB && window.FitDB.programs) {
+            await window.FitDB.programs.delete(id);
+        } else {
+            let programs = JSON.parse(localStorage.getItem('fit_admin_programs') || '[]');
+            programs = programs.filter(p => p.id !== id);
+            localStorage.setItem('fit_admin_programs', JSON.stringify(programs));
+        }
         renderProgramsList();
         showAdminToast('Program deleted from website.', 'info');
     }
@@ -1356,7 +1420,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelEditRecipeBtn?.addEventListener('click', resetRecipeForm);
 
-    adminRecipeForm?.addEventListener('submit', (e) => {
+    adminRecipeForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const editId = recipeEditId ? recipeEditId.value.trim() : '';
         const title = recipeTitleInput ? recipeTitleInput.value.trim() : '';
@@ -1373,39 +1437,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const instructions = recipeInstructionsInput ? recipeInstructionsInput.value.trim().split('\n').filter(i => i.trim()) : [];
         const coachTip = recipeCoachTipInput ? recipeCoachTipInput.value.trim() : '';
 
-        let recipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]');
+        const recipeRecord = {
+            id: editId || ('recipe_' + Date.now()),
+            title, type, meal, protein, calories, carbs, fats, prepTime, cookTime, desc, ingredients, instructions, coachTip
+        };
 
-        if (editId) {
-            const index = recipes.findIndex(r => r.id === editId);
-            if (index !== -1) {
-                recipes[index] = {
-                    ...recipes[index],
-                    title, type, meal, protein, calories, carbs, fats, prepTime, cookTime, desc, ingredients, instructions, coachTip
-                };
-                showAdminToast(`Recipe "${title}" updated live!`, 'success');
-            }
+        if (window.FitDB && window.FitDB.recipes) {
+            await window.FitDB.recipes.save(recipeRecord);
         } else {
-            const newRecipe = {
-                id: 'recipe_' + Date.now(),
-                title, type, meal, protein, calories, carbs, fats, prepTime, cookTime, desc, ingredients, instructions, coachTip
-            };
-            recipes.unshift(newRecipe);
-            showAdminToast(`New recipe "${title}" published live!`, 'success');
+            let recipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]');
+            if (editId) {
+                const index = recipes.findIndex(r => r.id === editId);
+                if (index !== -1) recipes[index] = recipeRecord;
+            } else {
+                recipes.unshift(recipeRecord);
+            }
+            localStorage.setItem('fit_admin_recipes', JSON.stringify(recipes));
         }
 
-        localStorage.setItem('fit_admin_recipes', JSON.stringify(recipes));
+        showAdminToast(`Recipe "${title}" saved and published live!`, 'success');
         resetRecipeForm();
         renderRecipesList();
     });
 
-    function deleteRecipe(id) {
+    async function deleteRecipe(id) {
         let recipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]');
         const recipe = recipes.find(r => r.id === id);
         if (!recipe) return;
 
         if (confirm(`Are you sure you want to delete the recipe "${recipe.title}" from the live kitchen?`)) {
-            recipes = recipes.filter(r => r.id !== id);
-            localStorage.setItem('fit_admin_recipes', JSON.stringify(recipes));
+            if (window.FitDB && window.FitDB.recipes) {
+                await window.FitDB.recipes.delete(id);
+            } else {
+                recipes = recipes.filter(r => r.id !== id);
+                localStorage.setItem('fit_admin_recipes', JSON.stringify(recipes));
+            }
             renderRecipesList();
             showAdminToast(`Recipe "${recipe.title}" deleted.`, 'info');
         }
@@ -1421,12 +1487,271 @@ document.addEventListener('DOMContentLoaded', () => {
         renderRecipesList();
     });
 
-    resetDefaultRecipesBtn?.addEventListener('click', () => {
+    resetDefaultRecipesBtn?.addEventListener('click', async () => {
         if (confirm('Reset all recipes to default coach catalog? Any custom additions will be refreshed.')) {
-            localStorage.setItem('fit_admin_recipes', JSON.stringify(defaultRecipesCatalog));
+            if (window.FitDB && window.FitDB.recipes) {
+                await window.FitDB.recipes.seedDefaults();
+            } else {
+                localStorage.setItem('fit_admin_recipes', JSON.stringify(defaultRecipesCatalog));
+            }
             renderRecipesList();
             showAdminToast('Recipes library restored to default.', 'success');
         }
+    });
+
+    // ------------------------------------------------------------------------
+    // 6.3. Products & Affiliate Gear Manager Engine
+    // ------------------------------------------------------------------------
+    const adminProductsGrid = document.getElementById('adminProductsGrid');
+    const productModal = document.getElementById('productModal');
+    const productModalTitle = document.getElementById('productModalTitle');
+    const productEditorForm = document.getElementById('productEditorForm');
+    const openAddProductBtn = document.getElementById('openAddProductBtn');
+    const closeProductModalBtn = document.getElementById('closeProductModalBtn');
+    const cancelProductModalBtn = document.getElementById('cancelProductModalBtn');
+
+    const prodEditIdInput = document.getElementById('prodEditIdInput');
+    const prodEditTitleInput = document.getElementById('prodEditTitleInput');
+    const prodEditCategorySelect = document.getElementById('prodEditCategorySelect');
+    const prodEditRatingInput = document.getElementById('prodEditRatingInput');
+    const prodEditPriceInput = document.getElementById('prodEditPriceInput');
+    const prodEditOrigPriceInput = document.getElementById('prodEditOrigPriceInput');
+    const prodEditDiscountInput = document.getElementById('prodEditDiscountInput');
+    const prodEditCouponInput = document.getElementById('prodEditCouponInput');
+    const prodEditImageInput = document.getElementById('prodEditImageInput');
+    const prodEditAffiliateUrlInput = document.getElementById('prodEditAffiliateUrlInput');
+    const prodEditDescInput = document.getElementById('prodEditDescInput');
+    const prodEditCoachTipInput = document.getElementById('prodEditCoachTipInput');
+    const prodEditFeaturedInput = document.getElementById('prodEditFeaturedInput');
+
+    const adminProductSearchInput = document.getElementById('adminProductSearchInput');
+    const adminProductCategoryFilter = document.getElementById('adminProductCategoryFilter');
+    const adminProductCountBadge = document.getElementById('adminProductCountBadge');
+
+    let adminProductSearchTerm = '';
+    let adminProductCategorySelected = 'all';
+
+    function renderProductsList() {
+        if (!adminProductsGrid) return;
+        const products = JSON.parse(localStorage.getItem('fit_admin_products') || '[]');
+
+        if (adminProductCountBadge) {
+            adminProductCountBadge.textContent = `${products.length} Products Live`;
+        }
+
+        const filtered = products.filter(p => {
+            const matchesCat = (adminProductCategorySelected === 'all' || p.category === adminProductCategorySelected);
+            const matchesSearch = (!adminProductSearchTerm || 
+                p.title.toLowerCase().includes(adminProductSearchTerm) ||
+                (p.couponCode && p.couponCode.toLowerCase().includes(adminProductSearchTerm)) ||
+                (p.desc && p.desc.toLowerCase().includes(adminProductSearchTerm))
+            );
+            return matchesCat && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            adminProductsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-glass);">
+                    <i class="fas fa-shopping-bag" style="font-size: 2.2rem; margin-bottom: 12px; opacity: 0.4; display: block;"></i>
+                    <h4 style="font-family: var(--font-heading); color: var(--text-main); margin-bottom: 6px;">No Products Found</h4>
+                    <p style="font-size: 0.88rem;">Click "+ Add New Product" to list a recommended supplement or gear item.</p>
+                </div>
+            `;
+            return;
+        }
+
+        adminProductsGrid.innerHTML = filtered.map(p => {
+            const isFeatured = !!p.featured;
+            const featuredBadge = isFeatured
+                ? `<span class="admin-prog-badge-featured"><i class="fas fa-crown"></i> Top Choice</span>`
+                : '';
+
+            return `
+                <div class="admin-prog-card ${isFeatured ? 'featured' : ''}" style="display: flex; flex-direction: column;">
+                    ${featuredBadge}
+                    <div style="display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px;">
+                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" style="width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); flex-shrink: 0;" onerror="this.src='https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=600&q=80'">
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.72rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">
+                                <i class="fas fa-tag"></i> ${escapeHtml(p.category || 'gear')} • ★ ${p.rating || 4.9}
+                            </div>
+                            <h4 style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; line-height: 1.3;">${escapeHtml(p.title)}</h4>
+                            <div style="font-size: 0.82rem; color: var(--text-sub);">
+                                <strong style="color: var(--primary); font-size: 1.05rem;">₹${Number(p.price).toLocaleString('en-IN')}</strong>
+                                ${p.originalPrice ? `<span style="text-decoration: line-through; opacity: 0.5; margin-left: 6px; font-size: 0.8rem;">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span>` : ''}
+                                ${p.discount ? `<span style="background: rgba(245, 196, 94, 0.15); color: var(--primary); font-size: 0.72rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">${escapeHtml(p.discount)}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        ${escapeHtml(p.desc || '')}
+                    </p>
+
+                    ${p.coachTip ? `
+                        <div style="background: rgba(255, 255, 255, 0.03); border-left: 2px solid var(--primary); padding: 8px 10px; font-size: 0.78rem; color: var(--text-sub); border-radius: 0 4px 4px 0; margin-bottom: 14px;">
+                            <strong style="color: var(--primary);"><i class="fas fa-quote-left" style="font-size: 0.7rem;"></i> Note:</strong> ${escapeHtml(p.coachTip)}
+                        </div>
+                    ` : ''}
+
+                    ${p.couponCode ? `
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 240, 255, 0.08); border: 1px dashed rgba(0, 240, 255, 0.3); padding: 6px 10px; border-radius: var(--radius-sm); font-size: 0.78rem; color: #00F0FF; margin-bottom: 14px;">
+                            <span><i class="fas fa-ticket-alt"></i> Code: <strong>${escapeHtml(p.couponCode)}</strong></span>
+                            <span style="font-size: 0.7rem; opacity: 0.8;">Active Deal</span>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-top: auto; display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border-glass);">
+                        <a href="${escapeHtml(p.affiliateUrl)}" target="_blank" rel="noopener" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.8rem;" title="View Live Affiliate Link">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <button class="btn btn-outline edit-product-btn" data-id="${p.id}" style="flex: 1; padding: 8px; font-size: 0.82rem;">
+                            <i class="fas fa-edit"></i> Edit Product
+                        </button>
+                        <button class="btn btn-outline delete-product-btn" data-id="${p.id}" style="padding: 8px 12px; font-size: 0.82rem; border-color: var(--accent-rose); color: #FFA5A5;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Attach Edit Listeners
+        document.querySelectorAll('.edit-product-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const prodId = btn.getAttribute('data-id');
+                openProductModal(prodId);
+            });
+        });
+
+        // Attach Delete Listeners
+        document.querySelectorAll('.delete-product-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const prodId = btn.getAttribute('data-id');
+                if (confirm('Delete this product from your recommended gear list?')) {
+                    deleteProduct(prodId);
+                }
+            });
+        });
+    }
+
+    function openProductModal(prodId = null) {
+        if (!productModal) return;
+
+        if (prodId) {
+            const products = JSON.parse(localStorage.getItem('fit_admin_products') || '[]');
+            const p = products.find(prod => prod.id === prodId);
+            if (p) {
+                productModalTitle.textContent = `Edit Product: ${p.title}`;
+                prodEditIdInput.value = p.id;
+                prodEditTitleInput.value = p.title || '';
+                prodEditCategorySelect.value = p.category || 'supplements';
+                prodEditRatingInput.value = p.rating || 4.9;
+                prodEditPriceInput.value = p.price || '';
+                prodEditOrigPriceInput.value = p.originalPrice || '';
+                prodEditDiscountInput.value = p.discount || '';
+                prodEditCouponInput.value = p.couponCode || '';
+                prodEditImageInput.value = p.image || '';
+                prodEditAffiliateUrlInput.value = p.affiliateUrl || '';
+                prodEditDescInput.value = p.desc || '';
+                prodEditCoachTipInput.value = p.coachTip || '';
+                prodEditFeaturedInput.checked = !!p.featured;
+            }
+        } else {
+            productModalTitle.textContent = 'Add Affiliate / Recommended Product';
+            productEditorForm.reset();
+            prodEditIdInput.value = '';
+            prodEditRatingInput.value = '4.9';
+            prodEditDiscountInput.value = '20% OFF';
+            prodEditImageInput.value = 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=600&q=80';
+            prodEditCoachTipInput.value = 'Coach Rajashekar personally verified for highest quality and clean macros.';
+        }
+
+        productModal.classList.add('active');
+    }
+
+    function closeProductModal() {
+        if (productModal) productModal.classList.remove('active');
+    }
+
+    openAddProductBtn?.addEventListener('click', () => openProductModal(null));
+    closeProductModalBtn?.addEventListener('click', closeProductModal);
+    cancelProductModalBtn?.addEventListener('click', closeProductModal);
+    productModal?.addEventListener('click', (e) => {
+        if (e.target === productModal) closeProductModal();
+    });
+
+    productEditorForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = prodEditIdInput.value.trim() || ('prod-' + Date.now());
+        const title = prodEditTitleInput.value.trim();
+        const category = prodEditCategorySelect.value;
+        const rating = Number(prodEditRatingInput.value) || 4.9;
+        const price = Number(prodEditPriceInput.value) || 0;
+        const originalPrice = prodEditOrigPriceInput.value ? Number(prodEditOrigPriceInput.value) : null;
+        const discount = prodEditDiscountInput.value.trim();
+        const couponCode = prodEditCouponInput.value.trim().toUpperCase();
+        const image = prodEditImageInput.value.trim() || 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=600&q=80';
+        const affiliateUrl = prodEditAffiliateUrlInput.value.trim();
+        const desc = prodEditDescInput.value.trim();
+        const coachTip = prodEditCoachTipInput.value.trim();
+        const featured = prodEditFeaturedInput.checked;
+
+        const newProduct = {
+            id,
+            title,
+            category,
+            rating,
+            price,
+            originalPrice,
+            discount,
+            couponCode,
+            image,
+            affiliateUrl,
+            desc,
+            coachTip,
+            featured
+        };
+
+        if (window.FitDB && window.FitDB.products) {
+            await window.FitDB.products.save(newProduct);
+        } else {
+            let products = JSON.parse(localStorage.getItem('fit_admin_products') || '[]');
+            const existingIdx = products.findIndex(p => p.id === id);
+            if (existingIdx >= 0) {
+                products[existingIdx] = newProduct;
+            } else {
+                products.unshift(newProduct);
+            }
+            localStorage.setItem('fit_admin_products', JSON.stringify(products));
+        }
+
+        showAdminToast(`Product "${title}" saved and synced live!`, 'success');
+        closeProductModal();
+        renderProductsList();
+    });
+
+    async function deleteProduct(id) {
+        if (window.FitDB && window.FitDB.products) {
+            await window.FitDB.products.delete(id);
+        } else {
+            let products = JSON.parse(localStorage.getItem('fit_admin_products') || '[]');
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('fit_admin_products', JSON.stringify(products));
+        }
+        renderProductsList();
+        showAdminToast('Product deleted from website.', 'info');
+    }
+
+    adminProductSearchInput?.addEventListener('input', (e) => {
+        adminProductSearchTerm = e.target.value.trim().toLowerCase();
+        renderProductsList();
+    });
+
+    adminProductCategoryFilter?.addEventListener('change', (e) => {
+        adminProductCategorySelected = e.target.value;
+        renderProductsList();
     });
 
     // ------------------------------------------------------------------------
@@ -1766,6 +2091,26 @@ document.addEventListener('DOMContentLoaded', () => {
             testConnBtn.innerHTML = '<i class="fas fa-plug"></i> Test Connection';
             showAdminToast(`Firebase Credentials Verified for: ${config.projectId}`, 'success');
         }, 700);
+    });
+
+    const forceSyncCloudBtn = document.getElementById('forceSyncCloudBtn');
+    forceSyncCloudBtn?.addEventListener('click', async () => {
+        forceSyncCloudBtn.disabled = true;
+        forceSyncCloudBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing to Cloud...';
+        try {
+            if (window.FitDB && window.FitDB.syncAllToCloud) {
+                await window.FitDB.syncAllToCloud();
+                showAdminToast('All Programs, Recipes & Transformations pushed to Firebase Cloud Firestore!', 'success');
+            } else {
+                showAdminToast('FitDB sync engine initializing...', 'info');
+            }
+        } catch (err) {
+            console.error(err);
+            showAdminToast('Cloud Sync Error: ' + (err.message || err), 'error');
+        } finally {
+            forceSyncCloudBtn.disabled = false;
+            forceSyncCloudBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Push Catalog to Cloud';
+        }
     });
 
     resetFbBtn?.addEventListener('click', () => {

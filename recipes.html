@@ -233,6 +233,10 @@
     <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <!-- Centralized Cloud DB & Sync Layer -->
+    <script src="assets/js/firebase-db.js"></script>
 
     <!-- Dynamic Recipe Engine & Interactive Controller Script -->
     <script>
@@ -746,17 +750,9 @@
             });
 
             // ----------------------------------------------------
-            // Live Recipes Storage & Renderer Engine
+            // Live Recipes Cloud Storage & Renderer Engine
             // ----------------------------------------------------
-            if (!localStorage.getItem('fit_admin_recipes')) {
-                localStorage.setItem('fit_admin_recipes', JSON.stringify(defaultRecipes));
-            }
-
-            let liveRecipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]');
-            if (!liveRecipes || liveRecipes.length === 0) {
-                liveRecipes = defaultRecipes;
-            }
-
+            let liveRecipes = defaultRecipes;
             const recipesGrid = document.getElementById('recipesGrid');
             const categoryBtns = document.querySelectorAll('.diet-toggle-btn');
             const mealBtns = document.querySelectorAll('.meal-chip-btn');
@@ -765,6 +761,18 @@
             let currentCategory = 'all';
             let currentMeal = 'all';
             let searchQuery = '';
+
+            // Subscribe to real-time cloud & local cache
+            if (window.FitDB && window.FitDB.recipes) {
+                window.FitDB.recipes.listen((cloudRecipes) => {
+                    if (cloudRecipes && cloudRecipes.length > 0) {
+                        liveRecipes = cloudRecipes;
+                        renderLiveRecipes();
+                    }
+                });
+            } else {
+                liveRecipes = JSON.parse(localStorage.getItem('fit_admin_recipes') || '[]') || defaultRecipes;
+            }
 
             function renderLiveRecipes() {
                 if (!recipesGrid) return;

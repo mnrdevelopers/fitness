@@ -102,6 +102,10 @@
     <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <!-- Centralized Cloud DB & Sync Layer -->
+    <script src="assets/js/firebase-db.js"></script>
 
     <script>
         // Firebase Configuration (Dynamic with Admin Override Support)
@@ -141,29 +145,8 @@
 
         // Record User in Admin Dashboard Directory
         function recordSignedInUser(user) {
-            if (!user) return;
-            try {
-                const usersList = JSON.parse(localStorage.getItem('fit_analytics_users') || '[]');
-                const existingIdx = usersList.findIndex(u => u.uid === user.uid || (u.email && u.email === user.email));
-                const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
-                
-                if (existingIdx >= 0) {
-                    usersList[existingIdx].lastActive = now;
-                    usersList[existingIdx].displayName = user.displayName || usersList[existingIdx].displayName || 'Member';
-                    usersList[existingIdx].photoURL = user.photoURL || usersList[existingIdx].photoURL || '';
-                } else {
-                    usersList.unshift({
-                        uid: user.uid,
-                        displayName: user.displayName || 'Fitness Member',
-                        email: user.email || 'Email Private',
-                        photoURL: user.photoURL || '',
-                        joinedDate: now,
-                        lastActive: now
-                    });
-                }
-                localStorage.setItem('fit_analytics_users', JSON.stringify(usersList));
-            } catch (e) {
-                console.warn('Analytics user record notice:', e);
+            if (window.FitDB && window.FitDB.analytics) {
+                window.FitDB.analytics.syncUser(user);
             }
         }
 

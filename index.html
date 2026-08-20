@@ -65,6 +65,7 @@
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home" class="nav-link active">Home</a></li>
                     <li><a href="#services" class="nav-link">Programs</a></li>
+                    <li><a href="#products" class="nav-link"><i class="fas fa-shopping-bag" style="color: var(--primary); margin-right: 4px;"></i> Products</a></li>
                     <li><a href="recipes.html" class="nav-link"><i class="fas fa-utensils" style="color: var(--primary); margin-right: 4px;"></i> Diet Recipes</a></li>
                     <li><a href="tools.html" class="nav-link"><i class="fas fa-calculator" style="color: var(--primary); margin-right: 4px;"></i> Tools Suite</a></li>
                     <li><a href="results.html" class="nav-link">Results</a></li>
@@ -563,6 +564,47 @@
         </div>
     </section>
 
+    <!-- 4.5. Coach Recommended Products & Affiliate Gear Showcase -->
+    <section id="products" class="section products-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag"><i class="fas fa-shopping-bag" style="color: var(--primary); margin-right: 5px;"></i> Handpicked & Tested Gear</span>
+                <h2>Coach Rajashekar's <span class="highlight-text">Recommended Products</span></h2>
+                <p>Top-rated supplements, recovery essentials, gym equipment, and healthy diet staples personally verified for quality, safety, and performance.</p>
+            </div>
+
+            <!-- Product Category Filter Tabs -->
+            <div class="product-filter-tabs" id="productFilterTabs">
+                <button class="prod-filter-btn active" data-category="all">
+                    <i class="fas fa-th-large"></i> All Products
+                </button>
+                <button class="prod-filter-btn" data-category="supplements">
+                    <i class="fas fa-pills"></i> Supplements & Whey
+                </button>
+                <button class="prod-filter-btn" data-category="gear">
+                    <i class="fas fa-dumbbell"></i> Gym Gear & Accessories
+                </button>
+                <button class="prod-filter-btn" data-category="diet">
+                    <i class="fas fa-utensils"></i> Diet & Healthy Foods
+                </button>
+                <button class="prod-filter-btn" data-category="equipment">
+                    <i class="fas fa-layer-group"></i> Lifting Equipment
+                </button>
+            </div>
+
+            <!-- Products Dynamic Live Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Injected dynamically by script.js via FitDB.products -->
+            </div>
+
+            <!-- Affiliate Transparency Notice -->
+            <div class="affiliate-disclosure-box">
+                <i class="fas fa-shield-alt"></i>
+                <span><strong>Affiliate Transparency:</strong> When you purchase through the verified links above with our coach discount codes, you get special discounted pricing and support the platform at zero additional cost to you.</span>
+            </div>
+        </div>
+    </section>
+
     <!-- About Coach Rajashekar Section -->
     <section id="about" class="section about-section">
         <div class="container">
@@ -977,6 +1019,10 @@
     <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <!-- Centralized Cloud DB & Sync Layer -->
+    <script src="assets/js/firebase-db.js"></script>
 
     <!-- Application Script -->
     <script src="assets/js/script.js"></script>

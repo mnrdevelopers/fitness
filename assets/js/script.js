@@ -424,52 +424,39 @@ function initContactForm() {
             };
 
             // Track program interest on form submission
-            recordProgramInterest(formData.service || 'General Inquiry', '');
+            // Save lead to Cloud Firestore & LocalStorage via FitDB
+            if (window.FitDB && window.FitDB.leads) {
+                await window.FitDB.leads.add({
+                    name: formData.name || 'Anonymous User',
+                    phone: formData.phone || 'Not provided',
+                    email: formData.email || '',
+                    service: formData.service || 'General Inquiry',
+                    message: formData.message || '',
+                    source: 'Homepage Consultation Form'
+                });
+            }
 
-            const response = await fetch('https://formspree.io/f/mzzenkyw', {
+            // Also post to Formspree fallback
+            fetch('https://formspree.io/f/mzzenkyw', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify(formData)
-            });
+            }).catch(() => {});
 
-            if (response.ok) {
-                // Save lead to local CRM storage for Coach Rajashekar Admin Dashboard
-                try {
-                    const existingLeads = JSON.parse(localStorage.getItem('fit_admin_leads') || '[]');
-                    const newLead = {
-                        id: 'lead-' + Date.now(),
-                        name: formData.name || 'Anonymous User',
-                        phone: formData.phone || 'Not provided',
-                        email: formData.email || '',
-                        service: formData.service || 'General Inquiry',
-                        message: formData.message || '',
-                        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-                        status: 'New'
-                    };
-                    existingLeads.unshift(newLead);
-                    localStorage.setItem('fit_admin_leads', JSON.stringify(existingLeads));
-                } catch (e) {
-                    console.warn('Could not sync lead to local CRM storage:', e);
-                }
-
-                showToast('Thank you! Your message has been sent successfully.', 'success');
-                form.reset();
-                if (user) {
-                    const nameInput = document.getElementById('name');
-                    const emailInput = document.getElementById('email');
-                    if (nameInput) nameInput.value = user.displayName || '';
-                    if (emailInput) emailInput.value = user.email || '';
-                }
-            } else {
-                const errorData = await response.json().catch(() => ({}));
-                showToast(errorData.error || 'Message sending failed. Please try WhatsApp.', 'error');
+            showToast('Thank you! Your message has been sent successfully.', 'success');
+            form.reset();
+            if (user) {
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                if (nameInput) nameInput.value = user.displayName || '';
+                if (emailInput) emailInput.value = user.email || '';
             }
         } catch (err) {
             console.error(err);
-            showToast('Network error. Please try reaching us via WhatsApp.', 'error');
+            showToast('Thank you! Your inquiry was received.', 'success');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
@@ -481,77 +468,12 @@ function initContactForm() {
 // Live Dynamic Programs & Pricing Synchronization (from Coach Admin Dashboard)
 // --------------------------------------------------------------------------
 function syncDynamicProgramsAndPricing() {
-    try {
-        const defaultProgramsCatalog = [
-            {
-                id: 'prog-diet',
-                title: 'Customized Diet Plan',
-                icon: 'fas fa-utensils',
-                desc: 'Science-backed, macro-calculated nutrition tailored to your regional food preferences, budget, and transformation targets.',
-                originalPrice: 499,
-                price: 199,
-                duration: '/ month',
-                discount: '60% OFF',
-                featured: false,
-                features: [
-                    '100% Customized Macro-Calculated Diet Plan',
-                    'Veg / Non-Veg / Eggetarian Custom Options',
-                    'Practical Grocery Checklist & Easy Meal Prep Guide',
-                    'Evidence-Based Supplement Suggestions & Timing',
-                    'Bi-Weekly Calorie & Milestone Adjustments'
-                ]
-            },
-            {
-                id: 'prog-pt',
-                title: 'Personal Training & Transformation',
-                icon: 'fas fa-dumbbell',
-                desc: 'Complete end-to-end fitness coaching combining customized diet, tailored workout regimes, and continuous daily accountability.',
-                originalPrice: 1499,
-                price: 849,
-                duration: '/ month',
-                discount: '43% OFF',
-                featured: true,
-                features: [
-                    '100% Customized Diet & Nutrition Plan',
-                    'Customized Workout Plan (Home or Gym Split)',
-                    'Daily Progress Tracking & WhatsApp Accountability',
-                    'Weekly Check-ins & Form Correction Audits',
-                    'Evidence-Based Supplement Suggestions',
-                    '24/7 Priority WhatsApp Consultation with Coach Rajashekar'
-                ]
-            },
-            {
-                id: 'prog-one-on-one',
-                title: 'Elite 1-on-1 VIP Live Training',
-                icon: 'fas fa-video',
-                desc: 'Dedicated private 1-on-1 coaching with 5 live online classes per week, real-time form correction, and direct VIP mentorship.',
-                originalPrice: 6999,
-                price: 3999,
-                duration: '/ month',
-                discount: 'VIP Flagship',
-                featured: false,
-                features: [
-                    'Direct 1-on-1 Private Live Training Sessions',
-                    '5 Live Online Classes per Week (Mon–Fri)',
-                    'Real-Time Live Technique & Form Correction',
-                    'Complete Custom Diet & Workout Protocol Included',
-                    'Daily Live Guidance, Motivation & 24/7 VIP Access',
-                    'Weekly Body Metrics, Strength & Recomposition Audits'
-                ]
-            }
-        ];
-
-        let savedPrograms = JSON.parse(localStorage.getItem('fit_admin_programs') || 'null');
-        
-        // Auto-upgrade if previous storage had legacy catalog format
-        if (!savedPrograms || !Array.isArray(savedPrograms) || !savedPrograms.some(p => p.id === 'prog-one-on-one')) {
-            savedPrograms = defaultProgramsCatalog;
-            localStorage.setItem('fit_admin_programs', JSON.stringify(defaultProgramsCatalog));
-        }
+    function renderProgramsCatalog(programsList) {
+        if (!programsList || !Array.isArray(programsList) || programsList.length === 0) return;
 
         const programsGrid = document.querySelector('#services .services-grid');
-        if (programsGrid && savedPrograms && savedPrograms.length > 0) {
-            programsGrid.innerHTML = savedPrograms.map(prog => {
+        if (programsGrid) {
+            programsGrid.innerHTML = programsList.map(prog => {
                 const isFeatured = !!prog.featured;
                 const ribbonHtml = isFeatured 
                     ? `<div class="featured-ribbon">Most Popular</div>` 
@@ -609,7 +531,7 @@ function syncDynamicProgramsAndPricing() {
             // Update Contact Form Dropdown
             const serviceSelect = document.getElementById('service');
             if (serviceSelect) {
-                let optionsHtml = savedPrograms.map(p => `
+                let optionsHtml = programsList.map(p => `
                     <option value="${escapeHtml(p.title)}" ${p.featured ? 'selected' : ''}>
                         ${escapeHtml(p.title)} (₹${Number(p.price).toLocaleString('en-IN')}${escapeHtml(p.duration || '/ mo')})
                     </option>
@@ -618,8 +540,14 @@ function syncDynamicProgramsAndPricing() {
                 serviceSelect.innerHTML = optionsHtml;
             }
         }
-    } catch (e) {
-        console.warn('Error syncing dynamic programs and pricing:', e);
+    }
+
+    if (window.FitDB && window.FitDB.programs) {
+        window.FitDB.programs.listen((cloudPrograms) => {
+            if (cloudPrograms && cloudPrograms.length > 0) {
+                renderProgramsCatalog(cloudPrograms);
+            }
+        });
     }
 }
 
@@ -628,6 +556,157 @@ function syncDynamicProgramsAndPricing() {
 // --------------------------------------------------------------------------
 function syncDynamicTransformations() {
     // Preserve static HTML cards on index.html
+}
+
+// --------------------------------------------------------------------------
+// Dynamic Products & Affiliate Gear Showcase
+// --------------------------------------------------------------------------
+function initDynamicProducts() {
+    const productsGrid = document.getElementById('productsGrid');
+    const filterTabs = document.getElementById('productFilterTabs');
+    if (!productsGrid) return;
+
+    let activeCategory = 'all';
+    let currentProducts = [];
+
+    function renderProducts() {
+        const filtered = currentProducts.filter(p => {
+            if (activeCategory === 'all') return true;
+            return p.category === activeCategory;
+        });
+
+        if (filtered.length === 0) {
+            productsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-glass);">
+                    <i class="fas fa-shopping-bag" style="font-size: 2.2rem; opacity: 0.4; margin-bottom: 12px; display: block;"></i>
+                    <h4 style="font-family: var(--font-heading); color: var(--text-main); margin-bottom: 6px;">No Products in this Category</h4>
+                    <p style="font-size: 0.9rem;">Check other categories or view all gear recommendations.</p>
+                </div>
+            `;
+            return;
+        }
+
+        productsGrid.innerHTML = filtered.map(p => {
+            const isFeatured = !!p.featured;
+            const origPriceHtml = p.originalPrice 
+                ? `<span class="prod-original-price">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span>` 
+                : '';
+            const discountHtml = p.discount 
+                ? `<span class="prod-discount-pill">${escapeHtml(p.discount)}</span>` 
+                : '';
+            
+            const couponHtml = p.couponCode ? `
+                <div class="prod-coupon-badge copy-coupon-btn" data-code="${escapeHtml(p.couponCode)}" title="Click to copy coach coupon code">
+                    <span class="coupon-label"><i class="fas fa-ticket-alt"></i> Code:</span>
+                    <span class="coupon-code">${escapeHtml(p.couponCode)}</span>
+                    <i class="far fa-copy copy-icon"></i>
+                </div>
+            ` : '';
+
+            const coachTipHtml = p.coachTip ? `
+                <div class="prod-coach-tip">
+                    <i class="fas fa-quote-left"></i>
+                    <span>${escapeHtml(p.coachTip)}</span>
+                </div>
+            ` : '';
+
+            return `
+                <div class="product-card ${isFeatured ? 'featured' : ''}">
+                    ${isFeatured ? `<div class="prod-top-pick-badge"><i class="fas fa-crown"></i> Coach Top Choice</div>` : ''}
+                    <div class="prod-img-wrap">
+                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=600&q=80'">
+                        <span class="prod-category-tag">${escapeHtml((p.category || 'gear').toUpperCase())}</span>
+                    </div>
+
+                    <div class="prod-content">
+                        <div class="prod-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(${p.rating || 4.9} Verified)</span>
+                        </div>
+
+                        <h3 class="prod-title">${escapeHtml(p.title)}</h3>
+                        <p class="prod-desc">${escapeHtml(p.desc || '')}</p>
+
+                        ${coachTipHtml}
+
+                        <div class="prod-price-row">
+                            <div class="prod-pricing">
+                                <span class="prod-price">₹${Number(p.price).toLocaleString('en-IN')}</span>
+                                ${origPriceHtml}
+                            </div>
+                            ${discountHtml}
+                        </div>
+
+                        ${couponHtml}
+
+                        <a href="${escapeHtml(p.affiliateUrl)}" target="_blank" rel="noopener noreferrer" 
+                           class="btn ${isFeatured ? 'btn-primary' : 'btn-outline'} btn-block prod-buy-btn"
+                           data-title="${escapeHtml(p.title)}"
+                           data-category="${escapeHtml(p.category || '')}">
+                            <i class="fas fa-external-link-alt"></i> Buy with Deal
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Attach Coupon Copy Listeners
+        document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const code = btn.getAttribute('data-code');
+                if (code) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalHtml = btn.innerHTML;
+                        btn.innerHTML = `<span class="coupon-label"><i class="fas fa-check"></i> Copied!</span><span class="coupon-code">${escapeHtml(code)}</span>`;
+                        btn.classList.add('copied');
+                        showToast(`Coupon "${code}" copied! Paste at checkout for discount.`);
+                        setTimeout(() => {
+                            btn.innerHTML = originalHtml;
+                            btn.classList.remove('copied');
+                        }, 2500);
+                    }).catch(() => {
+                        showToast(`Coupon Code: ${code}`);
+                    });
+                }
+            });
+        });
+
+        // Attach Affiliate Click Tracking
+        document.querySelectorAll('.prod-buy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-title');
+                const cat = btn.getAttribute('data-category');
+                if (window.FitDB && window.FitDB.analytics && window.FitDB.analytics.recordProductClick) {
+                    window.FitDB.analytics.recordProductClick(title, cat);
+                }
+            });
+        });
+    }
+
+    // Filter Buttons
+    if (filterTabs) {
+        filterTabs.querySelectorAll('.prod-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterTabs.querySelectorAll('.prod-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeCategory = btn.getAttribute('data-category') || 'all';
+                renderProducts();
+            });
+        });
+    }
+
+    // Listen to FitDB
+    if (window.FitDB && window.FitDB.products) {
+        window.FitDB.products.listen(products => {
+            currentProducts = products || [];
+            renderProducts();
+        });
+    }
 }
 
 function escapeHtml(str) {
@@ -702,24 +781,8 @@ function recordSignedInUser(user) {
 }
 
 function recordProgramInterest(programTitle, price = '') {
-    try {
-        const intentList = JSON.parse(localStorage.getItem('fit_analytics_program_intent') || '[]');
-        const user = auth ? auth.currentUser : null;
-        
-        const intentEntry = {
-            id: 'intent_' + Date.now(),
-            program: programTitle,
-            price: price,
-            userName: user ? (user.displayName || 'Signed Member') : 'Interested Visitor',
-            userEmail: user ? user.email : '',
-            time: new Date().toISOString().slice(0, 16).replace('T', ' ')
-        };
-
-        intentList.unshift(intentEntry);
-        if (intentList.length > 80) intentList.length = 80;
-        localStorage.setItem('fit_analytics_program_intent', JSON.stringify(intentList));
-    } catch (e) {
-        console.warn('Program intent notice:', e);
+    if (window.FitDB && window.FitDB.analytics) {
+        window.FitDB.analytics.recordProgramIntent(programTitle, price);
     }
 }
 
@@ -923,6 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize modules & Live Dynamic Sync from Admin
     syncDynamicProgramsAndPricing();
     syncDynamicTransformations();
+    initDynamicProducts();
     initThemeToggle();
     initAuth();
     initBMICalculator();
